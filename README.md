@@ -48,12 +48,13 @@ var MyNewObject = ObjectDefinition.create({
     MyMixin2
   ],
 
+
   static: { // These attributes will NOT be inherited by any child object definitions.
     staticAttr0: 42,
     staticAttr1: 4242,
 
     staticFunc0: function(param0) {
-      alert("It worked! Yay!!!");
+      alert("MyNewObject.staticFunc0 hit!");
     }
   },
 
@@ -62,27 +63,30 @@ var MyNewObject = ObjectDefinition.create({
   protoAttr1: "Fish fingers and custard",
   protoAttr2: {
     attr0: 17,
-    attr1: []
+    attr1: null
   },
-  protoAttr3: [],
+  protoAttr3: [ 'val0', 'val1', 'val2' ],
+
 
 
   // This function is NOT required, but it acts as the constructor for object
   // creation if is present.
   ctor: function(id) {
+    console.log("MyNewObject.ctor hit!");
     this.protoAttr0 = id;
-  }
+  },
+
 
 
   func0: function() {
-    console.log("you've hit func0 in an instance of `MyNewObject`");
+    console.log("MyNewObject.func0 hit!");
   },
 
 
   func1: function(toPrint) {
     console.log(toPrint);
   }
-})
+});
 ```
 
 
