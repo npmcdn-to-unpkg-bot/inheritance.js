@@ -1,4 +1,4 @@
-objects.js
+Objects.js
 ===================================
 
 [![Licensed under the CPOL v1.02](https://img.shields.io/badge/license-CPOL--1.02-blue.svg?style=flat)](https://github.com/bsara/objects.js/blob/master/LICENSE.md)
@@ -114,7 +114,7 @@ var MyChildObject = MyNewObject.extend({
 ***TODO: Finish adding examples!***
 
 
-### [All Documentation](https://github.com/bsara/objects.js/wiki/Object.js-Wiki-Home)
+### [All Documentation](https://github.com/bsara/objects.js/wiki/Objects.js-Wiki-Home)
 
 
 ## Contributing
