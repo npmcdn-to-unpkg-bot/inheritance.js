@@ -35,6 +35,9 @@ A simple &amp; small implementation of object inheritance in JavaScript.
 
 ## Usage
 
+### [Full Documentation](https://github.com/bsara/objects.js/wiki/Objects.js-Wiki-Home)
+
+
 ### Create New Object Definition (I.E. "Class")
 
 **View on [JSBin](http://jsbin.com/wurure/edit?js,console) or [JSFiddle](http://jsfiddle.net/bsara/ekwajv83/)**
@@ -72,7 +75,7 @@ var MyNewObject = ObjectDefinition.create({
   // This function is NOT required, but it acts as the constructor for object
   // creation if is present.
   ctor: function(id) {
-    console.log("MyNewObject.ctor hit!");
+    console.log("MyNewObject.ctor hit!''");
     this.protoAttr0 = id;
   },
 
@@ -116,9 +119,6 @@ var MyChildObject = MyNewObject.extend({
 ```
 
 ***TODO: Finish adding examples!***
-
-
-### [All Documentation](https://github.com/bsara/objects.js/wiki/Objects.js-Wiki-Home)
 
 
 ## Contributing
