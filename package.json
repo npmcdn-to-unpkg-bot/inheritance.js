@@ -1,0 +1,22 @@
+{
+  "title": "objects.js",
+  "name": "objects-js",
+  "description": "A simple and small implementation of object inheritance in JavaScript",
+  "homepage": "https://bitbucket.org/bsara/objects.js",
+  "version": "0.0.1",
+  "licenses": [
+    "https://bitbucket.org/bsara/objects.js/src/master/LICENSE.md"
+  ],
+  "author": {
+    "name": "Brandon Sara (http://bsara.github.io)"
+  },
+  "devDependencies": {
+    "gulp": "^3.8.11",
+    "gulp-jscs": "^1.6.0",
+    "gulp-jscs-html-reporter": "^0.1.1",
+    "gulp-jscs-stylish": "^1.1.0",
+    "gulp-jshint": "^1.11.0",
+    "gulp-jshint-html-reporter": "^0.1.2",
+    "jshint-stylish": "^2.0.0"
+  }
+}
