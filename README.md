@@ -21,7 +21,7 @@ A simple &amp; small implementation of object inheritance in JavaScript.
 ## Features
 
 - Usable implementation of a `_super` prototype variable added to objects created with
-  `ObjectDefinition.create()`. **NO CALLING `call` OR `apply` NEEDED!**
+  `ObjectDefinition.create()`. **NO NEED TO USE `call` OR `apply`!**
 - Helper functions for extending any object or object definition.
 - Helper functions for extending objects via mixins.
 - Adds ability to define object definition level (I.E. "static" or non-prototype)
