@@ -33,6 +33,12 @@ A simple &amp; small implementation of object inheritance in JavaScript.
 
 
 
+## Full Documentation
+
+[See Wiki](https://github.com/bsara/objects.js/wiki/Objects.js-Wiki-Home)
+
+
+
 ## Usage
 
 ### Create New Object Definition (I.E. "Class")
@@ -116,11 +122,6 @@ var MyChildObject = MyNewObject.extend({
 ```
 
 ***TODO: Finish adding examples!***
-
-
-## Documentation
-
-[See Wiki](https://github.com/bsara/objects.js/wiki/Objects.js-Wiki-Home)
 
 
 ## Contributing
