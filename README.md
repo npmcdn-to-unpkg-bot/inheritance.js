@@ -18,6 +18,7 @@ A simple &amp; small implementation of object inheritance in JavaScript.
 -->
 
 
+
 ## Features
 
 - Usable implementation of a `_super` prototype variable added to objects created with
@@ -31,9 +32,12 @@ A simple &amp; small implementation of object inheritance in JavaScript.
   objects. ([Full List of Extensible Built-in Objects](#))
 
 
+
 ## Usage
 
 ### Create New Object Definition (I.E. "Class")
+
+**View on [JSBin](http://jsbin.com/wurure/edit?js,console) or [JSFiddle](http://jsfiddle.net/bsara/ekwajv83/)**
 
 ```javascript
 var MyNewObject = ObjectDefinition.create({
@@ -109,7 +113,8 @@ var MyChildObject = MyNewObject.extend({
 
 ***TODO: Finish adding examples!***
 
-### [Full Documentation](https://github.com/bsara/objects.js/wiki)
+
+### [All Documentation](https://github.com/bsara/objects.js/wiki/Object.js-Wiki-Home)
 
 
 ## Contributing
