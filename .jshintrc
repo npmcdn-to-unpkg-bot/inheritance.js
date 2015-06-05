@@ -4,16 +4,6 @@
   "browser": true,
   "devel": true,
   "esnext": true,
-  "jquery": true,
-  "predef": [
-    "_",
-    "Backbone",
-    "define",
-    "module",
-    "PADSS",
-    "require",
-    "Styles"
-  ],
 
   "debug": false,
   "eqeqeq": true,
