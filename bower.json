@@ -1,0 +1,31 @@
+{
+  "name": "inheritance-js",
+  "version": "0.0.1",
+  "authors": [
+    "Brandon Sara (http://bsara.github.io)"
+  ],
+  "description": "A simple and small implementation of object inheritance using pure JavaScript",
+  "license": "CPOL-1.02",
+  "homepage": "https://github.com/bsara/inheritance.js#readme",
+  "keywords": [
+    "class",
+    "classes",
+    "inherit",
+    "inheritance",
+    "object",
+    "objects",
+    "prototype",
+  ],
+  "moduleType": [
+    "es6",
+    "globals"
+  ],
+  "main": "/dist/inheritance.js",
+  "ignore": [
+    "**/*",
+    "!/dist/*.js",
+    "!/docs/**/*",
+    "!/LICENSE",
+    "!/README.md"
+  ]
+}

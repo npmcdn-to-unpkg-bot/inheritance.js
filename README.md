@@ -1,21 +1,24 @@
-Objects.js
-===================================
+Inheritance.js
+=================================================
 
-[![Licensed under the CPOL v1.02](https://img.shields.io/badge/license-CPOL--1.02-blue.svg?style=flat)](https://github.com/bsara/objects.js/blob/master/LICENSE.md)
+[![CPOL v1.02 License](https://img.shields.io/badge/license-CPOL--1.02-blue.svg?style=flat-square)](https://github.com/bsara/inheritance.js/blob/master/LICENSE.md)
+
+[![NPM Package](https://img.shields.io/npm/v/inheritance-js.svg?style=flat-square)](https://www.npmjs.com/package/inheritance-js)&nbsp;
+[![Bower Package](https://img.shields.io/bower/v/inheritance-js.svg?style=flat-square)](http://bower.io/search/?q=inheritance-js)
 
 
-A simple &amp; small implementation of object inheritance in JavaScript.
+A simple and small implementation of object inheritance using pure JavaScript.
+
 
 
 ## Install
 
 **TODO**
 
-<!--
-- **NPM:** `$ npm install --save object-js`
-- **Bower:** `$ bower install --save object-js`
-- [Download Latest](#)
--->
+- **NPM:** `$ npm install --save inheritance-js`
+- **Bower:** `$ bower install --save inheritance-js`
+- **Download:**
+    - [v0.0.1](#) *(Latest)*
 
 
 
@@ -35,7 +38,7 @@ A simple &amp; small implementation of object inheritance in JavaScript.
 
 ## Full Documentation
 
-[See Wiki](https://github.com/bsara/objects.js/wiki/Objects.js-Wiki-Home)
+[See Wiki](https://github.com/bsara/inheritance.js/wiki/Inheritance.js-Wiki-Home)
 
 
 
@@ -126,4 +129,4 @@ var MyChildObject = MyNewObject.extend({
 
 ## Contributing
 
-See [contribution documentation page](https://github.com/bsara/objects.js/blob/master/CONTRIBUTING.md) for details.
+See [contribution documentation page](https://github.com/bsara/inheritance.js/blob/master/CONTRIBUTING.md) for details.
