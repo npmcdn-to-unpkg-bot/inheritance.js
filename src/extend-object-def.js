@@ -1,8 +1,12 @@
-import { mixWithObjectDef } from 'mixin';
+
+module.exports.extendObjectDef = extendObjectDef;
 
 
 
-export function extendObjectDef(parentDef, childDefAttrs) {
+require('mixin');
+
+
+function extendObjectDef(parentDef, childDefAttrs) {
   var attrName;
 
   var parentDef = (parentDef || Object);

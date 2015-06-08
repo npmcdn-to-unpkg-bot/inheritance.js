@@ -1,4 +1,4 @@
-import { extendObjectDef } from '../extend-object-def';
+require('extend-object-def');
 
 
 Float64Array.extend = function(childDefAttrs) {

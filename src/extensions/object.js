@@ -1,5 +1,4 @@
-import { mix, deepMix }    from '../mixin';
-import { extendObjectDef } from '../extend-object-def';
+require('extend-object-def');
 
 
 

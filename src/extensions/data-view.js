@@ -1,5 +1,4 @@
-import { extendObjectDef } from '../extend-object-def';
-
+require('extend-object-def');
 
 
 DataView.extend = function(childDefAttrs) {

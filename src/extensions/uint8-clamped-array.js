@@ -1,5 +1,4 @@
-import { extendObjectDef } from '../extend-object-def';
-
+require('extend-object-def');
 
 
 Uint8ClampedArray.extend = function(childDefAttrs) {

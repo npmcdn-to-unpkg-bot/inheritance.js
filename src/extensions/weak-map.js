@@ -1,7 +1,10 @@
-import { extendObjectDef } from '../extend-object-def';
+if (typeof WeakMap !== 'undefined' && WeakMap !== null) {
+
+  require('extend-object-def');
 
 
+  WeakMap.extend = function(childDefAttrs) {
+    return extendObjectDef(WeakMap, childDefAttrs);
+  };
 
-WeakMap.extend = function(childDefAttrs) {
-  return extendObjectDef(WeakMap, childDefAttrs);
-};
+}

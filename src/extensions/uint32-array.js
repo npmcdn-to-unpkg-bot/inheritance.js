@@ -1,5 +1,4 @@
-import { extendObjectDef } from '../extend-object-def';
-
+require('extend-object-def');
 
 
 Uint32Array.extend = function(childDefAttrs) {

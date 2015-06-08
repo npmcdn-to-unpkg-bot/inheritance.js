@@ -14,13 +14,13 @@
     "inheritance",
     "object",
     "objects",
-    "prototype",
+    "prototype"
   ],
   "moduleType": [
     "es6",
     "globals"
   ],
-  "main": "/dist/inheritance.js",
+  "main": "/dist/inheritance.min.js",
   "ignore": [
     "**/*",
     "!/dist/*.js",

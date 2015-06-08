@@ -1,7 +1,10 @@
-import { extendObjectDef } from '../extend-object-def';
+if (typeof WeakSet !== 'undefined' && WeakSet !== null) {
+
+  require('extend-object-def');
 
 
+  WeakSet.extend = function(childAttrs) {
+    return extendObjectDef(WeakSet, childDefAttrs);
+  };
 
-WeakSet.extend = function(childAttrs) {
-  return extendObjectDef(WeakSet, childDefAttrs);
-};
+}

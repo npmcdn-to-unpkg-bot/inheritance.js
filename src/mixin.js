@@ -1,4 +1,11 @@
-export function mix(obj, mixins) {
+
+module.exports.mix = mix;
+module.exports.deepMix = deepMix;
+module.exports.mixWithObjectDef = mixWithObjectDef;
+
+
+
+function mix(obj, mixins) {
   var newObj = (obj || {});
 
   for (var i = 1; i < mixins.length; i++) {
@@ -19,7 +26,7 @@ export function mix(obj, mixins) {
 }
 
 
-export function deepMix(obj, mixins) {
+function deepMix(obj, mixins) {
   var newObj = (obj || {});
 
   for (var i = 1; i < mixins.length; i++) {
@@ -44,7 +51,7 @@ export function deepMix(obj, mixins) {
 }
 
 
-export function mixWithObjectDef(objDef, mixins) {
+function mixWithObjectDef(objDef, mixins) {
   objDef = (objDef || {});
 
   var objDefPrototype = objDef.prototype;

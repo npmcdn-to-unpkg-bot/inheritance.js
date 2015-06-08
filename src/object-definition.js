@@ -1,8 +1,8 @@
-import '../extensions/object';
+require('extensions/object');
 
 
 
-export default {
+module.exports = {
   create: function(objDefAttrs) {
     return Object.extend(objDefAttrs);
   }
