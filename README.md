@@ -32,7 +32,7 @@ A simple and small implementation of object inheritance using pure JavaScript.
   attributes inline with prototype (I.E. "instance") variables; thus, increasing code
   organization
 - `extend` function added to default `Object` implementation and many more built-in JS
-  objects. ([Full List of Extensible Built-in Objects](#))
+  objects. ([Full List of Extensible Built-in Objects](https://github.com/bsara/inheritance.js/wiki/Built-in-Object-Changes))
 
 
 
