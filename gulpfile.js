@@ -1,12 +1,11 @@
 var gulp                  = require('gulp');
-var amdOptimizer          = require('gulp-amd-optimizer');
 var clean                 = require('gulp-clean');
 var concat                = require('gulp-concat');
 var jscs                  = require('gulp-jscs');
-var jscsHTMLReporter      = require('gulp-jscs-html-reporter');
-var jscsStylishReporter   = require('gulp-jscs-stylish');
+//var jscsHTMLReporter      = require('gulp-jscs-html-reporter');
+var jscsStylishReporter   = require('jscs-stylish');
 var jshint                = require('gulp-jshint');
-var jshintHTMLReporter    = require('gulp-jscs-html-reporter');
+//var jshintHTMLReporter    = require('gulp-jscs-html-reporter');
 var jshintStylishReporter = require('jshint-stylish');
 
 
@@ -28,14 +27,13 @@ var config = {
   },
 
   scripts: {
-    dir: 'src/',
-    inheritanceJS: {
-      path: 'src/inheritance.js'
-    },
     selector: {
       all: ['gulpfile.js', 'src/**/*.js', 'test/**/*.js'],
       src: 'src/**/*.js',
       test: 'test/**/*.js'
+    },
+    src: {
+      dir: 'src/'
     }
   }
 };
@@ -53,12 +51,35 @@ gulp.task('help', function() {
 
 
 
-gulp.task('build', function() {
-  gulp.src('src/inheritance.js', { base: config.scripts.dir })
-      .pipe(amdOptimizer({ baseUrl: config.scripts.dir }))
+gulp.task('build', ['build-all-in-one', 'build-partials']);
+
+
+gulp.task('build-all-in-one', function() {
+  gulp.src(['src/mixin.js', 'src/extend-object-def.js', 'src/extensions/*.js', 'src/object-definition.js'])
       .pipe(concat('inheritance.js'))
       .pipe(gulp.dest(config.build.dir));
 });
+
+
+gulp.task('build-partials', ['build-partial-object-definition', 'build-partial-extend-object-def', 'build-partial-mixin']);
+
+gulp.task('build-partial-object-definition', function() {
+  gulp.src(['src/mixin.js', 'src/extend-object-def.js', 'src/extensions/object.js', 'src/object-definition.js'])
+      .pipe(concat('inheritance.js'))
+      .pipe(gulp.dest(config.build.dir));
+});
+
+gulp.task('build-partial-extend-object-def', function() {
+  gulp.src(['src/mixin.js', 'src/extend-object-def.js'])
+      .pipe(concat('extend-object-def.js'))
+      .pipe(gulp.dest(config.build.dir));
+});
+
+gulp.task('build-partial-mixin', function() {
+  gulp.src('src/mixin.js', { base: config.scripts.src.dir })
+      .pipe(gulp.dest(config.build.dir));
+});
+
 
 gulp.task('rebuild', ['clean-build', 'build']);
 
@@ -114,8 +135,9 @@ gulp.task('jshint', function() {
 
 gulp.task('jscs', function() {
   gulp.src(config.scripts.selector.all)
-      .pipe(jscs())
-      .pipe(jscs.reporter(jscsStylishReporter));
+      .pipe(jscs({
+        verbose: true
+      }));
 });
 
 

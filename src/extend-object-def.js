@@ -1,16 +1,8 @@
-
-module.exports.extendObjectDef = extendObjectDef;
-
-
-
-require('mixin');
-
-
 function extendObjectDef(parentDef, childDefAttrs) {
   var attrName;
 
-  var parentDef = (parentDef || Object);
-  var childDefAttrs = (childDefAttrs || {});
+  parentDef = (parentDef || Object);
+  childDefAttrs = (childDefAttrs || {});
 
   var childDef = (childDefAttrs.ctor || function() { return this.super.apply(this, arguments); });
 

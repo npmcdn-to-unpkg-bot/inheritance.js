@@ -1,8 +1,4 @@
-require('extensions/object');
-
-
-
-module.exports = {
+window.ObjectDefinition = {
   create: function(objDefAttrs) {
     return Object.extend(objDefAttrs);
   }

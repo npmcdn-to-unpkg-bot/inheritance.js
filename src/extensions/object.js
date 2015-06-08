@@ -1,7 +1,3 @@
-require('extend-object-def');
-
-
-
 // ------------------ //
 // Static Functions   //
 // ------------------ //

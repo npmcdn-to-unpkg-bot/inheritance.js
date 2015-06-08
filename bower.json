@@ -17,7 +17,6 @@
     "prototype"
   ],
   "moduleType": [
-    "es6",
     "globals"
   ],
   "main": "/dist/inheritance.min.js",

@@ -1,10 +1,3 @@
-
-module.exports.mix = mix;
-module.exports.deepMix = deepMix;
-module.exports.mixWithObjectDef = mixWithObjectDef;
-
-
-
 function mix(obj, mixins) {
   var newObj = (obj || {});
 

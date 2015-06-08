@@ -3,7 +3,14 @@
 
   "browser": true,
   "devel": true,
-  "esnext": true,
+  "esnext": false,
+  "predef": [
+    "extendObjectDef",
+    "deepMix",
+    "mix",
+    "mixWithObjectDef",
+    "require"
+  ],
 
   "debug": false,
   "eqeqeq": true,
