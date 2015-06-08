@@ -1,6 +1,6 @@
 {
   "name": "inheritance-js",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "authors": [
     "Brandon Sara (http://bsara.github.io)"
   ],
@@ -26,7 +26,7 @@
   "main": "/dist/inheritance.min.js",
   "ignore": [
     "**/*",
-    "!/dist/*.js",
+    "!/dist/**/*.js",
     "!/docs/**/*",
     "!/LICENSE",
     "!/README.md"

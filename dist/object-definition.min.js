@@ -1,4 +1,6 @@
 /*!
+ * Inheritance.js (0.0.2)
+ *
  * Copyright (c) 2015 Brandon Sara (http://bsara.github.io)
  * Licensed under the CPOL-1.02 (https://github.com/bsara/inheritance.js/blob/master/LICENSE.md)
  */

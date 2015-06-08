@@ -1,6 +1,6 @@
 {
   "name": "inheritance-js",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "authors": [
     "Brandon Sara (http://bsara.github.io)"
   ],
@@ -18,17 +18,20 @@
   ],
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/bsara/inheritance.js.git"
+    "url": "git://github.com/bsara/inheritance.js.git"
   },
   "directories": {
     "test": "test"
   },
   "scripts": {
     "build": "gulp build",
+    "clean": "gulp clean",
+    "dist": "gulp dist",
+    "lint": "gulp lint",
     "test": "gulp test"
   },
   "files": [
-    "/dist/*.js",
+    "/dist/**/*.js",
     "/docs/**/*",
     "/LICENSE",
     "/README.md"

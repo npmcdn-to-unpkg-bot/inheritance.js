@@ -11,39 +11,37 @@ var uglify                = require('gulp-uglify');
 
 
 
-var config = {
-  build: {
-    dir: 'build/'
-  },
+// ------------------------- //
+// Configuration             //
+// ------------------------- //
 
-  dist: {
-    dir: 'dist/',
-    src: {
-      dir: 'dist/src'
-    }
-  },
+var config = {};
 
-  reports: {
-    dir: 'reports/'
-  },
+config.build = { dir: 'build/' };
 
-  scripts: {
-    selector: {
-      all: ['gulpfile.js', 'src/**/*.js', 'test/**/*.js'],
-      src: 'src/**/*.js',
-      test: 'test/**/*.js'
-    },
-    src: {
-      dir: 'src/'
-    }
-  },
+config.dist = { dir: 'dist/' };
+config.dist.src = { dir: config.dist.dir + 'src/' };
 
-  licenseHeaderText: "/*!\n * Copyright (c) 2015 Brandon Sara (http://bsara.github.io)\n * Licensed under the CPOL-1.02 (https://github.com/bsara/inheritance.js/blob/master/LICENSE.md)\n */\n\n"
+config.pkg = require('./package.json');
+
+config.reports = { dir: 'reports/' };
+
+config.scripts = {};
+config.scripts.header = "/*!\n * Inheritance.js (" + config.pkg.version + ")\n *\n * Copyright (c) 2015 Brandon Sara (http://bsara.github.io)\n * Licensed under the CPOL-1.02 (https://github.com/bsara/inheritance.js/blob/master/LICENSE.md)\n */\n\n"
+config.scripts.src = { dir: 'src/' };
+config.scripts.tests = { dir: 'test/' };
+config.scripts.selector = {
+  src: config.scripts.src.dir + '**/*.js',
+  tests: config.scripts.tests.dir + '**/*.js'
 };
+config.scripts.selector.all = ['gulpfile.js', config.scripts.selector.src, config.scripts.selector.tests];
 
 
 
 
+// ------------------------- //
+// Tasks                     //
+// ------------------------- //
 
 gulp.task('default', ['build']);
 
@@ -55,13 +53,16 @@ gulp.task('help', function() {
 
 
 
+// Build Tasks
+// ----------------
+
 gulp.task('build', ['build-all-in-one', 'build-partials']);
 
 
 gulp.task('build-all-in-one', function() {
   gulp.src(['src/mixin.js', 'src/extend-object-def.js', 'src/extensions/*.js', 'src/object-definition.js'])
       .pipe(concat('inheritance.js'))
-      .pipe(insert.prepend(config.licenseHeaderText))
+      .pipe(insert.prepend(config.scripts.header))
       .pipe(gulp.dest(config.build.dir));
 });
 
@@ -71,20 +72,20 @@ gulp.task('build-partials', ['build-partial-object-definition', 'build-partial-e
 gulp.task('build-partial-object-definition', function() {
   gulp.src(['src/mixin.js', 'src/extend-object-def.js', 'src/extensions/object.js', 'src/object-definition.js'])
       .pipe(concat('object-definition.js'))
-      .pipe(insert.prepend(config.licenseHeaderText))
+      .pipe(insert.prepend(config.scripts.header))
       .pipe(gulp.dest(config.build.dir));
 });
 
 gulp.task('build-partial-extend-object-def', function() {
   gulp.src(['src/mixin.js', 'src/extend-object-def.js'])
       .pipe(concat('extend-object-def.js'))
-      .pipe(insert.prepend(config.licenseHeaderText))
+      .pipe(insert.prepend(config.scripts.header))
       .pipe(gulp.dest(config.build.dir));
 });
 
 gulp.task('build-partial-mixin', function() {
   gulp.src('src/mixin.js', { base: config.scripts.src.dir })
-      .pipe(insert.prepend(config.licenseHeaderText))
+      .pipe(insert.prepend(config.scripts.header))
       .pipe(gulp.dest(config.build.dir));
 });
 
@@ -92,6 +93,9 @@ gulp.task('build-partial-mixin', function() {
 gulp.task('rebuild', ['clean-build', 'build']);
 
 
+
+// Dist Tasks
+// ----------------
 
 gulp.task('dist', ['dist-src', 'dist-min']);
 
@@ -115,6 +119,9 @@ gulp.task('redist', ['clean-dist', 'dist']);
 
 
 
+// Clean Tasks
+// ----------------
+
 gulp.task('clean', ['clean-build', 'clean-dist', 'clean-reports']);
 
 gulp.task('clean-build', function() {
@@ -134,6 +141,9 @@ gulp.task('clean-reports', function() {
 
 
 
+// Lint Tasks
+// ----------------
+
 gulp.task('lint', ['jshint', 'jscs']);
 
 gulp.task('jshint', function() {
@@ -151,5 +161,7 @@ gulp.task('jscs', function() {
 });
 
 
+// Release Tasks
+// ----------------
 
 gulp.task('release', ['lint', 'clean', 'dist']);
