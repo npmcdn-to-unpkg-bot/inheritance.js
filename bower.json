@@ -7,6 +7,10 @@
   "description": "A simple and small implementation of object inheritance using pure JavaScript",
   "license": "CPOL-1.02",
   "homepage": "https://github.com/bsara/inheritance.js#readme",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/bsara/inheritance.js.git"
+  },
   "keywords": [
     "class",
     "classes",

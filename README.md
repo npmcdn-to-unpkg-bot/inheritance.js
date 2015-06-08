@@ -15,12 +15,10 @@ A simple and small implementation of object inheritance using pure JavaScript.
 
 ## Install
 
-**TODO**
-
 - **NPM:** `$ npm install --save inheritance-js`
 - **Bower:** `$ bower install --save inheritance-js`
 - **Download:**
-    - [v0.0.1](#) *(Latest)*
+    - [v0.0.1](https://github.com/bsara/inheritance.js/releases/tag/v0.0.1) *(Latest)*
 
 
 
@@ -46,87 +44,7 @@ A simple and small implementation of object inheritance using pure JavaScript.
 
 ## Usage
 
-### Create New Object Definition (I.E. "Class")
-
-**View on [JSBin](http://jsbin.com/wurure/edit?js,console) or [JSFiddle](http://jsfiddle.net/bsara/ekwajv83/)**
-
-```javascript
-var MyNewObject = ObjectDefinition.create({
-
-  mixins: [
-    MyMixin0,
-    MyMixin1,
-    MyMixin2
-  ],
-
-
-  static: { // These attributes will NOT be inherited by any child object definitions.
-    staticAttr0: 42,
-    staticAttr1: 4242,
-
-    staticFunc0: function(param0) {
-      alert("MyNewObject.staticFunc0 hit!");
-    }
-  },
-
-
-  protoAttr0: null,
-  protoAttr1: "Fish fingers and custard",
-  protoAttr2: {
-    attr0: 17,
-    attr1: null
-  },
-  protoAttr3: [ 'val0', 'val1', 'val2' ],
-
-
-
-  // This function is NOT required, but it acts as the constructor for object
-  // creation if is present.
-  ctor: function(id) {
-    console.log("MyNewObject.ctor hit!''");
-    this.protoAttr0 = id;
-  },
-
-
-
-  func0: function() {
-    console.log("MyNewObject.func0 hit!");
-  },
-
-
-  func1: function(toPrint) {
-    console.log(toPrint);
-  }
-});
-```
-
-
-### Create Child Object Definition
-
-*Using the class given in the example above*
-
-```javascript
-// Notice that the extend function exists for `MyNewObject` even though it was
-// not specifically created by us!
-var MyChildObject = MyNewObject.extend({
-
-  static: {
-    staticAttr0: 24
-  },
-
-
-  childProtoAttr0: 42,
-  childProtoAttr1: "sudo make me a sandwich",
-  childProtoAttr2: null,
-
-
-  ctor: function(id, name) {
-    this.super(id)
-  }
-});
-```
-
-***TODO: Finish adding examples!***
+***TODO***
 
 
 ## Contributing
