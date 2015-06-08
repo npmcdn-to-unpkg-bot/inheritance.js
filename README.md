@@ -36,9 +36,10 @@ A simple and small implementation of object inheritance using pure JavaScript.
 
 
 
-## Full Documentation
+## Documentation
 
-[See Wiki](https://github.com/bsara/inheritance.js/wiki/Inheritance.js-Wiki-Home)
+[Wiki](https://github.com/bsara/inheritance.js/wiki)
+[Changelog](https://img.shields.io/badge/license-CPOL--1.02-blue.svg?style=flat-square)](https://github.com/bsara/inheritance.js/blob/master/CHANGELOG.md)
 
 
 
