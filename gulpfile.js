@@ -71,14 +71,14 @@ gulp.task('build-partials', ['build-partial-object-definition', 'build-partial-e
 
 gulp.task('build-partial-object-definition', function() {
   gulp.src(['src/mixin.js', 'src/extend-object-def.js', 'src/extensions/object.js', 'src/object-definition.js'])
-      .pipe(concat('object-definition.js'))
+      .pipe(concat('inheritance.object-definition.js'))
       .pipe(insert.prepend(config.scripts.header))
       .pipe(gulp.dest(config.build.dir));
 });
 
 gulp.task('build-partial-extend-object-def', function() {
   gulp.src(['src/mixin.js', 'src/extend-object-def.js'])
-      .pipe(concat('extend-object-def.js'))
+      .pipe(concat('inheritance.extend-object-def.js'))
       .pipe(insert.prepend(config.scripts.header))
       .pipe(gulp.dest(config.build.dir));
 });
@@ -86,6 +86,7 @@ gulp.task('build-partial-extend-object-def', function() {
 gulp.task('build-partial-mixin', function() {
   gulp.src('src/mixin.js', { base: config.scripts.src.dir })
       .pipe(insert.prepend(config.scripts.header))
+      .pipe(rename('inheritance.mixin.js'))
       .pipe(gulp.dest(config.build.dir));
 });
 

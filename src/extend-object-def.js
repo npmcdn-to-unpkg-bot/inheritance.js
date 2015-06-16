@@ -22,7 +22,7 @@ function extendObjectDef(parentDef, childDefAttrs) {
 
   var mixins = childDefAttrs.mixins;
   if (mixins !== null && mixins instanceof Array) {
-    mixWithObjectDef(childDef, mixins);
+    deepMix(childDefAttrs, mixins);
   }
 
 
@@ -35,7 +35,7 @@ function extendObjectDef(parentDef, childDefAttrs) {
 
 
   childDef.prototype = Object.create(parentDef.prototype);
-  childDef.prototype.class = childDef;
+  childDef.prototype.objDef = childDef;
 
   childDef.prototype.constructor = function() {
     if (!(this instanceof childDef)) {
@@ -50,6 +50,7 @@ function extendObjectDef(parentDef, childDefAttrs) {
 
     childDef(arguments);
   };
+
 
   childDef.prototype.super = function() {
     this.objDef.__super__.constructor.apply(this, arguments);

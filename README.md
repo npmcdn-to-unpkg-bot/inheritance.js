@@ -18,7 +18,8 @@ A simple and small implementation of object inheritance using pure JavaScript.
 - **NPM:** `$ npm install --save inheritance-js`
 - **Bower:** `$ bower install --save inheritance-js`
 - **Download:**
-    - [v0.0.2](https://github.com/bsara/inheritance.js/releases/tag/v0.0.2) *(Latest)*
+    - [v0.1.0](https://github.com/bsara/inheritance.js/releases/tag/v0.1.0) *(Latest)*
+    - [v0.0.2](https://github.com/bsara/inheritance.js/releases/tag/v0.0.2)
 
 
 
@@ -45,8 +46,7 @@ A simple and small implementation of object inheritance using pure JavaScript.
 
 ## Usage
 
-***TODO***
-
+- Create New Object Definition (I.E. "Class") [[JSbin](http://jsbin.com/wurure/edit?js,console)] [[JSFiddle](https://jsfiddle.net/bsara/ekwajv83/)]
 
 ## Contributing
 

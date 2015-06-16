@@ -1,7 +1,7 @@
 function mix(obj, mixins) {
   var newObj = (obj || {});
 
-  for (var i = 1; i < mixins.length; i++) {
+  for (var i = 0; i < mixins.length; i++) {
     var mixin = mixins[i];
 
     if (!mixin) {
@@ -22,8 +22,8 @@ function mix(obj, mixins) {
 function deepMix(obj, mixins) {
   var newObj = (obj || {});
 
-  for (var i = 1; i < mixins.length; i++) {
-    var mixin = mixin[i];
+  for (var i = 0; i < mixins.length; i++) {
+    var mixin = mixins[i];
 
     if (!mixin) {
       continue;
@@ -49,7 +49,7 @@ function mixWithObjectDef(objDef, mixins) {
 
   var objDefPrototype = objDef.prototype;
 
-  for (var i = 1; i < mixins.length; i++) {
+  for (var i = 0; i < mixins.length; i++) {
     var mixin = mixins[i];
 
     if (!mixin) {

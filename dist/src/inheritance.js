@@ -1,5 +1,5 @@
 /*!
- * Inheritance.js (0.0.2)
+ * Inheritance.js (0.1.0)
  *
  * Copyright (c) 2015 Brandon Sara (http://bsara.github.io)
  * Licensed under the CPOL-1.02 (https://github.com/bsara/inheritance.js/blob/master/LICENSE.md)
@@ -8,7 +8,7 @@
 function mix(obj, mixins) {
   var newObj = (obj || {});
 
-  for (var i = 1; i < mixins.length; i++) {
+  for (var i = 0; i < mixins.length; i++) {
     var mixin = mixins[i];
 
     if (!mixin) {
@@ -29,8 +29,8 @@ function mix(obj, mixins) {
 function deepMix(obj, mixins) {
   var newObj = (obj || {});
 
-  for (var i = 1; i < mixins.length; i++) {
-    var mixin = mixin[i];
+  for (var i = 0; i < mixins.length; i++) {
+    var mixin = mixins[i];
 
     if (!mixin) {
       continue;
@@ -56,7 +56,7 @@ function mixWithObjectDef(objDef, mixins) {
 
   var objDefPrototype = objDef.prototype;
 
-  for (var i = 1; i < mixins.length; i++) {
+  for (var i = 0; i < mixins.length; i++) {
     var mixin = mixins[i];
 
     if (!mixin) {
@@ -97,7 +97,7 @@ function extendObjectDef(parentDef, childDefAttrs) {
 
   var mixins = childDefAttrs.mixins;
   if (mixins !== null && mixins instanceof Array) {
-    mixWithObjectDef(childDef, mixins);
+    deepMix(childDefAttrs, mixins);
   }
 
 
@@ -110,7 +110,7 @@ function extendObjectDef(parentDef, childDefAttrs) {
 
 
   childDef.prototype = Object.create(parentDef.prototype);
-  childDef.prototype.class = childDef;
+  childDef.prototype.objDef = childDef;
 
   childDef.prototype.constructor = function() {
     if (!(this instanceof childDef)) {
@@ -125,6 +125,7 @@ function extendObjectDef(parentDef, childDefAttrs) {
 
     childDef(arguments);
   };
+
 
   childDef.prototype.super = function() {
     this.objDef.__super__.constructor.apply(this, arguments);
