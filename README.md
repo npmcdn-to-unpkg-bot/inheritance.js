@@ -18,7 +18,7 @@ A simple and small implementation of object inheritance using pure JavaScript.
 - **NPM:** `$ npm install --save inheritance-js`
 - **Bower:** `$ bower install --save inheritance-js`
 - **Download:**
-    - [v0.1.0](https://github.com/bsara/inheritance.js/releases/tag/v0.1.0) *(Latest)*
+    - [v0.1.1](https://github.com/bsara/inheritance.js/releases/tag/v0.1.1) *(Latest)*
     - [v0.0.2](https://github.com/bsara/inheritance.js/releases/tag/v0.0.2)
 
 

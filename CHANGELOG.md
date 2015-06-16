@@ -1,4 +1,4 @@
-## [v0.1.0](https://github.com/bsara/inheritance.js/tree/v0.1.0) (2015-06-16)
+## [v0.1.1](https://github.com/bsara/inheritance.js/tree/v0.1.1) (2015-06-16)
 
 * **[Bug Fix]** `deepMix` throws exception because of variable name typo.
 * **[Bug Fix]** Couldn't use mixins with object definition creation.
