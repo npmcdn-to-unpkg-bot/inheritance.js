@@ -1,5 +1,5 @@
 /*!
- * Inheritance.js (0.1.1)
+ * Inheritance.js (0.1.2)
  *
  * Copyright (c) 2015 Brandon Sara (http://bsara.github.io)
  * Licensed under the CPOL-1.02 (https://github.com/bsara/inheritance.js/blob/master/LICENSE.md)
@@ -155,3 +155,32 @@ function extendObjectDef(parentDef, childDefAttrs) {
 
   return childDef;
 }
+
+// ------------------ //
+// Static Functions   //
+// ------------------ //
+
+Object.extend = function(childDefAttrs) {
+  return extendObjectDef(Object, childDefAttrs);
+};
+
+
+
+// ------------------ //
+// Instance Functions //
+// ------------------ //
+
+Object.prototype.mix = function() {
+  return mix(this, arguments);
+};
+
+
+Object.prototype.deepMix = function() {
+  return deepMix(this, arguments);
+};
+
+window.ObjectDefinition = {
+  create: function(objDefAttrs) {
+    return Object.extend(objDefAttrs);
+  }
+};

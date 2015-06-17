@@ -15,7 +15,13 @@
     "class",
     "classes",
     "inherit",
+    "inheritjs",
+    "inherit-js",
+    "inherit.js",
     "inheritance",
+    "inheritancejs",
+    "inheritance-js",
+    "inheritance.js",
     "object",
     "objects",
     "prototype"
@@ -26,7 +32,7 @@
   "main": "/dist/inheritance.min.js",
   "ignore": [
     "**/*",
-    "!/dist/**/*.js",
+    "!/dist/*.js",
     "!/docs/**/*",
     "!/LICENSE",
     "!/README.md"

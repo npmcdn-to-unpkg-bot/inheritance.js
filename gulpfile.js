@@ -102,7 +102,7 @@ gulp.task('dist', ['dist-src', 'dist-min']);
 
 gulp.task('dist-src', function() {
   gulp.src(config.build.dir + '*.js')
-      .pipe(gulp.dest(config.dist.src.dir));
+      .pipe(gulp.dest(config.dist.dir));
 });
 
 gulp.task('dist-min', function() {

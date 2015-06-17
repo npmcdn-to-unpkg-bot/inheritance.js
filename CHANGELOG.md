@@ -1,3 +1,11 @@
+## [v0.1.2](https://github.com/bsara/inheritance.js/tree/v0.1.2) (2015-06-17)
+
+* **[Breaking Change]** `src` directory removed from `dist` directory. All files are
+now contained within the same directory.
+* Updated output files to allow for more appropriate inclusion into cdnjs.com.
+* Updated `.gitattributes` to ensure that all files will have Unix style line endings.
+
+
 ## [v0.1.1](https://github.com/bsara/inheritance.js/tree/v0.1.1) (2015-06-16)
 
 * **[Bug Fix]** `deepMix` throws exception because of variable name typo.
