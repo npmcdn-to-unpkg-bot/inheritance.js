@@ -1,9 +1,12 @@
 /*!
- * Inheritance.js (0.1.2)
+ * Inheritance.js (0.1.3)
  *
  * Copyright (c) 2015 Brandon Sara (http://bsara.github.io)
  * Licensed under the CPOL-1.02 (https://github.com/bsara/inheritance.js/blob/master/LICENSE.md)
  */
+
+/* exported mix, deepMix, mixWithObjectDef */
+
 
 function mix(obj, mixins) {
   var newObj = (obj || {});
@@ -37,13 +40,16 @@ function deepMix(obj, mixins) {
     }
 
     for (var attrName in mixin) {
-      if (mixin.hasOwnProperty(attrName)) {
-        if (typeof mixin[attrName] === 'object') {
-          deepMix(newObj[attrName], mixin[attrName]);
-          continue;
-        }
-        newObj[attrName] = mixin[attrName];
+      if (!mixin.hasOwnProperty(attrName)) {
+        continue;
       }
+
+      if (typeof mixin[attrName] === 'object') {
+        deepMix(newObj[attrName], mixin[attrName]);
+        continue;
+      }
+
+      newObj[attrName] = mixin[attrName];
     }
   }
 

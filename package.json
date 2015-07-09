@@ -7,6 +7,10 @@
   "description": "A simple and small implementation of object inheritance using pure JavaScript",
   "license": "CPOL-1.02",
   "homepage": "https://github.com/bsara/inheritance.js#readme",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/bsara/inheritance.js.git"
+  },
   "keywords": [
     "class",
     "classes",
@@ -22,19 +26,16 @@
     "objects",
     "prototype"
   ],
-  "repository": {
-    "type": "git",
-    "url": "git://github.com/bsara/inheritance.js.git"
-  },
   "directories": {
     "test": "test"
   },
   "scripts": {
     "build": "gulp build",
-    "clean": "gulp clean",
     "dist": "gulp dist",
+    "docs": "gulp docs",
+    "clean": "gulp clean",
     "lint": "gulp lint",
-    "test": "gulp test"
+    "test": "gulp dist"
   },
   "files": [
     "/dist/*.js",
@@ -43,14 +44,19 @@
     "/README.md"
   ],
   "devDependencies": {
-    "gulp": "^3.9.0",
-    "gulp-clean": "^0.3.1",
-    "gulp-concat": "^2.5.2",
-    "gulp-insert": "^0.4.0",
-    "gulp-jscs": "^1.6.0",
-    "gulp-jshint": "^1.11.0",
-    "gulp-rename": "^1.2.2",
-    "gulp-uglify": "^1.2.0",
-    "jshint-stylish": "^2.0.0"
+    "del": "latest",
+    "gulp": "latest",
+    "gulp-concat": "latest",
+    "gulp-insert": "latest",
+    "gulp-jscs": "latest",
+    "gulp-jsdoc": "latest",
+    "gulp-jshint": "latest",
+    "gulp-order": "latest",
+    "gulp-rename": "latest",
+    "gulp-uglify": "latest",
+    "gulp-util": "latest",
+    "jshint-stylish": "latest",
+    "merge-stream": "latest",
+    "run-sequence": "latest"
   }
 }

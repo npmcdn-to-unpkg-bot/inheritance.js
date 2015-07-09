@@ -1,3 +1,14 @@
+## Next Release
+
+* **[Bug Fix]** `Symbol` tries to add `extend` function even when `Symbol` doesn't exist.
+* Added Travis CI integration.
+* Added documentation generation gulp task for future use.
+* Added gulp `help` task.
+* Cleaned up `gulpfile.js`.
+* Fixed issues found by JSHint and fully implemented JSHint throughout project.
+* Fixed `.gitattributes` issues (for reals this time).
+
+
 ## [v0.1.2](https://github.com/bsara/inheritance.js/tree/v0.1.2) (2015-06-17)
 
 * **[Breaking Change]** `src` directory removed from `dist` directory. All files are

@@ -1,10 +1,14 @@
+/* globals deepMix, -extendObjectDef */
+/* exported extendObjectDef */
+
+
 function extendObjectDef(parentDef, childDefAttrs) {
   var attrName;
 
   parentDef = (parentDef || Object);
   childDefAttrs = (childDefAttrs || {});
 
-  var childDef = (childDefAttrs.ctor || function() { return this.super.apply(this, arguments); });
+  var childDef = (childDefAttrs.ctor || function() { return this.super.apply(this, arguments); }); // jscs:disable requireBlocksOnNewline
 
 
   for (attrName in parentDef) {
@@ -39,7 +43,7 @@ function extendObjectDef(parentDef, childDefAttrs) {
 
   childDef.prototype.constructor = function() {
     if (!(this instanceof childDef)) {
-      return new childDef(arguments);
+      return new childDef(arguments); // jscs:disable requireCapitalizedConstructors
     }
 
     for (var funcName in this._super) {

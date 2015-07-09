@@ -5,11 +5,17 @@
   "devel": true,
   "esnext": false,
   "predef": [
+    "document",
+    "window",
     "extendObjectDef",
-    "deepMix",
-    "mix",
-    "mixWithObjectDef",
-    "require"
+    "Map",
+    "Promise",
+    "Proxy",
+    "Reflect",
+    "Set",
+    "Symbol",
+    "WeakMap",
+    "WeakSet"
   ],
 
   "debug": false,

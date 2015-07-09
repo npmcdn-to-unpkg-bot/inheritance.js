@@ -1,3 +1,6 @@
+/* globals mix, deepMix */
+
+
 // ------------------ //
 // Static Functions   //
 // ------------------ //

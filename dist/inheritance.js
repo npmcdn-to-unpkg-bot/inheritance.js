@@ -1,77 +1,13 @@
 /*!
- * Inheritance.js (0.1.2)
+ * Inheritance.js (0.1.3)
  *
  * Copyright (c) 2015 Brandon Sara (http://bsara.github.io)
  * Licensed under the CPOL-1.02 (https://github.com/bsara/inheritance.js/blob/master/LICENSE.md)
  */
 
-function mix(obj, mixins) {
-  var newObj = (obj || {});
+/* globals deepMix, -extendObjectDef */
+/* exported extendObjectDef */
 
-  for (var i = 0; i < mixins.length; i++) {
-    var mixin = mixins[i];
-
-    if (!mixin) {
-      continue;
-    }
-
-    for (var attrName in mixin) {
-      if (mixin.hasOwnProperty(attrName)) {
-        newObj[attrName] = mixin[attrName];
-      }
-    }
-  }
-
-  return newObj;
-}
-
-
-function deepMix(obj, mixins) {
-  var newObj = (obj || {});
-
-  for (var i = 0; i < mixins.length; i++) {
-    var mixin = mixins[i];
-
-    if (!mixin) {
-      continue;
-    }
-
-    for (var attrName in mixin) {
-      if (mixin.hasOwnProperty(attrName)) {
-        if (typeof mixin[attrName] === 'object') {
-          deepMix(newObj[attrName], mixin[attrName]);
-          continue;
-        }
-        newObj[attrName] = mixin[attrName];
-      }
-    }
-  }
-
-  return newObj;
-}
-
-
-function mixWithObjectDef(objDef, mixins) {
-  objDef = (objDef || {});
-
-  var objDefPrototype = objDef.prototype;
-
-  for (var i = 0; i < mixins.length; i++) {
-    var mixin = mixins[i];
-
-    if (!mixin) {
-      continue;
-    }
-
-    for (var attrName in mixin) {
-      if (mixin.hasOwnProperty(attrName)) {
-        objDefPrototype[attrName] = mixin[attrName];
-      }
-    }
-  }
-
-  return objDef;
-}
 
 function extendObjectDef(parentDef, childDefAttrs) {
   var attrName;
@@ -79,7 +15,7 @@ function extendObjectDef(parentDef, childDefAttrs) {
   parentDef = (parentDef || Object);
   childDefAttrs = (childDefAttrs || {});
 
-  var childDef = (childDefAttrs.ctor || function() { return this.super.apply(this, arguments); });
+  var childDef = (childDefAttrs.ctor || function() { return this.super.apply(this, arguments); }); // jscs:disable requireBlocksOnNewline
 
 
   for (attrName in parentDef) {
@@ -114,7 +50,7 @@ function extendObjectDef(parentDef, childDefAttrs) {
 
   childDef.prototype.constructor = function() {
     if (!(this instanceof childDef)) {
-      return new childDef(arguments);
+      return new childDef(arguments); // jscs:disable requireCapitalizedConstructors
     }
 
     for (var funcName in this._super) {
@@ -228,6 +164,9 @@ Number.extend = function(childDefAttrs) {
   return extendObjectDef(Number, childDefAttrs);
 };
 
+/* globals mix, deepMix */
+
+
 // ------------------ //
 // Static Functions   //
 // ------------------ //
@@ -291,7 +230,7 @@ String.extend = function(childDefAttrs) {
   return extendObjectDef(String, childDefAttrs);
 };
 
-if (typeof Promise !== 'undefined' && Promise !== null) {
+if (typeof Symbol !== 'undefined' && Symbol !== null) {
   Symbol.extend = function(childDefAttrs) {
     return extendObjectDef(Symbol, childDefAttrs);
   };
@@ -335,6 +274,80 @@ if (typeof WeakSet !== 'undefined' && WeakSet !== null) {
   WeakSet.extend = function(childAttrs) {
     return extendObjectDef(WeakSet, childAttrs);
   };
+}
+
+/* exported mix, deepMix, mixWithObjectDef */
+
+
+function mix(obj, mixins) {
+  var newObj = (obj || {});
+
+  for (var i = 0; i < mixins.length; i++) {
+    var mixin = mixins[i];
+
+    if (!mixin) {
+      continue;
+    }
+
+    for (var attrName in mixin) {
+      if (mixin.hasOwnProperty(attrName)) {
+        newObj[attrName] = mixin[attrName];
+      }
+    }
+  }
+
+  return newObj;
+}
+
+
+function deepMix(obj, mixins) {
+  var newObj = (obj || {});
+
+  for (var i = 0; i < mixins.length; i++) {
+    var mixin = mixins[i];
+
+    if (!mixin) {
+      continue;
+    }
+
+    for (var attrName in mixin) {
+      if (!mixin.hasOwnProperty(attrName)) {
+        continue;
+      }
+
+      if (typeof mixin[attrName] === 'object') {
+        deepMix(newObj[attrName], mixin[attrName]);
+        continue;
+      }
+
+      newObj[attrName] = mixin[attrName];
+    }
+  }
+
+  return newObj;
+}
+
+
+function mixWithObjectDef(objDef, mixins) {
+  objDef = (objDef || {});
+
+  var objDefPrototype = objDef.prototype;
+
+  for (var i = 0; i < mixins.length; i++) {
+    var mixin = mixins[i];
+
+    if (!mixin) {
+      continue;
+    }
+
+    for (var attrName in mixin) {
+      if (mixin.hasOwnProperty(attrName)) {
+        objDefPrototype[attrName] = mixin[attrName];
+      }
+    }
+  }
+
+  return objDef;
 }
 
 window.ObjectDefinition = {

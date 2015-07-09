@@ -1,3 +1,6 @@
+/* exported mix, deepMix, mixWithObjectDef */
+
+
 function mix(obj, mixins) {
   var newObj = (obj || {});
 
@@ -30,13 +33,16 @@ function deepMix(obj, mixins) {
     }
 
     for (var attrName in mixin) {
-      if (mixin.hasOwnProperty(attrName)) {
-        if (typeof mixin[attrName] === 'object') {
-          deepMix(newObj[attrName], mixin[attrName]);
-          continue;
-        }
-        newObj[attrName] = mixin[attrName];
+      if (!mixin.hasOwnProperty(attrName)) {
+        continue;
       }
+
+      if (typeof mixin[attrName] === 'object') {
+        deepMix(newObj[attrName], mixin[attrName]);
+        continue;
+      }
+
+      newObj[attrName] = mixin[attrName];
     }
   }
 
