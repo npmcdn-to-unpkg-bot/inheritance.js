@@ -1,4 +1,4 @@
-Inheritance.js [![Build Status](https://img.shields.io/travis/bsara/inheritance.js.svg)](https://travis-ci.org/bsara/inheritance.js)
+Inheritance.js [![Build Status](https://img.shields.io/travis/bsara/inheritance.js.svg)](https://travis-ci.org/bsara/inheritance.js?style=flat-square)
 =================================================
 
 [![CPOL v1.02 License](https://img.shields.io/badge/license-CPOL--1.02-blue.svg?style=flat-square)](https://github.com/bsara/inheritance.js/blob/master/LICENSE.md)
@@ -9,7 +9,7 @@ Inheritance.js [![Build Status](https://img.shields.io/travis/bsara/inheritance.
 [![Gitter Chat](https://badges.gitter.im/JOIN%20CHAT.svg)](https://gitter.im/bsara/inheritance.js)
 
 
-A simple and small implementation of object inheritance using pure JavaScript.
+A simple and lightweight implementation of object inheritance using pure JavaScript.
 
 
 
@@ -18,9 +18,10 @@ A simple and small implementation of object inheritance using pure JavaScript.
 - **NPM:** `$ npm install --save inheritance-js`
 - **Bower:** `$ bower install --save inheritance-js`
 - **Download:**
-    - [v0.1.2](https://github.com/bsara/inheritance.js/releases/tag/v0.1.2) *(Latest)*
+    - [v0.1.3](https://github.com/bsara/inheritance.js/releases/tag/v0.1.3) *(Latest)*
+    - [v0.1.2](https://github.com/bsara/inheritance.js/releases/tag/v0.1.2)
     - [v0.1.1](https://github.com/bsara/inheritance.js/releases/tag/v0.1.1)
-    - [v0.0.2](https://github.com/bsara/inheritance.js/releases/tag/v0.0.2)
+    - [More...](https://github.com/bsara/inheritance.js/releases)
 
 
 

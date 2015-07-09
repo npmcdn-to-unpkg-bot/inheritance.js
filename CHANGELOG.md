@@ -1,4 +1,4 @@
-## Next Release
+## [v0.1.3](https://github.com/bsara/inheritance.js/tree/v0.1.3) (2015-07-09)
 
 * **[Bug Fix]** `Symbol` tries to add `extend` function even when `Symbol` doesn't exist.
 * Added Travis CI integration.

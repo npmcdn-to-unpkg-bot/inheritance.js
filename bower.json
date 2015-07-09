@@ -4,7 +4,7 @@
   "authors": [
     "Brandon Sara (http://bsara.github.io)"
   ],
-  "description": "A simple and small implementation of object inheritance using pure JavaScript",
+  "description": "A simple and lightweight implementation of object inheritance using pure JavaScript",
   "license": "CPOL-1.02",
   "homepage": "https://github.com/bsara/inheritance.js#readme",
   "repository": {
