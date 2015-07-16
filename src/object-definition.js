@@ -1,8 +1,8 @@
-/* exported Inheritable */
+/* exported ObjectDefinition */
 
 
 /** @namespace */
-var Inheritable = {
+var ObjectDefinition = {
 
   /**
    * Creates a new object (I.E. "class") that can be inherited.

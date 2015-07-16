@@ -1,4 +1,4 @@
-/* globals deepMix */
+/* globals mixDeep */
 /* exported inheritance */
 
 
@@ -14,6 +14,8 @@
  *                              TODO: Add reference to the `childDef` spec
  *
  * @returns {Object} An object created from the given `childDef` that inherits `parent`.
+ *
+ * @requires mixDeep
  */
 function inheritance(parent, childDef) {
   var attrName;
@@ -38,7 +40,7 @@ function inheritance(parent, childDef) {
 
   var mixins = childDef.mixins;
   if (mixins !== null && mixins instanceof Array) {
-    deepMix(childDef, mixins);
+    mixDeep(childDef, mixins);
   }
 
 

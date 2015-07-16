@@ -61,17 +61,18 @@ config.src.selector = {
     object     : config.src.dir + 'ext/extensions.object.js'
   },
   inherit: {
-    inheritable     : config.src.dir + 'inherit/inheritable.js',
     inheritance     : config.src.dir + 'inherit/inheritance.js',
     makeInheritable : config.src.dir + 'inherit/make-inheritable.js'
   },
   mixin: {
-    deepMix      : config.src.dir + 'mixin/deep-mix.js',
-    mix          : config.src.dir + 'mixin/mix.js',
-    mixPrototype : config.src.dir + 'mixin/mix-prototype.js'
+    mix              : config.src.dir + 'mixin/mix.js',
+    mixDeep          : config.src.dir + 'mixin/mix-deep.js',
+    mixPrototype     : config.src.dir + 'mixin/mix-prototype.js',
+    mixPrototypeDeep : config.src.dir + 'mixin/mix-prototype-deep.js'
   },
-  scripts : config.src.dir + '**/*.js',
-  tests   : config.tests.dir + '**/*.js'
+  objectDef : config.src.dir + 'object-definition.js',
+  scripts   : config.src.dir + '**/*.js',
+  tests     : config.tests.dir + '**/*.js'
 };
 
 config.lint.selectors = [
@@ -127,28 +128,14 @@ gulp.task('help', function() {
 // ----------------
 
 gulp.task('build', [ 'build:modules' ], function() {
-  var all = gulp.src([
-                  config.src.selector.mixin.mix,
-                  config.src.selector.mixin.mixPrototype,
-                  config.src.selector.mixin.deepMix,
-                  config.src.selector.inherit.inheritance,
-                  config.src.selector.inherit.makeInheritable,
-                  config.src.selector.ext.object,
-                  config.src.selector.ext.extensions,
-                  config.src.selector.inherit.inheritable
-                ])
+  var all = gulp.src(config.src.selector.scripts)
                 .pipe(concat('inheritance.js'));
 
   var noExts = gulp.src([
-                         config.src.selector.mixin.mix,
-                         config.src.selector.mixin.mixPrototype,
-                         config.src.selector.mixin.deepMix,
-                         config.src.selector.inherit.inheritance,
-                         config.src.selector.inherit.makeInheritable,
-                         config.src.selector.ext.object,
-                         config.src.selector.inherit.inheritable
-                       ])
-                       .pipe(concat('inheritance.noexts.js'));
+                     config.src.selector.scripts,
+                     '!' + config.src.selector.ext.extensions
+                   ])
+                   .pipe(concat('inheritance.noexts.js'));
 
   return merge(all, noExts)
           .pipe(replace(/\s*\/\/\s*js(hint\s|cs:).*$/gmi, String.EMPTY))
@@ -159,39 +146,48 @@ gulp.task('build', [ 'build:modules' ], function() {
 
 
 gulp.task('build:modules', function() {
-  var inheritable = gulp.src([
+  var objectDef = gulp.src([
                           config.src.selector.mixin.mix,
-                          config.src.selector.mixin.deepMix,
+                          config.src.selector.mixin.mixDeep,
                           config.src.selector.inherit.inheritance,
                           config.src.selector.inherit.makeInheritable,
                           config.src.selector.ext.object,
-                          config.src.selector.inherit.inheritable
+                          config.src.selector.objectDef
                         ])
-                        .pipe(concat('inheritance.inheritable.js'));
+                        .pipe(concat('inheritance.objectdef.js'));
 
   var inheritance = gulp.src([
-                          config.src.selector.mixin.deepMix,
+                          config.src.selector.mixin.mixDeep,
                           config.src.selector.inherit.inheritance
                         ])
                         .pipe(concat('inheritance.inheritance.js'));
 
   var makeInheritable = gulp.src([
-                              config.src.selector.mixin.deepMix,
+                              config.src.selector.mixin.mixDeep,
                               config.src.selector.inherit.inheritance,
                               config.src.selector.inherit.makeInheritable
                             ])
                             .pipe(concat('inheritance.makeinheritable.js'));
 
-  var deepMix = gulp.src(config.src.selector.mixin.deepMix)
-                    .pipe(concat('inheritance.deepmix.js'));
-
   var mix = gulp.src(config.src.selector.mixin.mix)
                 .pipe(concat('inheritance.mix.js'));
 
-  var mixPrototype = gulp.src(config.src.selector.mixin.mix)
+  var mixDeep = gulp.src(config.src.selector.mixin.mixDeep)
+                    .pipe(concat('inheritance.mixdeep.js'));
+
+  var mixPrototype = gulp.src([
+                           config.src.selector.mixin.mix,
+                           config.src.selector.mixin.mixPrototype
+                         ])
                          .pipe(concat('inheritance.mixprototype.js'));
 
-  return merge(inheritable, inheritance, makeInheritable, deepMix, mix, mixPrototype)
+  var mixPrototypeDeep = gulp.src([
+                               config.src.selector.mixin.mixDeep,
+                               config.src.selector.mixin.mixPrototypeDeep
+                             ])
+                             .pipe(concat('inheritance.mixprototypedeep.js'));
+
+  return merge(objectDef, inheritance, makeInheritable, mix, mixDeep, mixPrototype, mixPrototypeDeep)
           .pipe(replace(/\s*\/\/\s*js(hint\s|cs:).*$/gmi, String.EMPTY))
           .pipe(replace(/\s*\/\*\s*(js(hint|lint|cs:)|global(|s)|exported)\s.*?\*\/\s*\n/gmi, String.EMPTY))
           .pipe(header(config.fileHeader))

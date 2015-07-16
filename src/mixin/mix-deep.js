@@ -1,4 +1,4 @@
-/* exported deepMix */
+/* exported mixDeep */
 
 
 /**
@@ -18,7 +18,7 @@
  *
  * @returns {Object} The deep mixed version of `obj`.
  */
-function deepMix(obj, mixins) {
+function mixDeep(obj, mixins) {
   var newObj = (obj || {});
 
   for (var i = 0; i < mixins.length; i++) {
@@ -34,7 +34,7 @@ function deepMix(obj, mixins) {
       }
 
       if (typeof mixin[attrName] === 'object') {
-        deepMix(newObj[attrName], mixin[attrName]);
+        mixDeep(newObj[attrName], mixin[attrName]);
         continue;
       }
 

@@ -1,4 +1,4 @@
-/* globals deepMix, makeInheritable, mix */
+/* globals makeInheritable, mix, mixDeep */
 
 
 makeInheritable(Object);
@@ -35,6 +35,6 @@ Object.prototype.mix = function() {
  *
  * @returns {Object} This object, deep mixed with the given mixin objects.
  */
-Object.prototype.deepMix = function() {
-  return deepMix(this, arguments);
+Object.prototype.mixDeep = function() {
+  return mixDeep(this, arguments);
 };

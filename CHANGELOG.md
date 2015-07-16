@@ -1,3 +1,20 @@
+## [v0.2.0](https://github.com/bsara/inheritance.js/tree/v0.2.0) () **[Breaking Release]**
+
+*__WARNING:__ This release will break nearly all code made against previous releases*
+
+* **[Function Renamed]** `extendObjectDef` -> `inheritance`
+* **[Function Renamed]** `deepMix` -> `mixDeep`
+* **[Function Renamed]** `mixWithObjectDef` -> `mixPrototype`
+* **[Function Renamed]** `Object.prototype.deepMix` -> `Object.prototype.mixDeep`
+* **[New Function]** `makeInheritable`
+* **[New Function]** `mixPrototypeDeep`
+* **[Changed Dist Files]** `dist/modules` now contains all separated modules instead of having them all at the root
+* **[New Dist File]** `dist/inheritance.noext.js` - This file is the same as `dist/inheritance.js` except that it does not contain any of the extended native objects (except for `Object`, it is still extended).
+* Converted files to UMD format to support AMD, CommonJS, and global includes
+* Added inline documentation
+* Added useful documentation to README
+
+
 ## [v0.1.3](https://github.com/bsara/inheritance.js/tree/v0.1.3) (2015-07-09)
 
 * **[Bug Fix]** `Symbol` tries to add `extend` function even when `Symbol` doesn't exist.
