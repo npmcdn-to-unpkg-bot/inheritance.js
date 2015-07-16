@@ -4,14 +4,14 @@
 var gulp                  = require('gulp');
 var concat                = require('gulp-concat');
 var del                   = require('del');
-var insert                = require('gulp-insert');
+var header                = require('gulp-header');
 var jscs                  = require('gulp-jscs');
 var jsdoc                 = require('gulp-jsdoc');
 var jshint                = require('gulp-jshint');
 var jshintStylishReporter = require('jshint-stylish');
 var merge                 = require('merge-stream');
-var order                 = require('gulp-order');
 var rename                = require('gulp-rename');
+var replace               = require('gulp-replace');
 var runSequence           = require('run-sequence');
 var uglify                = require('gulp-uglify');
 var util                  = require('gulp-util');
@@ -35,8 +35,14 @@ String.SPACE = ' ';
 var config = {
   pkg: require('./package.json'),
 
-  build: { dir: 'build/' },
-  dist: { dir: 'dist/' },
+  build: {
+    dir: 'build/',
+    modules: {}
+  },
+  dist: {
+    dir: 'dist/',
+    modules: {}
+  },
   docs: { dir: 'docs/' },
   lint: {},
   reports: { dir: 'reports/' },
@@ -47,15 +53,25 @@ var config = {
   tests: { dir: 'test/' }
 };
 
-config.fileHeader = "/*!\n * Inheritance.js (" + config.pkg.version + ")\n *\n * Copyright (c) 2015 Brandon Sara (http://bsara.github.io)\n * Licensed under the CPOL-1.02 (https://github.com/bsara/inheritance.js/blob/master/LICENSE.md)\n */\n\n";
+config.fileHeader = "/*!\n * Inheritance.js (" + config.pkg.version + ")\n *\n * Copyright (c) 2015 Brandon Sara (http://bsara.github.io)\n * Licensed under the CPOL-1.02 (https://github.com/bsara/inheritance.js/blob/master/LICENSE.md)\n */\n";
 
 config.src.selector = {
-  extendObjDef     : config.src.dir + 'extend-object-def.js',
-  extensions       : config.src.dir + 'extensions/*.js',
-  mixin            : config.src.dir + 'mixin.js',
-  objectDefinition : config.src.dir + 'object-definition.js',
-  scripts          : config.src.dir + '**/*.js',
-  tests            : config.tests.dir + '**/*.js'
+  ext: {
+    extentions : config.src.dir + 'ext/extensions.js',
+    object     : config.src.dir + 'ext/extensions.object.js'
+  },
+  inherit: {
+    inheritable     : config.src.dir + 'inherit/inheritable.js',
+    inheritance     : config.src.dir + 'inherit/inheritance.js',
+    makeInheritable : config.src.dir + 'inherit/make-inheritable.js'
+  },
+  mixin: {
+    deepMix      : config.src.dir + 'mixin/deep-mix.js',
+    mix          : config.src.dir + 'mixin/mix.js',
+    mixPrototype : config.src.dir + 'mixin/mix-prototype.js'
+  },
+  scripts : config.src.dir + '**/*.js',
+  tests   : config.tests.dir + '**/*.js'
 };
 
 config.lint.selectors = [
@@ -85,6 +101,7 @@ gulp.task('help', function() {
   console.log("  " + task("help") + " (" + util.colors.yellow("default") + ") - Displays this message.");
   console.log(String.EMPTY);
   console.log("  " + task("build") + "          - Builds the project.");
+  console.log("  " + task("build:modules") + "  - Builds the project in separate modules.");
   console.log("  " + task("rebuild") + "        - Cleans the build folder, then builds the project.");
   console.log("  " + task("docs") + "           - Generates documentation based on inline JSDoc comments.");
   console.log("  " + task("dist") + "           - Performs all needed tasks to prepare the built project");
@@ -109,36 +126,76 @@ gulp.task('help', function() {
 // Build Tasks
 // ----------------
 
-gulp.task('build', function() {
-  var all = gulp.src(config.src.selector.scripts)
-                .pipe(order([
-                  config.src.selector.mixin,
-                  config.src.selector.extendObjDef,
-                  config.src.selector.extensions,
-                  config.src.selector.objectDefinition
-                ]))
+gulp.task('build', [ 'build:modules' ], function() {
+  var all = gulp.src([
+                  config.src.selector.mixin.mix,
+                  config.src.selector.mixin.mixPrototype,
+                  config.src.selector.mixin.deepMix,
+                  config.src.selector.inherit.inheritance,
+                  config.src.selector.inherit.makeInheritable,
+                  config.src.selector.ext.object,
+                  config.src.selector.ext.extensions,
+                  config.src.selector.inherit.inheritable
+                ])
                 .pipe(concat('inheritance.js'));
 
-  var objDefinition = gulp.src([
-                            config.src.selector.mixin,
-                            config.src.selector.extendObjDef,
-                            config.src.dir + 'extensions/object.js',
-                            config.src.selector.objectDefinition
-                          ])
-                          .pipe(concat('inheritance.object-definition.js'));
+  var noExts = gulp.src([
+                         config.src.selector.mixin.mix,
+                         config.src.selector.mixin.mixPrototype,
+                         config.src.selector.mixin.deepMix,
+                         config.src.selector.inherit.inheritance,
+                         config.src.selector.inherit.makeInheritable,
+                         config.src.selector.ext.object,
+                         config.src.selector.inherit.inheritable
+                       ])
+                       .pipe(concat('inheritance.noexts.js'));
 
-  var extendObjDef = gulp.src([
-                           config.src.selector.mixin,
-                           config.src.selector.extendObjDef
-                         ])
-                         .pipe(concat('inheritance.extend-object-def.js'));
-
-  var mixin = gulp.src(config.src.selector.mixin)
-                  .pipe(rename('inheritance.mixin.js'));
-
-  return merge(all, objDefinition, extendObjDef, mixin)
-          .pipe(insert.prepend(config.fileHeader))
+  return merge(all, noExts)
+          .pipe(replace(/\s*\/\/\s*js(hint\s|cs:).*$/gmi, String.EMPTY))
+          .pipe(replace(/\s*\/\*\s*(js(hint|lint|cs:)|global(|s)|exported)\s.*?\*\/\s*\n/gmi, String.EMPTY))
+          .pipe(header(config.fileHeader))
           .pipe(gulp.dest(config.build.dir));
+});
+
+
+gulp.task('build:modules', function() {
+  var inheritable = gulp.src([
+                          config.src.selector.mixin.mix,
+                          config.src.selector.mixin.deepMix,
+                          config.src.selector.inherit.inheritance,
+                          config.src.selector.inherit.makeInheritable,
+                          config.src.selector.ext.object,
+                          config.src.selector.inherit.inheritable
+                        ])
+                        .pipe(concat('inheritance.inheritable.js'));
+
+  var inheritance = gulp.src([
+                          config.src.selector.mixin.deepMix,
+                          config.src.selector.inherit.inheritance
+                        ])
+                        .pipe(concat('inheritance.inheritance.js'));
+
+  var makeInheritable = gulp.src([
+                              config.src.selector.mixin.deepMix,
+                              config.src.selector.inherit.inheritance,
+                              config.src.selector.inherit.makeInheritable
+                            ])
+                            .pipe(concat('inheritance.makeinheritable.js'));
+
+  var deepMix = gulp.src(config.src.selector.mixin.deepMix)
+                    .pipe(concat('inheritance.deepmix.js'));
+
+  var mix = gulp.src(config.src.selector.mixin.mix)
+                .pipe(concat('inheritance.mix.js'));
+
+  var mixPrototype = gulp.src(config.src.selector.mixin.mix)
+                         .pipe(concat('inheritance.mixprototype.js'));
+
+  return merge(inheritable, inheritance, makeInheritable, deepMix, mix, mixPrototype)
+          .pipe(replace(/\s*\/\/\s*js(hint\s|cs:).*$/gmi, String.EMPTY))
+          .pipe(replace(/\s*\/\*\s*(js(hint|lint|cs:)|global(|s)|exported)\s.*?\*\/\s*\n/gmi, String.EMPTY))
+          .pipe(header(config.fileHeader))
+          .pipe(gulp.dest(config.build.modules.dir));
 });
 
 
@@ -154,14 +211,20 @@ gulp.task('dist', function(callback) {
       return;
     }
 
-    var scripts = gulp.src(config.build.dir + '*.js');
+    var main = gulp.src(config.build.dir + '*.js');
+    var minifiedMain = gulp.src(config.build.dir + '*.js')
+                            .pipe(uglify({ preserveComments: 'some' }))
+                            .pipe(rename({ suffix: '.min' }));
 
-    var minifiedScripts = gulp.src(config.build.dir + '*.js')
+    var modules = gulp.src(config.build.modules.dir + '*.js');
+    var minifiedModules = gulp.src(config.build.modules.dir + '*.js')
                               .pipe(uglify({ preserveComments: 'some' }))
                               .pipe(rename({ suffix: '.min' }));
 
-    merge(scripts, minifiedScripts)
-      .pipe(gulp.dest(config.dist.dir));
+    merge(
+      merge(main, minifiedMain).pipe(gulp.dest(config.dist.dir)),
+      merge(modules, minifiedModules).pipe(gulp.dest(config.dist.modules.dir))
+    );
 
     callback();
   });

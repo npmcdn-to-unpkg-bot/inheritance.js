@@ -7,7 +7,6 @@
   "predef": [
     "document",
     "window",
-    "extendObjectDef",
     "Map",
     "Promise",
     "Proxy",
