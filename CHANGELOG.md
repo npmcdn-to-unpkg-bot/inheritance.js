@@ -12,7 +12,6 @@
 * **[New Dist File]** `dist/inheritance.noext.js` - This file is the same as `dist/inheritance.js` except that it does not contain any of the extended native objects (except for `Object`, it is still extended).
 * Converted files to UMD format to support AMD, CommonJS, and global includes
 * Added inline documentation
-* Added useful documentation to README
 
 
 ## [v0.1.3](https://github.com/bsara/inheritance.js/tree/v0.1.3) (2015-07-09)
