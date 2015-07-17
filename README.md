@@ -18,7 +18,7 @@ A simple and lightweight implementation of object inheritance using pure JavaScr
 - **NPM:** `$ npm install --save inheritance-js`
 - **Bower:** `$ bower install --save inheritance-js`
 - **Download:**
-    - [v0.2.1](https://github.com/bsara/inheritance.js/releases/tag/v0.2.0) *(Latest)*
+    - [v0.2.0](https://github.com/bsara/inheritance.js/releases/tag/v0.2.0) *(Latest)*
     - [v0.1.3](https://github.com/bsara/inheritance.js/releases/tag/v0.1.3)
     - [v0.1.2](https://github.com/bsara/inheritance.js/releases/tag/v0.1.2)
     - [More...](https://github.com/bsara/inheritance.js/releases)
