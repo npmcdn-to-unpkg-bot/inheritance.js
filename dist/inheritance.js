@@ -1,38 +1,137 @@
 /*!
- * Inheritance.js (0.2.0)
+ * Inheritance.js (0.2.1)
  *
  * Copyright (c) 2015 Brandon Sara (http://bsara.github.io)
  * Licensed under the CPOL-1.02 (https://github.com/bsara/inheritance.js/blob/master/LICENSE.md)
  */
+
 (function(root, factory) {
-  if (typeof define === "function" && define.amd) define(factory);
-  else if (typeof exports === "object") module.exports = factory();
-  else {
-    var _module = factory();
-    if (typeof _module === "function") {
-      var moduleName = ((typeof _module.name !== "undefined") ? _module.name : ( /^function\s+([\w\$]+)\s*\(/ ).exec( _module.toString() )[1])
-      root[moduleName] = _module;
-      return;
-    }
-    for (var moduleName in _module) {
-      if (_module.hasOwnProperty(moduleName)) {
-        root[moduleName] = _module[moduleName];
-      }
-    }
+  if (typeof define === 'function' && define.amd) {
+    define([], factory);
+  } else if (typeof exports === 'object') {
+    module.exports = factory();
+  } else {
+    root.I = factory();
+    root.ObjectDefinition = root.I.ObjectDefinition;
+    delete root.I.ObjectDefinition;
   }
-})(this, function() {
-/** @namespace */
+}(this, function() {/** @namespace */
 var ObjectDefinition = {
 
   /**
    * Creates a new object (I.E. "class") that can be inherited.
    * NOTE: The new object inherits the native JavaScript `Object`.
    *
-   * @param [Object] objDef - TODO: Add description
+   * @param {Object} objDef - TODO: Add description
+   *
+   * @returns {Object} The newly created, inheritable, object that inherits `Object`.
    */
   create: function(objDef) {
     return Object.extend(objDef);
   }
+};makeInheritable(ArrayBuffer);
+makeInheritable(Array);
+makeInheritable(DataView);
+makeInheritable(Date);
+makeInheritable(Error);
+makeInheritable(EvalError);
+makeInheritable(Float32Array);
+makeInheritable(Float64Array);
+makeInheritable(Function);
+makeInheritable(Int8Array);
+
+if (typeof Int16Array !== 'undefined' && Int16Array !== null) {
+  makeInheritable(Int16Array);
+}
+
+makeInheritable(Int32Array);
+makeInheritable(Intl.Collator);
+makeInheritable(Intl.DateTimeFormat);
+makeInheritable(Intl.NumberFormat);
+
+if (typeof Map !== 'undefined' && Map !== null) {
+  makeInheritable(Map);
+}
+
+makeInheritable(Number);
+
+if (typeof Promise !== 'undefined' && Promise !== null) {
+  makeInheritable(Promise);
+}
+
+if (typeof Proxy !== 'undefined' && Proxy !== null) {
+  makeInheritable(Proxy);
+}
+
+makeInheritable(RangeError);
+makeInheritable(ReferenceError);
+
+if (typeof Reflect !== 'undefined' && Reflect !== null) {
+  makeInheritable(Reflect);
+}
+
+makeInheritable(RegExp);
+
+if (typeof Set !== 'undefined' && Set !== null) {
+  makeInheritable(Set);
+}
+
+makeInheritable(String);
+
+if (typeof Symbol !== 'undefined' && Symbol !== null) {
+  makeInheritable(Symbol);
+}
+
+makeInheritable(SyntaxError);
+makeInheritable(TypeError);
+makeInheritable(Uint8Array);
+makeInheritable(Uint8ClampedArray);
+makeInheritable(Uint16Array);
+makeInheritable(Uint32Array);
+makeInheritable(URIError);
+
+if (typeof WeakMap !== 'undefined' && WeakMap !== null) {
+  makeInheritable(WeakMap);
+}
+
+if (typeof WeakSet !== 'undefined' && WeakSet !== null) {
+  makeInheritable(WeakSet);
+}makeInheritable(Object);
+
+
+/**
+ * TODO: Add description
+ *
+ * @param {Object...} arguments - Mixin objects whose attributes should be mixed into this
+ *                                object.
+ *                                NOTE: The order of objects in this array does matter!
+ *                                If there are attributes present in multiple mixin
+ *                                objects, then the mixin with the largest index value
+ *                                overwrite any values set by the lower index valued
+ *                                mixin objects.
+ *
+ * @returns {Object} This object, mixed with the given mixin objects.
+ */
+Object.prototype.mix = function() {
+  return mix(this, arguments);
+};
+
+
+/**
+ * TODO: Add description
+ *
+ * @param {Object...} arguments - Mixin objects whose attributes should be deep mixed into
+ *                                this object.
+ *                                NOTE: The order of objects in this array does matter!
+ *                                If there are attributes present in multiple mixin
+ *                                objects, then the mixin with the largest index value
+ *                                overwrite any values set by the lower index valued
+ *                                mixin objects.
+ *
+ * @returns {Object} This object, deep mixed with the given mixin objects.
+ */
+Object.prototype.mixDeep = function() {
+  return mixDeep(this, arguments);
 };/**
  * TODO: Add description
  *
@@ -173,8 +272,8 @@ function mix(obj, mixins) {
 
   return newObj;
 }/**
- * Creates a new object definition based upon the given `childDef` attributes and causes
- * that new object definition to inherit the given `parent`.
+ * Creates a new object definition based upon the given `childDef` attributes that
+ * inherits the given `parent`.
  *
  * @param {Object} parent     - The object to be inherited.
  * @param {Object} [childDef] - An object containing all attributes to be used in creating
@@ -278,7 +377,7 @@ function inheritance(parent, childDef) {
  *                                           `obj.extend` already exists and `overwrite`
  *                                           is not `true`.
  *
- * @returns {Object} The `obj` given.
+ * @returns {Object} The modified `obj` given.
  *
  * @throws {TypeError} If `obj` is `undefined` or `null`.
  * @throws {TypeError} If `obj.extend` already exists and `overwrite` is NOT equal `true`.
@@ -299,9 +398,9 @@ function makeInheritable(obj, overwrite, ignoreOverwriteError) {
    * that new object definition to inherit this object.
    *
    * @param {Object} childDef - An object containing all attributes to be used in creating
-   *                            the new object definition that will inherit the given
-   *                            `parent` object. If this parameter is `undefined` or
-   *                            `null`, then a new child object definition is created.
+   *                            the new object definition that will inherit this object.
+   *                            If this parameter is `undefined` or `null`, then a new
+   *                            child object definition is created.
    *                            TODO: Add reference to the `childDef` spec
    *
    * @returns {Object} An object created from the given `childDef` that inherits this
@@ -312,110 +411,7 @@ function makeInheritable(obj, overwrite, ignoreOverwriteError) {
   };
 
   return obj;
-}makeInheritable(ArrayBuffer);
-makeInheritable(Array);
-makeInheritable(DataView);
-makeInheritable(Date);
-makeInheritable(Error);
-makeInheritable(EvalError);
-makeInheritable(Float32Array);
-makeInheritable(Float64Array);
-makeInheritable(Function);
-makeInheritable(Int8Array);
-
-if (typeof Int16Array !== 'undefined' && Int16Array !== null) {
-  makeInheritable(Int16Array);
 }
-
-makeInheritable(Int32Array);
-makeInheritable(Intl.Collator);
-makeInheritable(Intl.DateTimeFormat);
-makeInheritable(Intl.NumberFormat);
-
-if (typeof Map !== 'undefined' && Map !== null) {
-  makeInheritable(Map);
-}
-
-makeInheritable(Number);
-
-if (typeof Promise !== 'undefined' && Promise !== null) {
-  makeInheritable(Promise);
-}
-
-if (typeof Proxy !== 'undefined' && Proxy !== null) {
-  makeInheritable(Proxy);
-}
-
-makeInheritable(RangeError);
-makeInheritable(ReferenceError);
-
-if (typeof Reflect !== 'undefined' && Reflect !== null) {
-  makeInheritable(Reflect);
-}
-
-makeInheritable(RegExp);
-
-if (typeof Set !== 'undefined' && Set !== null) {
-  makeInheritable(Set);
-}
-
-makeInheritable(String);
-
-if (typeof Symbol !== 'undefined' && Symbol !== null) {
-  makeInheritable(Symbol);
-}
-
-makeInheritable(SyntaxError);
-makeInheritable(TypeError);
-makeInheritable(Uint8Array);
-makeInheritable(Uint8ClampedArray);
-makeInheritable(Uint16Array);
-makeInheritable(Uint32Array);
-makeInheritable(URIError);
-
-if (typeof WeakMap !== 'undefined' && WeakMap !== null) {
-  makeInheritable(WeakMap);
-}
-
-if (typeof WeakSet !== 'undefined' && WeakSet !== null) {
-  makeInheritable(WeakSet);
-}makeInheritable(Object);
-
-
-/**
- * TODO: Add description
- *
- * @param {Object...} arguments - An array of objects whose attributes should be mixed
- *                                into the given `obj`.
- *                                NOTE: The order of objects in this array does matter!
- *                                If there are attributes present in multiple mixin
- *                                objects, then the mixin with the largest index value
- *                                overwrite any values set by the lower index valued
- *                                mixin objects.
- *
- * @returns {Object} This object, mixed with the given mixin objects.
- */
-Object.prototype.mix = function() {
-  return mix(this, arguments);
-};
-
-
-/**
- * TODO: Add description
- *
- * @param {Object...} arguments - An array of objects whose attributes should be deep
- *                                mixed into the given `obj`.
- *                                NOTE: The order of objects in this array does matter!
- *                                If there are attributes present in multiple mixin
- *                                objects, then the mixin with the largest index value
- *                                overwrite any values set by the lower index valued
- *                                mixin objects.
- *
- * @returns {Object} This object, deep mixed with the given mixin objects.
- */
-Object.prototype.mixDeep = function() {
-  return mixDeep(this, arguments);
-};
 
 return {
   mix: mix,
@@ -426,4 +422,5 @@ return {
   makeInheritable: makeInheritable,
   ObjectDefinition: ObjectDefinition
 };
-});
+
+}));

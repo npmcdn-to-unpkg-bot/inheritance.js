@@ -1,27 +1,20 @@
 /*!
- * Inheritance.js (0.2.0)
+ * Inheritance.js (0.2.1)
  *
  * Copyright (c) 2015 Brandon Sara (http://bsara.github.io)
  * Licensed under the CPOL-1.02 (https://github.com/bsara/inheritance.js/blob/master/LICENSE.md)
  */
+
 (function(root, factory) {
-  if (typeof define === "function" && define.amd) define(factory);
-  else if (typeof exports === "object") module.exports = factory();
-  else {
-    var _module = factory();
-    if (typeof _module === "function") {
-      var moduleName = ((typeof _module.name !== "undefined") ? _module.name : ( /^function\s+([\w\$]+)\s*\(/ ).exec( _module.toString() )[1])
-      root[moduleName] = _module;
-      return;
-    }
-    for (var moduleName in _module) {
-      if (_module.hasOwnProperty(moduleName)) {
-        root[moduleName] = _module[moduleName];
-      }
-    }
+  if (typeof define === 'function' && define.amd) {
+    define([], factory);
+  } else if (typeof exports === 'object') {
+    module.exports = factory();
+  } else {
+    root.I = {};
+    root.I.mixDeep = factory();
   }
-})(this, function() {
-/**
+}(this, function() {/**
  * TODO: Add description
  *
  * @param {Object}        obj    - The object to deep mix into.
@@ -66,4 +59,5 @@ function mixDeep(obj, mixins) {
 }
 
 return mixDeep;
-});
+
+}));

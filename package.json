@@ -47,7 +47,6 @@
     "del": "latest",
     "gulp": "latest",
     "gulp-concat": "latest",
-    "gulp-footer": "latest",
     "gulp-header": "latest",
     "gulp-jscs": "latest",
     "gulp-jsdoc": "latest",
@@ -56,6 +55,7 @@
     "gulp-replace": "latest",
     "gulp-uglify": "latest",
     "gulp-util": "latest",
+    "gulp-wrap-umd": "bsara/gulp-wrap-umd",
     "jshint-stylish": "latest",
     "merge-stream": "latest",
     "run-sequence": "latest"

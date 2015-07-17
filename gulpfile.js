@@ -5,7 +5,6 @@ var gulp                  = require('gulp');
 var concat                = require('gulp-concat');
 var del                   = require('del');
 var header                = require('gulp-header');
-var footer                = require('gulp-footer');
 var jscs                  = require('gulp-jscs');
 var jsdoc                 = require('gulp-jsdoc');
 var jshint                = require('gulp-jshint');
@@ -16,6 +15,7 @@ var replace               = require('gulp-replace');
 var runSequence           = require('run-sequence');
 var uglify                = require('gulp-uglify');
 var util                  = require('gulp-util');
+var wrapUMD               = require('gulp-wrap-umd');
 
 
 
@@ -51,30 +51,19 @@ var config = {
     dir: 'src/',
     selector: {}
   },
-  tests: { dir: 'test/' }
+  tests: { dir: 'test/' },
+
+  umd: {
+    deps: [],
+    namespace: 'I',
+    globalExportTemplateInitNamespace: 'root.I = {};\n    <%= _default %>',
+    globalExportTemplateObjectDef: '<%= _default %>\n'
+                             + '    root.ObjectDefinition = root.<%= namespace %>.ObjectDefinition;\n'
+                             + '    delete root.<%= namespace %>.ObjectDefinition;'
+  }
 };
 
 config.fileHeader = "/*!\n * Inheritance.js (" + config.pkg.version + ")\n *\n * Copyright (c) 2015 Brandon Sara (http://bsara.github.io)\n * Licensed under the CPOL-1.02 (https://github.com/bsara/inheritance.js/blob/master/LICENSE.md)\n */\n";
-config.umdHeader =
-'(function(root, factory) {\n\
-  if (typeof define === "function" && define.amd) define(factory);\n\
-  else if (typeof exports === "object") module.exports = factory();\n\
-  else {\n\
-    var _module = factory();\n\
-    if (typeof _module === "function") {\n\
-      var moduleName = ((typeof _module.name !== "undefined") ? _module.name : ( /^function\\s+([\\w\\$]+)\\s*\\(/ ).exec( _module.toString() )[1])\n\
-      root[moduleName] = _module;\n\
-      return;\n\
-    }\n\
-    for (var moduleName in _module) {\n\
-      if (_module.hasOwnProperty(moduleName)) {\n\
-        root[moduleName] = _module[moduleName];\n\
-      }\n\
-    }\n\
-  }\n\
-})(this, function() {\n';
-
-config.umdFooter = "\n});";
 
 config.build.modules.dir = config.build.dir + 'modules/';
 config.dist.modules.dir = config.dist.dir + 'modules/';
@@ -154,15 +143,20 @@ gulp.task('help', function() {
 gulp.task('build', [ 'build:modules' ], function() {
   var all = gulp.src(config.src.selector.scripts)
                 .pipe(concat('inheritance.js'))
-                .pipe(footer('\nreturn {\n'
-                             + '  mix: mix,\n'
-                             + '  mixDeep: mixDeep,\n'
-                             + '  mixPrototype: mixPrototype,\n'
-                             + '  mixPrototypeDeep: mixPrototypeDeep,\n'
-                             + '  inheritance: inheritance,\n'
-                             + '  makeInheritable: makeInheritable,\n'
-                             + '  ObjectDefinition: ObjectDefinition\n'
-                             + '};'));
+                .pipe(wrapUMD({
+                  deps: config.umd.deps,
+                  namespace: config.umd.namespace,
+                  globalExportTemplate: config.umd.globalExportTemplateObjectDef,
+                  exports: '{\n'
+                         + '  mix: mix,\n'
+                         + '  mixDeep: mixDeep,\n'
+                         + '  mixPrototype: mixPrototype,\n'
+                         + '  mixPrototypeDeep: mixPrototypeDeep,\n'
+                         + '  inheritance: inheritance,\n'
+                         + '  makeInheritable: makeInheritable,\n'
+                         + '  ObjectDefinition: ObjectDefinition\n'
+                         + '}'
+                }));
 
   var noExts = gulp.src([
                      config.src.selector.mixin.mix,
@@ -175,21 +169,24 @@ gulp.task('build', [ 'build:modules' ], function() {
                      config.src.selector.objectDef
                    ])
                    .pipe(concat('inheritance.noexts.js'))
-                   .pipe(footer('\nreturn {\n'
-                                + '  mix: mix,\n'
-                                + '  mixDeep: mixDeep,\n'
-                                + '  mixPrototype: mixPrototype,\n'
-                                + '  mixPrototypeDeep: mixPrototypeDeep,\n'
-                                + '  inheritance: inheritance,\n'
-                                + '  makeInheritable: makeInheritable,\n'
-                                + '  ObjectDefinition: ObjectDefinition\n'
-                                + '};'));
+                   .pipe(wrapUMD({
+                     deps: config.umd.deps,
+                     namespace: config.umd.namespace,
+                     globalExportTemplate: config.umd.globalExportTemplateObjectDef,
+                     exports: '{\n'
+                            + '  mix: mix,\n'
+                            + '  mixDeep: mixDeep,\n'
+                            + '  mixPrototype: mixPrototype,\n'
+                            + '  mixPrototypeDeep: mixPrototypeDeep,\n'
+                            + '  inheritance: inheritance,\n'
+                            + '  makeInheritable: makeInheritable,\n'
+                            + '  ObjectDefinition: ObjectDefinition\n'
+                            + '}'
+                   }));
 
   return merge(all, noExts)
           .pipe(replace(/\s*\/\/\s*js(hint\s|cs:).*$/gmi, String.EMPTY))
           .pipe(replace(/\s*\/\*\s*(js(hint|lint|cs:)|global(|s)|exported)\s.*?\*\/\s*\n/gmi, String.EMPTY))
-          .pipe(header(config.umdHeader))
-          .pipe(footer(config.umdFooter))
           .pipe(header(config.fileHeader))
           .pipe(gulp.dest(config.build.dir));
 });
@@ -205,23 +202,32 @@ gulp.task('build:modules', function() {
                           config.src.selector.objectDef
                         ])
                         .pipe(concat('inheritance.objectdef.js'))
-                        .pipe(footer('\nreturn {\n'
-                                     + '  mix: mix,\n'
-                                     + '  mixDeep: mixDeep,\n'
-                                     + '  inheritance: inheritance,\n'
-                                     + '  makeInheritable: makeInheritable,\n'
-                                     + '  ObjectDefinition: ObjectDefinition\n'
-                                     + '};'));
+                        .pipe(wrapUMD({
+                          deps: config.umd.deps,
+                          namespace: config.umd.namespace,
+                          globalExportTemplate: 'root.I = {};\n    <%= _default %>',
+                          exports: '{\n'
+                                 + '  mix: mix,\n'
+                                 + '  mixDeep: mixDeep,\n'
+                                 + '  inheritance: inheritance,\n'
+                                 + '  makeInheritable: makeInheritable,\n'
+                                 + '  ObjectDefinition: ObjectDefinition\n'
+                                 + '}'
+                        }));
 
   var inheritance = gulp.src([
                           config.src.selector.mixin.mixDeep,
                           config.src.selector.inherit.inheritance
                         ])
                         .pipe(concat('inheritance.inheritance.js'))
-                        .pipe(footer('\nreturn {\n'
-                                     + '  mixDeep: mixDeep,\n'
-                                     + '  inheritance: inheritance\n'
-                                     + '};'));
+                        .pipe(wrapUMD({
+                          deps: config.umd.deps,
+                          namespace: config.umd.namespace,
+                          exports: '{\n'
+                                 + '  mixDeep: mixDeep,\n'
+                                 + '  inheritance: inheritance\n'
+                                 + '}'
+                        }));
 
   var makeInheritable = gulp.src([
                               config.src.selector.mixin.mixDeep,
@@ -229,45 +235,67 @@ gulp.task('build:modules', function() {
                               config.src.selector.inherit.makeInheritable
                             ])
                             .pipe(concat('inheritance.makeinheritable.js'))
-                            .pipe(footer('\nreturn {\n'
-                                         + '  mixDeep: mixDeep,\n'
-                                         + '  inheritance: inheritance,\n'
-                                         + '  makeInheritable: makeInheritable\n'
-                                         + '};'));
+                            .pipe(wrapUMD({
+                              deps: config.umd.deps,
+                              namespace: config.umd.namespace,
+                              exports: '{\n'
+                                     + '  mixDeep: mixDeep,\n'
+                                     + '  inheritance: inheritance,\n'
+                                     + '  makeInheritable: makeInheritable\n'
+                                     + '}'
+                            }));
 
   var mix = gulp.src(config.src.selector.mixin.mix)
                 .pipe(concat('inheritance.mix.js'))
-                .pipe(footer('\nreturn mix;'));
+                .pipe(wrapUMD({
+                  deps: config.umd.deps,
+                  namespace: config.umd.namespace + ".mix",
+                  globalExportTemplate: config.umd.globalExportTemplateInitNamespace,
+                  exports: 'mix'
+                }));
 
   var mixDeep = gulp.src(config.src.selector.mixin.mixDeep)
                     .pipe(concat('inheritance.mixdeep.js'))
-                    .pipe(footer('\nreturn mixDeep;'));
+                    .pipe(wrapUMD({
+                      deps: config.umd.deps,
+                      namespace: config.umd.namespace + ".mixDeep",
+                      globalExportTemplate: config.umd.globalExportTemplateInitNamespace,
+                      exports: 'mixDeep'
+                    }));
 
   var mixPrototype = gulp.src([
                            config.src.selector.mixin.mix,
                            config.src.selector.mixin.mixPrototype
                          ])
                          .pipe(concat('inheritance.mixprototype.js'))
-                         .pipe(footer('\nreturn {\n'
-                                      + '  mix: mix,\n'
-                                      + '  mixPrototype: mixPrototype\n'
-                                      + '};'));
+                         .pipe(wrapUMD({
+                           deps: config.umd.deps,
+                           namespace: config.umd.namespace,
+                           exports: '\n'
+                                    + 'return {\n'
+                                    + '  mix: mix,\n'
+                                    + '  mixPrototype: mixPrototype\n'
+                                    + '};'
+                         }));
 
   var mixPrototypeDeep = gulp.src([
                                config.src.selector.mixin.mixDeep,
                                config.src.selector.mixin.mixPrototypeDeep
                              ])
                              .pipe(concat('inheritance.mixprototypedeep.js'))
-                             .pipe(footer('\nreturn {\n'
-                                          + '  mix: mixDeep,\n'
-                                          + '  mixPrototype: mixPrototypeDeep\n'
-                                          + '};'));
+                             .pipe(wrapUMD({
+                               deps: config.umd.deps,
+                               namespace: config.umd.namespace,
+                               exports: '\n'
+                                        + 'return {\n'
+                                        + '  mix: mixDeep,\n'
+                                        + '  mixPrototype: mixPrototypeDeep\n'
+                                        + '};'
+                             }));
 
   return merge(objectDef, inheritance, makeInheritable, mix, mixDeep, mixPrototype, mixPrototypeDeep)
           .pipe(replace(/\s*\/\/\s*js(hint\s|cs:).*$/gmi, String.EMPTY))
           .pipe(replace(/\s*\/\*\s*(js(hint|lint|cs:)|global(|s)|exported)\s.*?\*\/\s*\n/gmi, String.EMPTY))
-          .pipe(header(config.umdHeader))
-          .pipe(footer(config.umdFooter))
           .pipe(header(config.fileHeader))
           .pipe(gulp.dest(config.build.modules.dir));
 });
