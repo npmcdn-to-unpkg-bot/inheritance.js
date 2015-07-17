@@ -1,4 +1,4 @@
-/* globals mixDeep */
+/* globals makeInheritable, mixDeep */
 /* exported inheritance */
 
 
@@ -94,7 +94,6 @@ function inheritance(parent, childDef) {
     }
     child.prototype[attrName] = childDef[attrName];
   }
-
 
   return child;
 }

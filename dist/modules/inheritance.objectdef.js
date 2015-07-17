@@ -21,19 +21,42 @@
     }
   }
 })(this, function() {
-/** @namespace */
-var ObjectDefinition = {
+/**
+ * TODO: Add description
+ *
+ * @param {Object}        obj    - The object to mix into.
+ *                                 NOTE: `undefined` and `null` are both VALID values for
+ *                                 this parameter. If `obj` is `undefined` or `null`, then
+ *                                 a new object will be created from the `mixins` given.
+ * @param {Array<Object>} mixins - An array of objects whose attributes should be mixed
+ *                                 into the given `obj`.
+ *                                 NOTE: The order of objects in this array does matter!
+ *                                 If there are attributes present in multiple mixin
+ *                                 objects, then the mixin with the largest index value
+ *                                 overwrite any values set by the lower index valued
+ *                                 mixin objects.
+ *
+ * @returns {Object} The mixed version of `obj`.
+ */
+function mix(obj, mixins) {
+  var newObj = (obj || {});
 
-  /**
-   * Creates a new object (I.E. "class") that can be inherited.
-   * NOTE: The new object inherits the native JavaScript `Object`.
-   *
-   * @param [Object] objDef - TODO: Add description
-   */
-  create: function(objDef) {
-    return Object.extend(objDef);
+  for (var i = 0; i < mixins.length; i++) {
+    var mixin = mixins[i];
+
+    if (!mixin) {
+      continue;
+    }
+
+    for (var attrName in mixin) {
+      if (mixin.hasOwnProperty(attrName)) {
+        newObj[attrName] = mixin[attrName];
+      }
+    }
   }
-};/**
+
+  return newObj;
+}/**
  * TODO: Add description
  *
  * @param {Object}        obj    - The object to deep mix into.
@@ -71,103 +94,6 @@ function mixDeep(obj, mixins) {
       }
 
       newObj[attrName] = mixin[attrName];
-    }
-  }
-
-  return newObj;
-}/**
- * TODO: Add description
- *
- * @param {Object}        obj    - The object containing the prototype to deep mix into.
- *                                 NOTE: `undefined` and `null` are both VALID values for
- *                                 this parameter. If `obj` is `undefined` or `null`, then
- *                                 a new object will be created from the `mixins` given.
- * @param {Array<Object>} mixins - An array of objects whose attributes should be deep
- *                                 mixed into the prototype of the given `obj`.
- *                                 NOTE: The order of objects in this array does matter!
- *                                 If there are attributes present in multiple mixin
- *                                 objects, then the mixin with the largest index value
- *                                 overwrite any values set by the lower index valued
- *                                 mixin objects.
- *
- * @returns {Object} The deep mixed version of `obj`.
- *
- * @throws {TypeError} If `obj.prototype` does not exist.
- *
- * @requires mixDeep
- */
-function mixPrototypeDeep(obj, mixins) {
-  obj = (obj || { prototype: {} });
-
-  if (typeof obj.prototype === 'undefined' || obj.prototype === null) {
-    throw new TypeError("`obj.prototype` cannot be `undefined` or `null`!");
-  }
-
-  obj.prototype = mixDeep(obj.prototype, mixins);
-
-  return obj;
-}/**
- * TODO: Add description
- *
- * @param {Object}        obj    - The object containing the prototype to mix into.
- *                                 NOTE: `undefined` and `null` are both VALID values for
- *                                 this parameter. If `obj` is `undefined` or `null`, then
- *                                 a new object will be created from the `mixins` given.
- * @param {Array<Object>} mixins - An array of objects whose attributes should be mixed
- *                                 into the prototype of the given `obj`.
- *                                 NOTE: The order of objects in this array does matter!
- *                                 If there are attributes present in multiple mixin
- *                                 objects, then the mixin with the largest index value
- *                                 overwrite any values set by the lower index valued
- *                                 mixin objects.
- *
- * @returns {Object} The mixed version of `obj`.
- *
- * @throws {TypeError} If `obj.prototype` does not exist.
- *
- * @requires mix
- */
-function mixPrototype(obj, mixins) {
-  obj = (obj || { prototype: {} });
-
-  if (typeof obj.prototype === 'undefined' || obj.prototype === null) {
-    throw new TypeError("`obj.prototype` cannot be `undefined` or `null`!");
-  }
-
-  obj.prototype = mix(obj.prototype, mixins);
-
-  return obj;
-}/**
- * TODO: Add description
- *
- * @param {Object}        obj    - The object to mix into.
- *                                 NOTE: `undefined` and `null` are both VALID values for
- *                                 this parameter. If `obj` is `undefined` or `null`, then
- *                                 a new object will be created from the `mixins` given.
- * @param {Array<Object>} mixins - An array of objects whose attributes should be mixed
- *                                 into the given `obj`.
- *                                 NOTE: The order of objects in this array does matter!
- *                                 If there are attributes present in multiple mixin
- *                                 objects, then the mixin with the largest index value
- *                                 overwrite any values set by the lower index valued
- *                                 mixin objects.
- *
- * @returns {Object} The mixed version of `obj`.
- */
-function mix(obj, mixins) {
-  var newObj = (obj || {});
-
-  for (var i = 0; i < mixins.length; i++) {
-    var mixin = mixins[i];
-
-    if (!mixin) {
-      continue;
-    }
-
-    for (var attrName in mixin) {
-      if (mixin.hasOwnProperty(attrName)) {
-        newObj[attrName] = mixin[attrName];
-      }
     }
   }
 
@@ -312,73 +238,6 @@ function makeInheritable(obj, overwrite, ignoreOverwriteError) {
   };
 
   return obj;
-}makeInheritable(ArrayBuffer);
-makeInheritable(Array);
-makeInheritable(DataView);
-makeInheritable(Date);
-makeInheritable(Error);
-makeInheritable(EvalError);
-makeInheritable(Float32Array);
-makeInheritable(Float64Array);
-makeInheritable(Function);
-makeInheritable(Int8Array);
-
-if (typeof Int16Array !== 'undefined' && Int16Array !== null) {
-  makeInheritable(Int16Array);
-}
-
-makeInheritable(Int32Array);
-makeInheritable(Intl.Collator);
-makeInheritable(Intl.DateTimeFormat);
-makeInheritable(Intl.NumberFormat);
-
-if (typeof Map !== 'undefined' && Map !== null) {
-  makeInheritable(Map);
-}
-
-makeInheritable(Number);
-
-if (typeof Promise !== 'undefined' && Promise !== null) {
-  makeInheritable(Promise);
-}
-
-if (typeof Proxy !== 'undefined' && Proxy !== null) {
-  makeInheritable(Proxy);
-}
-
-makeInheritable(RangeError);
-makeInheritable(ReferenceError);
-
-if (typeof Reflect !== 'undefined' && Reflect !== null) {
-  makeInheritable(Reflect);
-}
-
-makeInheritable(RegExp);
-
-if (typeof Set !== 'undefined' && Set !== null) {
-  makeInheritable(Set);
-}
-
-makeInheritable(String);
-
-if (typeof Symbol !== 'undefined' && Symbol !== null) {
-  makeInheritable(Symbol);
-}
-
-makeInheritable(SyntaxError);
-makeInheritable(TypeError);
-makeInheritable(Uint8Array);
-makeInheritable(Uint8ClampedArray);
-makeInheritable(Uint16Array);
-makeInheritable(Uint32Array);
-makeInheritable(URIError);
-
-if (typeof WeakMap !== 'undefined' && WeakMap !== null) {
-  makeInheritable(WeakMap);
-}
-
-if (typeof WeakSet !== 'undefined' && WeakSet !== null) {
-  makeInheritable(WeakSet);
 }makeInheritable(Object);
 
 
@@ -415,13 +274,23 @@ Object.prototype.mix = function() {
  */
 Object.prototype.mixDeep = function() {
   return mixDeep(this, arguments);
+};/** @namespace */
+var ObjectDefinition = {
+
+  /**
+   * Creates a new object (I.E. "class") that can be inherited.
+   * NOTE: The new object inherits the native JavaScript `Object`.
+   *
+   * @param [Object] objDef - TODO: Add description
+   */
+  create: function(objDef) {
+    return Object.extend(objDef);
+  }
 };
 
 return {
   mix: mix,
   mixDeep: mixDeep,
-  mixPrototype: mixPrototype,
-  mixPrototypeDeep: mixPrototypeDeep,
   inheritance: inheritance,
   makeInheritable: makeInheritable,
   ObjectDefinition: ObjectDefinition

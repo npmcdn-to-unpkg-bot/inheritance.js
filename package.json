@@ -1,6 +1,6 @@
 {
   "name": "inheritance-js",
-  "version": "0.1.4",
+  "version": "0.2.0",
   "authors": [
     "Brandon Sara (http://bsara.github.io)"
   ],
@@ -38,7 +38,7 @@
     "test": "gulp dist"
   },
   "files": [
-    "/dist/*.js",
+    "/dist/**/*.js",
     "/docs/**/*",
     "/LICENSE",
     "/README.md"
@@ -47,12 +47,13 @@
     "del": "latest",
     "gulp": "latest",
     "gulp-concat": "latest",
+    "gulp-footer": "latest",
     "gulp-header": "latest",
     "gulp-jscs": "latest",
     "gulp-jsdoc": "latest",
     "gulp-jshint": "latest",
     "gulp-rename": "latest",
-    "gulp-replace": "^0.5.3",
+    "gulp-replace": "latest",
     "gulp-uglify": "latest",
     "gulp-util": "latest",
     "jshint-stylish": "latest",

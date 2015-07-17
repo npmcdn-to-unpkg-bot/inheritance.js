@@ -89,7 +89,7 @@
     "?"
   ],
   "requirePaddingNewLinesAfterUseStrict": true,
-  "requirePaddingNewLinesBeforeExport": true,
+  "requirePaddingNewLinesBeforeExport": false,
   "requireParenthesesAroundIIFE": true,
   "requireSemicolons": true,
   "requireSpaceAfterBinaryOperators": [

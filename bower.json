@@ -1,6 +1,6 @@
 {
   "name": "inheritance-js",
-  "version": "0.1.4",
+  "version": "0.2.0",
   "authors": [
     "Brandon Sara (http://bsara.github.io)"
   ],
@@ -27,12 +27,14 @@
     "prototype"
   ],
   "moduleType": [
-    "globals"
+    "globals",
+    "amd",
+    "node"
   ],
   "main": "/dist/inheritance.min.js",
   "ignore": [
     "**/*",
-    "!/dist/*.js",
+    "!/dist/**/*.js",
     "!/docs/**/*",
     "!/LICENSE",
     "!/README.md"
