@@ -3,8 +3,8 @@
 
 
 /**
- * Creates a new object definition based upon the given `childDef` attributes and causes
- * that new object definition to inherit the given `parent`.
+ * Creates a new object definition based upon the given `childDef` attributes that
+ * inherits the given `parent`.
  *
  * @param {Object} parent     - The object to be inherited.
  * @param {Object} [childDef] - An object containing all attributes to be used in creating

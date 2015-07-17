@@ -14,7 +14,7 @@
  *                                           `obj.extend` already exists and `overwrite`
  *                                           is not `true`.
  *
- * @returns {Object} The `obj` given.
+ * @returns {Object} The modified `obj` given.
  *
  * @throws {TypeError} If `obj` is `undefined` or `null`.
  * @throws {TypeError} If `obj.extend` already exists and `overwrite` is NOT equal `true`.
@@ -35,9 +35,9 @@ function makeInheritable(obj, overwrite, ignoreOverwriteError) {
    * that new object definition to inherit this object.
    *
    * @param {Object} childDef - An object containing all attributes to be used in creating
-   *                            the new object definition that will inherit the given
-   *                            `parent` object. If this parameter is `undefined` or
-   *                            `null`, then a new child object definition is created.
+   *                            the new object definition that will inherit this object.
+   *                            If this parameter is `undefined` or `null`, then a new
+   *                            child object definition is created.
    *                            TODO: Add reference to the `childDef` spec
    *
    * @returns {Object} An object created from the given `childDef` that inherits this

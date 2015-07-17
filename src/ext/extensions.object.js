@@ -7,8 +7,8 @@ makeInheritable(Object);
 /**
  * TODO: Add description
  *
- * @param {Object...} arguments - An array of objects whose attributes should be mixed
- *                                into the given `obj`.
+ * @param {Object...} arguments - Mixin objects whose attributes should be mixed into this
+ *                                object.
  *                                NOTE: The order of objects in this array does matter!
  *                                If there are attributes present in multiple mixin
  *                                objects, then the mixin with the largest index value
@@ -25,8 +25,8 @@ Object.prototype.mix = function() {
 /**
  * TODO: Add description
  *
- * @param {Object...} arguments - An array of objects whose attributes should be deep
- *                                mixed into the given `obj`.
+ * @param {Object...} arguments - Mixin objects whose attributes should be deep mixed into
+ *                                this object.
  *                                NOTE: The order of objects in this array does matter!
  *                                If there are attributes present in multiple mixin
  *                                objects, then the mixin with the largest index value
