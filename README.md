@@ -39,7 +39,7 @@ A simple and lightweight implementation of object inheritance using pure JavaScr
 
 # Documentation
 
-#### [Changelog](https://github.com/bsara/inheritance.js/blob/master/CHANGELOG.md)
+[**Changelog**](https://github.com/bsara/inheritance.js/blob/master/CHANGELOG.md)
 
 #### Code Samples
 
