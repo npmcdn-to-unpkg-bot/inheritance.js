@@ -1,3 +1,11 @@
+## [v0.2.3](https://github.com/bsara/inheritance.js/tree/v0.2.3) (2015-08-11)
+
+* **[Bug Fix]** Making native object inheritable fails because it wasn't specified that any existing `extend` function should be overwritten.
+* **[Feature]** Added ability to pass a single mixin OR and array of mixins to `mix`, `mixDeep`, `mixPrototype`, and `mixPrototypeDeep`.
+* Updated UMD implementation so that when library is included globally (I.E. not as a module), the default namespace of the library is `I`. (However, `ObjectDefinition` is not namespaced, it is added as a property of the root object).
+* Documentation updates.
+
+
 ## [v0.2.0](https://github.com/bsara/inheritance.js/tree/v0.2.0) (2015-07-16) **[Breaking Changes]**
 
 *__WARNING:__ This release will break nearly all code made against previous releases*

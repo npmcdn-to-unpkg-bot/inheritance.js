@@ -17,11 +17,7 @@ A simple and lightweight implementation of object inheritance using pure JavaScr
 
 - **NPM:** `$ npm install --save inheritance-js`
 - **Bower:** `$ bower install --save inheritance-js`
-- **Download:**
-    - [v0.2.0](https://github.com/bsara/inheritance.js/releases/tag/v0.2.0) *(Latest)*
-    - [v0.1.3](https://github.com/bsara/inheritance.js/releases/tag/v0.1.3)
-    - [v0.1.2](https://github.com/bsara/inheritance.js/releases/tag/v0.1.2)
-    - [More...](https://github.com/bsara/inheritance.js/releases)
+- [**Download**](https://github.com/bsara/inheritance.js/releases)
 
 
 
@@ -149,7 +145,7 @@ var mixin2 = {
     console.log('mixin2Func');
   },
 
-  value0: 4400,  
+  value0: 4400,
   func0: function() {
     console.log('func0 overridden by mixin2');
   },
@@ -246,7 +242,7 @@ Creates a new object (I.E. "class") that can be inherited.
 ---
 
 
-### [inheritance(parent, childDef)](https://github.com/bsara/inheritance.js/blob/master/src/inherit/inheritance.js)
+### [I.inheritance(parent, childDef)](https://github.com/bsara/inheritance.js/blob/master/src/inherit/inheritance.js)
 
 Creates a new object definition based upon the given `childDef` attributes that inherits
 the given `parent`.
@@ -270,7 +266,7 @@ the given `parent`.
 ---
 
 
-### [makeInheritable(obj, overwrite, ignoreOverwriteError)](https://github.com/bsara/inheritance.js/blob/master/src/inherit/make-inheritable.js)
+### [I.makeInheritable(obj, overwrite, ignoreOverwriteError)](https://github.com/bsara/inheritance.js/blob/master/src/inherit/make-inheritable.js)
 
 Makes an object inheritable by adding a function called `extend` as a "static" attribute
 of the object. _(I.E. Calling this function adding passing `Object` as a parameter, creates `Object.extend`)_
@@ -300,7 +296,7 @@ of the object. _(I.E. Calling this function adding passing `Object` as a paramet
 ---
 
 
-### [mix(obj, mixins)](https://github.com/bsara/inheritance.js/blob/master/src/mixin/mix.js)
+### [I.mix(obj, mixins)](https://github.com/bsara/inheritance.js/blob/master/src/mixin/mix.js)
 
 **TODO**
 
@@ -323,7 +319,7 @@ of the object. _(I.E. Calling this function adding passing `Object` as a paramet
 ---
 
 
-### [mixDeep(obj, mixins)](https://github.com/bsara/inheritance.js/blob/master/src/mixin/mix-deep.js)
+### [I.mixDeep(obj, mixins)](https://github.com/bsara/inheritance.js/blob/master/src/mixin/mix-deep.js)
 
 **TODO**
 
@@ -346,7 +342,7 @@ of the object. _(I.E. Calling this function adding passing `Object` as a paramet
 ---
 
 
-### [mixPrototype(obj, mixins)](https://github.com/bsara/inheritance.js/blob/master/src/mixin/mix-prototype.js)
+### [I.mixPrototype(obj, mixins)](https://github.com/bsara/inheritance.js/blob/master/src/mixin/mix-prototype.js)
 
 **TODO**
 
@@ -373,7 +369,7 @@ of the object. _(I.E. Calling this function adding passing `Object` as a paramet
 ---
 
 
-### [mixPrototypeDeep(obj, mixins)](https://github.com/bsara/inheritance.js/blob/master/src/mixin/mix-prototype-deep.js)
+### [I.mixPrototypeDeep(obj, mixins)](https://github.com/bsara/inheritance.js/blob/master/src/mixin/mix-prototype-deep.js)
 
 **TODO**
 
