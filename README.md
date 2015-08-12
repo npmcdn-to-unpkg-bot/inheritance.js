@@ -9,7 +9,9 @@ Inheritance.js [![Build Status](https://img.shields.io/travis/bsara/inheritance.
 [![Gitter Chat](https://badges.gitter.im/JOIN%20CHAT.svg)](https://gitter.im/bsara/inheritance.js)
 
 
-A simple and lightweight implementation of object inheritance using pure JavaScript.
+Simple, lightweight extensions and helpers that make inheritance in JS a breeze, all with pure JavaScript, no extra libraries needed.
+
+Includes support for AMD, CommonJS, and global inclusion via an HTML script tag.
 
 
 
@@ -41,11 +43,61 @@ A simple and lightweight implementation of object inheritance using pure JavaScr
 
 [**Changelog**](https://github.com/bsara/inheritance.js/blob/master/CHANGELOG.md)
 
+
+<br/>
+
+
 #### Code Samples
 
 - Create New Object Definition (I.E. "Class") [[JSbin](http://jsbin.com/wurure/edit?js,console)] [[JSFiddle](https://jsfiddle.net/bsara/ekwajv83/)]
 
+
 <br/>
+
+
+#### Include via Global Script Tag
+
+```html
+<script type="text/javascript" src="inheritance.min.js" />
+<script type="text/javascript">
+  I.mix(...);
+
+  // Notice that `ObjectDefinition` belongs to the `window` object, not the `I` namespace.
+  var MyObj = ObjectDefinition.create(...);
+
+  ...
+</script>
+```
+
+
+#### Include as AMD Module
+
+```javascript
+define([ 'inheritance' ], function(I) {
+  I.mix(...);
+
+  var MyObj = I.ObjectDefinition.create(...);P
+
+  ...
+});
+```
+
+
+#### Include as CommonJS Module
+
+```javascript
+var I = require('inheritance');
+
+I.mix(...);
+
+var MyObj = I.ObjectDefinition.create(...);
+
+...
+```
+
+
+<br/>
+
 
 ## Functions Added to `Object`
 
