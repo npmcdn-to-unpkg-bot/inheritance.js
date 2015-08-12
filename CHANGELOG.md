@@ -1,4 +1,4 @@
-## [v0.2.3](https://github.com/bsara/inheritance.js/tree/v0.2.3) (2015-08-11)
+## [v0.2.4](https://github.com/bsara/inheritance.js/tree/v0.2.3) (2015-08-11)
 
 * **[Bug Fix]** Making native object inheritable fails because it wasn't specified that any existing `extend` function should be overwritten.
 * **[Feature]** Added ability to pass a single mixin OR and array of mixins to `mix`, `mixDeep`, `mixPrototype`, and `mixPrototypeDeep`.

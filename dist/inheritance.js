@@ -1,5 +1,5 @@
 /*!
- * Inheritance.js (0.2.2)
+ * Inheritance.js (0.2.4)
  *
  * Copyright (c) 2015 Brandon Sara (http://bsara.github.io)
  * Licensed under the CPOL-1.02 (https://github.com/bsara/inheritance.js/blob/master/LICENSE.md)
@@ -29,6 +29,109 @@ var ObjectDefinition = {
   create: function(objDef) {
     return Object.extend(objDef);
   }
+};makeInheritable(ArrayBuffer, true);
+makeInheritable(Array, true);
+makeInheritable(DataView, true);
+makeInheritable(Date, true);
+makeInheritable(Error, true);
+makeInheritable(EvalError, true);
+makeInheritable(Float32Array, true);
+makeInheritable(Float64Array, true);
+makeInheritable(Function, true);
+makeInheritable(Int8Array, true);
+
+if (typeof Int16Array !== 'undefined' && Int16Array !== null) {
+  makeInheritable(Int16Array, true);
+}
+
+makeInheritable(Int32Array, true);
+makeInheritable(Intl.Collator, true);
+makeInheritable(Intl.DateTimeFormat, true);
+makeInheritable(Intl.NumberFormat, true);
+
+if (typeof Map !== 'undefined' && Map !== null) {
+  makeInheritable(Map, true);
+}
+
+makeInheritable(Number, true);
+
+if (typeof Promise !== 'undefined' && Promise !== null) {
+  makeInheritable(Promise, true);
+}
+
+if (typeof Proxy !== 'undefined' && Proxy !== null) {
+  makeInheritable(Proxy, true);
+}
+
+makeInheritable(RangeError, true);
+makeInheritable(ReferenceError, true);
+
+if (typeof Reflect !== 'undefined' && Reflect !== null) {
+  makeInheritable(Reflect, true);
+}
+
+makeInheritable(RegExp, true);
+
+if (typeof Set !== 'undefined' && Set !== null) {
+  makeInheritable(Set, true);
+}
+
+makeInheritable(String, true);
+
+if (typeof Symbol !== 'undefined' && Symbol !== null) {
+  makeInheritable(Symbol, true);
+}
+
+makeInheritable(SyntaxError, true);
+makeInheritable(TypeError, true);
+makeInheritable(Uint8Array, true);
+makeInheritable(Uint8ClampedArray, true);
+makeInheritable(Uint16Array, true);
+makeInheritable(Uint32Array, true);
+makeInheritable(URIError, true);
+
+if (typeof WeakMap !== 'undefined' && WeakMap !== null) {
+  makeInheritable(WeakMap, true);
+}
+
+if (typeof WeakSet !== 'undefined' && WeakSet !== null) {
+  makeInheritable(WeakSet, true);
+}makeInheritable(Object);
+
+
+/**
+ * TODO: Add description
+ *
+ * @param {Object...} arguments - Mixin objects whose attributes should be mixed into this
+ *                                object.
+ *                                NOTE: The order of objects in this array does matter!
+ *                                If there are attributes present in multiple mixin
+ *                                objects, then the mixin with the largest index value
+ *                                overwrite any values set by the lower index valued
+ *                                mixin objects.
+ *
+ * @returns {Object} This object, mixed with the given mixin objects.
+ */
+Object.prototype.mix = function() {
+  return mix(this, arguments);
+};
+
+
+/**
+ * TODO: Add description
+ *
+ * @param {Object...} arguments - Mixin objects whose attributes should be deep mixed into
+ *                                this object.
+ *                                NOTE: The order of objects in this array does matter!
+ *                                If there are attributes present in multiple mixin
+ *                                objects, then the mixin with the largest index value
+ *                                overwrite any values set by the lower index valued
+ *                                mixin objects.
+ *
+ * @returns {Object} This object, deep mixed with the given mixin objects.
+ */
+Object.prototype.mixDeep = function() {
+  return mixDeep(this, arguments);
 };/**
  * TODO: Add description
  *
@@ -316,110 +419,7 @@ function makeInheritable(obj, overwrite, ignoreOverwriteError) {
   };
 
   return obj;
-}makeInheritable(ArrayBuffer);
-makeInheritable(Array);
-makeInheritable(DataView);
-makeInheritable(Date);
-makeInheritable(Error);
-makeInheritable(EvalError);
-makeInheritable(Float32Array);
-makeInheritable(Float64Array);
-makeInheritable(Function);
-makeInheritable(Int8Array);
-
-if (typeof Int16Array !== 'undefined' && Int16Array !== null) {
-  makeInheritable(Int16Array);
 }
-
-makeInheritable(Int32Array);
-makeInheritable(Intl.Collator);
-makeInheritable(Intl.DateTimeFormat);
-makeInheritable(Intl.NumberFormat);
-
-if (typeof Map !== 'undefined' && Map !== null) {
-  makeInheritable(Map);
-}
-
-makeInheritable(Number);
-
-if (typeof Promise !== 'undefined' && Promise !== null) {
-  makeInheritable(Promise);
-}
-
-if (typeof Proxy !== 'undefined' && Proxy !== null) {
-  makeInheritable(Proxy);
-}
-
-makeInheritable(RangeError);
-makeInheritable(ReferenceError);
-
-if (typeof Reflect !== 'undefined' && Reflect !== null) {
-  makeInheritable(Reflect);
-}
-
-makeInheritable(RegExp);
-
-if (typeof Set !== 'undefined' && Set !== null) {
-  makeInheritable(Set);
-}
-
-makeInheritable(String);
-
-if (typeof Symbol !== 'undefined' && Symbol !== null) {
-  makeInheritable(Symbol);
-}
-
-makeInheritable(SyntaxError);
-makeInheritable(TypeError);
-makeInheritable(Uint8Array);
-makeInheritable(Uint8ClampedArray);
-makeInheritable(Uint16Array);
-makeInheritable(Uint32Array);
-makeInheritable(URIError);
-
-if (typeof WeakMap !== 'undefined' && WeakMap !== null) {
-  makeInheritable(WeakMap);
-}
-
-if (typeof WeakSet !== 'undefined' && WeakSet !== null) {
-  makeInheritable(WeakSet);
-}makeInheritable(Object);
-
-
-/**
- * TODO: Add description
- *
- * @param {Object...} arguments - Mixin objects whose attributes should be mixed into this
- *                                object.
- *                                NOTE: The order of objects in this array does matter!
- *                                If there are attributes present in multiple mixin
- *                                objects, then the mixin with the largest index value
- *                                overwrite any values set by the lower index valued
- *                                mixin objects.
- *
- * @returns {Object} This object, mixed with the given mixin objects.
- */
-Object.prototype.mix = function() {
-  return mix(this, arguments);
-};
-
-
-/**
- * TODO: Add description
- *
- * @param {Object...} arguments - Mixin objects whose attributes should be deep mixed into
- *                                this object.
- *                                NOTE: The order of objects in this array does matter!
- *                                If there are attributes present in multiple mixin
- *                                objects, then the mixin with the largest index value
- *                                overwrite any values set by the lower index valued
- *                                mixin objects.
- *
- * @returns {Object} This object, deep mixed with the given mixin objects.
- */
-Object.prototype.mixDeep = function() {
-  return mixDeep(this, arguments);
-};
 
 return {
   mix: mix,
