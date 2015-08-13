@@ -14,7 +14,7 @@
 
 ## [v0.2.0](https://github.com/bsara/inheritance.js/tree/v0.2.0) (2015-07-16) **[Breaking Changes]**
 
-> __WARNING:__ This release will break nearly all code made against previous releases
+> __WARNING:__ This release will break nearly all code using previous releases
 
 * **[Function Renamed]** `extendObjectDef` -> `inheritance`
 * **[Function Renamed]** `deepMix` -> `mixDeep`
