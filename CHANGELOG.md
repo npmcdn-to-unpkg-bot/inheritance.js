@@ -1,4 +1,4 @@
-## [v0.3.1](https://github.com/bsara/inheritance.js/tree/v0.3.0) (2015-08-12)
+## [v0.3.2](https://github.com/bsara/inheritance.js/tree/v0.3.2) (2015-08-12)
 
 * **[Breaking Change]** Removed need to have `Object` modified to use `ObjectDefinition.create`. This means that `inheritance.noexts.js` no longer contains extensions to `Object`, which was the only native object extended in that file.
 * **[Bug Fix]** Made extension functions non-enumerable for native objects and when calling `makeInheritable`.
