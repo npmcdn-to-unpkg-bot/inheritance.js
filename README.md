@@ -62,7 +62,7 @@ were based largly off of their implementation of ["Extend"](http://youmightnotne
     - [ObjectDefinition.create](#objectdefinitioncreateobjdef)
     - [inheritance](#inheritanceparent-childdef)
     - [makeInheritable](#makeinheritableobj-overwrite-ignoreoverwriteerror)
-    - [mix](#mixobj-mixins)\
+    - [mix](#mixobj-mixins)
     - [mixDeep](#mixdeepobj-mixins)
     - [mixPrototype](#mixprototypeobj-mixins)
     - [mixPrototypeDeep](#mixprototypedeepobj-mixins)

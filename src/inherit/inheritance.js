@@ -66,8 +66,6 @@ function inheritance(parent, childDef) {
       }
     }
 
-    this.super();
-
     child(arguments);
   };
 

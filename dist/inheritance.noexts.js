@@ -1,5 +1,5 @@
 /*!
- * Inheritance.js (0.3.0)
+ * Inheritance.js (0.3.1)
  *
  * Copyright (c) 2015 Brandon Sara (http://bsara.github.io)
  * Licensed under the CPOL-1.02 (https://github.com/bsara/inheritance.js/blob/master/LICENSE.md)
@@ -225,8 +225,6 @@ function inheritance(parent, childDef) {
         this._super[funcName] = this._super[funcName].bind(this);
       }
     }
-
-    this.super();
 
     child(arguments);
   };
