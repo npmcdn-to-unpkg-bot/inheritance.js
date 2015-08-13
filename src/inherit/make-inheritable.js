@@ -43,9 +43,12 @@ function makeInheritable(obj, overwrite, ignoreOverwriteError) {
    * @returns {Object} An object created from the given `childDef` that inherits this
    *                   object.
    */
-  obj.extend = function(childDef) {
-    return inheritance(obj, childDef);
-  };
+  Object.defineProperty(obj, 'extend', {
+    value:        function(childDef) { return inheritance(obj, childDef); },
+    configurable: true,
+    enumerable:   false,
+    writable:     true
+  });
 
   return obj;
 }

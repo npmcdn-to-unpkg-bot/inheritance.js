@@ -1,3 +1,9 @@
+## [v0.3.0](https://github.com/bsara/inheritance.js/tree/v0.3.0) (2015-08-12)
+
+* **[Breaking Change]** Removed need to have `Object` modified to use `ObjectDefinition.create`. This means that `inheritance.noexts.js` no longer contains extensions to `Object`, which was the only native object extended in that file.
+* **[Bug Fix]** Made extension functions non-enumerable for native objects and when calling `makeInheritable`.
+
+
 ## [v0.2.4](https://github.com/bsara/inheritance.js/tree/v0.2.3) (2015-08-11)
 
 * **[Bug Fix]** Making native object inheritable fails because it wasn't specified that any existing `extend` function should be overwritten.
@@ -8,7 +14,7 @@
 
 ## [v0.2.0](https://github.com/bsara/inheritance.js/tree/v0.2.0) (2015-07-16) **[Breaking Changes]**
 
-*__WARNING:__ This release will break nearly all code made against previous releases*
+> __WARNING:__ This release will break nearly all code made against previous releases
 
 * **[Function Renamed]** `extendObjectDef` -> `inheritance`
 * **[Function Renamed]** `deepMix` -> `mixDeep`

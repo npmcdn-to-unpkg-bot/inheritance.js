@@ -20,7 +20,7 @@
 function inheritance(parent, childDef) {
   var attrName;
 
-  parent = (parent || Object);
+  parent   = (parent || Object);
   childDef = (childDef || {});
 
   var child = (childDef.ctor || function() { return this.super.apply(this, arguments); }); // jscs:disable requireBlocksOnNewline
@@ -52,7 +52,7 @@ function inheritance(parent, childDef) {
   }
 
 
-  child.prototype = Object.create(parent.prototype);
+  child.prototype        = Object.create(parent.prototype);
   child.prototype.objDef = child;
 
   child.prototype.constructor = function() {
@@ -65,6 +65,8 @@ function inheritance(parent, childDef) {
         this._super[funcName] = this._super[funcName].bind(this);
       }
     }
+
+    this.super();
 
     child(arguments);
   };

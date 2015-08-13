@@ -1,5 +1,5 @@
 /*!
- * Inheritance.js (0.2.4)
+ * Inheritance.js (0.3.0)
  *
  * Copyright (c) 2015 Brandon Sara (http://bsara.github.io)
  * Licensed under the CPOL-1.02 (https://github.com/bsara/inheritance.js/blob/master/LICENSE.md)
@@ -117,7 +117,7 @@ function mixDeep(obj, mixins) {
 function inheritance(parent, childDef) {
   var attrName;
 
-  parent = (parent || Object);
+  parent   = (parent || Object);
   childDef = (childDef || {});
 
   var child = (childDef.ctor || function() { return this.super.apply(this, arguments); });
@@ -149,7 +149,7 @@ function inheritance(parent, childDef) {
   }
 
 
-  child.prototype = Object.create(parent.prototype);
+  child.prototype        = Object.create(parent.prototype);
   child.prototype.objDef = child;
 
   child.prototype.constructor = function() {
@@ -162,6 +162,8 @@ function inheritance(parent, childDef) {
         this._super[funcName] = this._super[funcName].bind(this);
       }
     }
+
+    this.super();
 
     child(arguments);
   };
@@ -234,48 +236,15 @@ function makeInheritable(obj, overwrite, ignoreOverwriteError) {
    * @returns {Object} An object created from the given `childDef` that inherits this
    *                   object.
    */
-  obj.extend = function(childDef) {
-    return inheritance(obj, childDef);
-  };
+  Object.defineProperty(obj, 'extend', {
+    value:        function(childDef) { return inheritance(obj, childDef); },
+    configurable: true,
+    enumerable:   false,
+    writable:     true
+  });
 
   return obj;
-}makeInheritable(Object);
-
-
-/**
- * TODO: Add description
- *
- * @param {Object...} arguments - Mixin objects whose attributes should be mixed into this
- *                                object.
- *                                NOTE: The order of objects in this array does matter!
- *                                If there are attributes present in multiple mixin
- *                                objects, then the mixin with the largest index value
- *                                overwrite any values set by the lower index valued
- *                                mixin objects.
- *
- * @returns {Object} This object, mixed with the given mixin objects.
- */
-Object.prototype.mix = function() {
-  return mix(this, arguments);
-};
-
-
-/**
- * TODO: Add description
- *
- * @param {Object...} arguments - Mixin objects whose attributes should be deep mixed into
- *                                this object.
- *                                NOTE: The order of objects in this array does matter!
- *                                If there are attributes present in multiple mixin
- *                                objects, then the mixin with the largest index value
- *                                overwrite any values set by the lower index valued
- *                                mixin objects.
- *
- * @returns {Object} This object, deep mixed with the given mixin objects.
- */
-Object.prototype.mixDeep = function() {
-  return mixDeep(this, arguments);
-};/** @namespace */
+}/** @namespace */
 var ObjectDefinition = {
 
   /**
@@ -287,7 +256,7 @@ var ObjectDefinition = {
    * @returns {Object} The newly created, inheritable, object that inherits `Object`.
    */
   create: function(objDef) {
-    return Object.extend(objDef);
+    return inheritance(Object, objDef);
   }
 };
 

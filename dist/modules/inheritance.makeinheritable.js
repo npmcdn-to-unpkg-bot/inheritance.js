@@ -1,5 +1,5 @@
 /*!
- * Inheritance.js (0.2.4)
+ * Inheritance.js (0.3.0)
  *
  * Copyright (c) 2015 Brandon Sara (http://bsara.github.io)
  * Licensed under the CPOL-1.02 (https://github.com/bsara/inheritance.js/blob/master/LICENSE.md)
@@ -77,7 +77,7 @@ function mixDeep(obj, mixins) {
 function inheritance(parent, childDef) {
   var attrName;
 
-  parent = (parent || Object);
+  parent   = (parent || Object);
   childDef = (childDef || {});
 
   var child = (childDef.ctor || function() { return this.super.apply(this, arguments); });
@@ -109,7 +109,7 @@ function inheritance(parent, childDef) {
   }
 
 
-  child.prototype = Object.create(parent.prototype);
+  child.prototype        = Object.create(parent.prototype);
   child.prototype.objDef = child;
 
   child.prototype.constructor = function() {
@@ -122,6 +122,8 @@ function inheritance(parent, childDef) {
         this._super[funcName] = this._super[funcName].bind(this);
       }
     }
+
+    this.super();
 
     child(arguments);
   };
@@ -194,9 +196,12 @@ function makeInheritable(obj, overwrite, ignoreOverwriteError) {
    * @returns {Object} An object created from the given `childDef` that inherits this
    *                   object.
    */
-  obj.extend = function(childDef) {
-    return inheritance(obj, childDef);
-  };
+  Object.defineProperty(obj, 'extend', {
+    value:        function(childDef) { return inheritance(obj, childDef); },
+    configurable: true,
+    enumerable:   false,
+    writable:     true
+  });
 
   return obj;
 }

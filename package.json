@@ -1,6 +1,6 @@
 {
   "name": "inheritance-js",
-  "version": "0.2.4",
+  "version": "0.3.0",
   "authors": [
     "Brandon Sara (http://bsara.github.io)"
   ],
@@ -58,6 +58,7 @@
     "gulp-wrap-umd": "bsara/gulp-wrap-umd",
     "jshint-stylish": "latest",
     "merge-stream": "latest",
+    "path": "latest",
     "run-sequence": "latest"
   }
 }

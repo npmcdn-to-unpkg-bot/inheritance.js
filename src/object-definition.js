@@ -1,3 +1,4 @@
+/* globals inheritance */
 /* exported ObjectDefinition */
 
 
@@ -13,6 +14,6 @@ var ObjectDefinition = {
    * @returns {Object} The newly created, inheritable, object that inherits `Object`.
    */
   create: function(objDef) {
-    return Object.extend(objDef);
+    return inheritance(Object, objDef);
   }
 };

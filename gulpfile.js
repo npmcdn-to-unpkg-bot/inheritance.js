@@ -10,6 +10,7 @@ var jsdoc                 = require('gulp-jsdoc');
 var jshint                = require('gulp-jshint');
 var jshintStylishReporter = require('jshint-stylish');
 var merge                 = require('merge-stream');
+var path                  = require('path');
 var rename                = require('gulp-rename');
 var replace               = require('gulp-replace');
 var runSequence           = require('run-sequence');
@@ -65,27 +66,23 @@ var config = {
 
 config.fileHeader = "/*!\n * Inheritance.js (" + config.pkg.version + ")\n *\n * Copyright (c) 2015 Brandon Sara (http://bsara.github.io)\n * Licensed under the CPOL-1.02 (https://github.com/bsara/inheritance.js/blob/master/LICENSE.md)\n */\n";
 
-config.build.modules.dir = config.build.dir + 'modules/';
-config.dist.modules.dir = config.dist.dir + 'modules/';
+config.build.modules.dir = path.join(config.build.dir, 'modules');
+config.dist.modules.dir  = path.join(config.dist.dir, 'modules');
 
 config.src.selector = {
-  ext: {
-    extentions : config.src.dir + 'ext/extensions.js',
-    object     : config.src.dir + 'ext/extensions.object.js'
-  },
   inherit: {
-    inheritance     : config.src.dir + 'inherit/inheritance.js',
-    makeInheritable : config.src.dir + 'inherit/make-inheritable.js'
+    inheritance     : path.join(config.src.dir, 'inherit', 'inheritance.js'),
+    makeInheritable : path.join(config.src.dir, 'inherit', 'make-inheritable.js')
   },
   mixin: {
-    mix              : config.src.dir + 'mixin/mix.js',
-    mixDeep          : config.src.dir + 'mixin/mix-deep.js',
-    mixPrototype     : config.src.dir + 'mixin/mix-prototype.js',
-    mixPrototypeDeep : config.src.dir + 'mixin/mix-prototype-deep.js'
+    mix              : path.join(config.src.dir, 'mixin', 'mix.js'),
+    mixDeep          : path.join(config.src.dir, 'mixin', 'mix-deep.js'),
+    mixPrototype     : path.join(config.src.dir, 'mixin', 'mix-prototype.js'),
+    mixPrototypeDeep : path.join(config.src.dir, 'mixin', 'mix-prototype-deep.js')
   },
-  objectDef : config.src.dir + 'object-definition.js',
-  scripts   : config.src.dir + '**/*.js',
-  tests     : config.tests.dir + '**/*.js'
+  objectDef  : path.join(config.src.dir, 'object-definition.js'),
+  scripts    : path.join(config.src.dir, '**', '*.js'),
+  tests      : path.join(config.tests.dir, '**', '*.js')
 };
 
 config.lint.selectors = [
@@ -165,7 +162,6 @@ gulp.task('build', [ 'build:modules' ], function() {
                      config.src.selector.mixin.mixPrototypeDeep,
                      config.src.selector.inherit.inheritance,
                      config.src.selector.inherit.makeInheritable,
-                     config.src.selector.ext.object,
                      config.src.selector.objectDef
                    ])
                    .pipe(concat('inheritance.noexts.js'))
@@ -198,7 +194,6 @@ gulp.task('build:modules', function() {
                           config.src.selector.mixin.mixDeep,
                           config.src.selector.inherit.inheritance,
                           config.src.selector.inherit.makeInheritable,
-                          config.src.selector.ext.object,
                           config.src.selector.objectDef
                         ])
                         .pipe(concat('inheritance.objectdef.js'))
@@ -313,13 +308,13 @@ gulp.task('dist', function(callback) {
       return;
     }
 
-    var main = gulp.src(config.build.dir + '*.js');
-    var minifiedMain = gulp.src(config.build.dir + '*.js')
+    var main = gulp.src(path.join(config.build.dir, '*.js'));
+    var minifiedMain = gulp.src(path.join(config.build.dir, '*.js'))
                             .pipe(uglify({ preserveComments: 'some' }))
                             .pipe(rename({ suffix: '.min' }));
 
-    var modules = gulp.src(config.build.modules.dir + '*.js');
-    var minifiedModules = gulp.src(config.build.modules.dir + '*.js')
+    var modules = gulp.src(path.join(config.build.modules.dir, '*.js'));
+    var minifiedModules = gulp.src(path.join(config.build.modules.dir + '*.js'))
                               .pipe(uglify({ preserveComments: 'some' }))
                               .pipe(rename({ suffix: '.min' }));
 
