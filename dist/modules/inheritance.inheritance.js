@@ -164,7 +164,7 @@ function inheritance(parent, childDef) {
         continue;
       }
 
-      Object.defineProperty(childDef.prototype, propName, {
+      Object.defineProperty(child.prototype, propName, {
         value:        privateProps[propName],
         configurable: true,
         enumerable:   false,
@@ -176,7 +176,7 @@ function inheritance(parent, childDef) {
     var privateStaticProps = privateProps.static;
     if (typeof privateStaticProps !== 'undefined' && privateStaticProps !== null) {
       for (propName in privateStaticProps) {
-        Object.defineProperty(childDef, propName, {
+        Object.defineProperty(child, propName, {
           value:        privateStaticProps[propName],
           configurable: true,
           enumerable:   false,

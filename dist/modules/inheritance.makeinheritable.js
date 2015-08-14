@@ -164,7 +164,7 @@ function inheritance(parent, childDef) {
         continue;
       }
 
-      Object.defineProperty(childDef.prototype, propName, {
+      Object.defineProperty(child.prototype, propName, {
         value:        privateProps[propName],
         configurable: true,
         enumerable:   false,
@@ -176,7 +176,7 @@ function inheritance(parent, childDef) {
     var privateStaticProps = privateProps.static;
     if (typeof privateStaticProps !== 'undefined' && privateStaticProps !== null) {
       for (propName in privateStaticProps) {
-        Object.defineProperty(childDef, propName, {
+        Object.defineProperty(child, propName, {
           value:        privateStaticProps[propName],
           configurable: true,
           enumerable:   false,
@@ -242,6 +242,8 @@ function makeInheritable(obj, overwrite, ignoreOverwriteError) {
    *
    * @returns {Object} An object created from the given `childDef` that inherits this
    *                   object.
+   *
+   * @throws {TypeError} If the object's definition has been sealed. @see {@link https://github.com/bsara/inheritance.js/blob/master/src/inherit/seal.js}
    */
   Object.defineProperty(obj, 'extend', {
     value:        function(childDef) { return inheritance(obj, childDef); },
