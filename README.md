@@ -158,7 +158,7 @@ Creates a new object (I.E. "class") that can be inherited.
 ---
 
 
-### [ObjectDefinition.createSealed(objDef)](https://github.com/bsara/inheritance.js/blob/master/src/object-definition.jsL21)
+### [ObjectDefinition.createSealed(objDef)](https://github.com/bsara/inheritance.js/blob/master/src/object-definition.js#L21)
 
 Creates a new object (I.E. "class") that CANNOT be inherited.
 **NOTE:** The new object inherits the native JavaScript `Object`.
@@ -403,7 +403,7 @@ var ChildObject = Object.extend({
 ---
 
 
-### [Object.prototype.mix(...)](https://github.com/bsara/inheritance.js/blob/master/src/ext/extensions.object.js#L20)
+### [Object.prototype.mix(...)](https://github.com/bsara/inheritance.js/blob/master/src/extensions.js#L4)
 
 **TODO**
 
@@ -519,7 +519,7 @@ newObj.mixin2Func() // Prints "mixin2Func"
 ---
 
 
-### [Object.prototype.mixDeep(...)](https://github.com/bsara/inheritance.js/blob/master/src/ext/extensions.object.js#L38)
+### [Object.prototype.mixDeep(...)](https://github.com/bsara/inheritance.js/blob/master/src/extensions.js#L25)
 
 **TODO**
 
@@ -548,4 +548,4 @@ See [contribution documentation page](https://github.com/bsara/inheritance.js/bl
 
 
 [cs-create-obj-def-jsbin]: http://jsbin.com/wurure/edit?js,console "Create Object Definition Code Sample (JSBin)"
-[cs-create-obj-def-jsfiddle]: https://jsfiddle.net/bsara/ekwajv83/ "Create Object Definition Code Sample (JSFiddle"
+[cs-create-obj-def-jsfiddle]: https://jsfiddle.net/bsara/ekwajv83/ "Create Object Definition Code Sample (JSFiddle)"

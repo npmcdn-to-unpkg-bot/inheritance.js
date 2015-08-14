@@ -42,6 +42,8 @@ function makeInheritable(obj, overwrite, ignoreOverwriteError) {
    *
    * @returns {Object} An object created from the given `childDef` that inherits this
    *                   object.
+   *
+   * @throws {TypeError} If the object's definition has been sealed. @see {@link https://github.com/bsara/inheritance.js/blob/master/src/inherit/seal.js}
    */
   Object.defineProperty(obj, 'extend', {
     value:        function(childDef) { return inheritance(obj, childDef); },
