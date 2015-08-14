@@ -4,10 +4,10 @@
 /**
  * TODO: Add description
  *
- * @param {Object...} arguments - Mixin objects whose attributes should be mixed into this
+ * @param {Object...} arguments - Mixin objects whose properties should be mixed into this
  *                                object.
  *                                NOTE: The order of objects in this array does matter!
- *                                If there are attributes present in multiple mixin
+ *                                If there are properties present in multiple mixin
  *                                objects, then the mixin with the largest index value
  *                                overwrite any values set by the lower index valued
  *                                mixin objects.
@@ -25,10 +25,10 @@ Object.defineProperty(Object.prototype, 'mix', {
 /**
  * TODO: Add description
  *
- * @param {Object...} arguments - Mixin objects whose attributes should be deep mixed into
+ * @param {Object...} arguments - Mixin objects whose properties should be deep mixed into
  *                                this object.
  *                                NOTE: The order of objects in this array does matter!
- *                                If there are attributes present in multiple mixin
+ *                                If there are properties present in multiple mixin
  *                                objects, then the mixin with the largest index value
  *                                overwrite any values set by the lower index valued
  *                                mixin objects.

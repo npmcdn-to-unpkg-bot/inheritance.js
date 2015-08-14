@@ -38,29 +38,29 @@ var config = {
   pkg: require('./package.json'),
 
   build: {
-    dir: 'build/',
+    dir:     'build/',
     modules: {}
   },
   dist: {
-    dir: 'dist/',
+    dir:     'dist/',
     modules: {}
   },
   docs: { dir: 'docs/' },
   lint: {},
   reports: { dir: 'reports/' },
   src: {
-    dir: 'src/',
+    dir:     'src/',
     selector: {}
   },
   tests: { dir: 'test/' },
 
   umd: {
-    deps: [],
-    namespace: 'I',
+    deps:                              [],
+    namespace:                         'I',
     globalExportTemplateInitNamespace: 'root.I = {};\n    <%= _default %>',
-    globalExportTemplateObjectDef: '<%= _default %>\n'
-                             + '    root.ObjectDefinition = root.<%= namespace %>.ObjectDefinition;\n'
-                             + '    delete root.<%= namespace %>.ObjectDefinition;'
+    globalExportTemplateObjectDef:     '<%= _default %>\n'
+                                 + '    root.ObjectDefinition = root.<%= namespace %>.ObjectDefinition;\n'
+                                 + '    delete root.<%= namespace %>.ObjectDefinition;'
   }
 };
 
@@ -71,18 +71,19 @@ config.dist.modules.dir  = path.join(config.dist.dir, 'modules');
 
 config.src.selector = {
   inherit: {
-    inheritance     : path.join(config.src.dir, 'inherit', 'inheritance.js'),
-    makeInheritable : path.join(config.src.dir, 'inherit', 'make-inheritable.js')
+    inheritance:     path.join(config.src.dir, 'inherit', 'inheritance.js'),
+    makeInheritable: path.join(config.src.dir, 'inherit', 'make-inheritable.js'),
+    seal:            path.join(config.src.dir, 'inherit', 'seal.js')
   },
   mixin: {
-    mix              : path.join(config.src.dir, 'mixin', 'mix.js'),
-    mixDeep          : path.join(config.src.dir, 'mixin', 'mix-deep.js'),
-    mixPrototype     : path.join(config.src.dir, 'mixin', 'mix-prototype.js'),
-    mixPrototypeDeep : path.join(config.src.dir, 'mixin', 'mix-prototype-deep.js')
+    mix:              path.join(config.src.dir, 'mixin', 'mix.js'),
+    mixDeep:          path.join(config.src.dir, 'mixin', 'mix-deep.js'),
+    mixPrototype:     path.join(config.src.dir, 'mixin', 'mix-prototype.js'),
+    mixPrototypeDeep: path.join(config.src.dir, 'mixin', 'mix-prototype-deep.js')
   },
-  objectDef  : path.join(config.src.dir, 'object-definition.js'),
-  scripts    : path.join(config.src.dir, '**', '*.js'),
-  tests      : path.join(config.tests.dir, '**', '*.js')
+  objectDef: path.join(config.src.dir, 'object-definition.js'),
+  scripts:   path.join(config.src.dir, '**', '*.js'),
+  tests:     path.join(config.tests.dir, '**', '*.js')
 };
 
 config.lint.selectors = [
@@ -104,7 +105,7 @@ gulp.task('default', [ 'help' ]);
 
 gulp.task('help', function() {
   var header = util.colors.bold.blue;
-  var task = util.colors.green;
+  var task   = util.colors.green;
 
   console.log(String.EMPTY);
   console.log(header("Inheritance.js Gulp Tasks"));
@@ -141,8 +142,8 @@ gulp.task('build', [ 'build:modules' ], function() {
   var all = gulp.src(config.src.selector.scripts)
                 .pipe(concat('inheritance.js'))
                 .pipe(wrapUMD({
-                  deps: config.umd.deps,
-                  namespace: config.umd.namespace,
+                  deps:                 config.umd.deps,
+                  namespace:            config.umd.namespace,
                   globalExportTemplate: config.umd.globalExportTemplateObjectDef,
                   exports: '{\n'
                          + '  mix: mix,\n'
@@ -151,6 +152,7 @@ gulp.task('build', [ 'build:modules' ], function() {
                          + '  mixPrototypeDeep: mixPrototypeDeep,\n'
                          + '  inheritance: inheritance,\n'
                          + '  makeInheritable: makeInheritable,\n'
+                         + '  seal: seal,\n'
                          + '  ObjectDefinition: ObjectDefinition\n'
                          + '}'
                 }));
@@ -162,12 +164,13 @@ gulp.task('build', [ 'build:modules' ], function() {
                      config.src.selector.mixin.mixPrototypeDeep,
                      config.src.selector.inherit.inheritance,
                      config.src.selector.inherit.makeInheritable,
+                     config.src.selector.inherit.seal,
                      config.src.selector.objectDef
                    ])
                    .pipe(concat('inheritance.noexts.js'))
                    .pipe(wrapUMD({
-                     deps: config.umd.deps,
-                     namespace: config.umd.namespace,
+                     deps:                 config.umd.deps,
+                     namespace:            config.umd.namespace,
                      globalExportTemplate: config.umd.globalExportTemplateObjectDef,
                      exports: '{\n'
                             + '  mix: mix,\n'
@@ -176,6 +179,7 @@ gulp.task('build', [ 'build:modules' ], function() {
                             + '  mixPrototypeDeep: mixPrototypeDeep,\n'
                             + '  inheritance: inheritance,\n'
                             + '  makeInheritable: makeInheritable,\n'
+                            + '  seal: seal,\n'
                             + '  ObjectDefinition: ObjectDefinition\n'
                             + '}'
                    }));
@@ -190,25 +194,27 @@ gulp.task('build', [ 'build:modules' ], function() {
 
 gulp.task('build:modules', function() {
   var objectDef = gulp.src([
-                          config.src.selector.mixin.mix,
-                          config.src.selector.mixin.mixDeep,
-                          config.src.selector.inherit.inheritance,
-                          config.src.selector.inherit.makeInheritable,
-                          config.src.selector.objectDef
-                        ])
-                        .pipe(concat('inheritance.objectdef.js'))
-                        .pipe(wrapUMD({
-                          deps: config.umd.deps,
-                          namespace: config.umd.namespace,
-                          globalExportTemplate: 'root.I = {};\n    <%= _default %>',
-                          exports: '{\n'
-                                 + '  mix: mix,\n'
-                                 + '  mixDeep: mixDeep,\n'
-                                 + '  inheritance: inheritance,\n'
-                                 + '  makeInheritable: makeInheritable,\n'
-                                 + '  ObjectDefinition: ObjectDefinition\n'
-                                 + '}'
-                        }));
+                        config.src.selector.mixin.mix,
+                        config.src.selector.mixin.mixDeep,
+                        config.src.selector.inherit.inheritance,
+                        config.src.selector.inherit.makeInheritable,
+                        config.src.selector.inherit.seal,
+                        config.src.selector.objectDef
+                      ])
+                      .pipe(concat('inheritance.objectdef.js'))
+                      .pipe(wrapUMD({
+                        deps:                 config.umd.deps,
+                        namespace:            config.umd.namespace,
+                        globalExportTemplate: 'root.I = {};\n    <%= _default %>',
+                        exports: '{\n'
+                               + '  mix: mix,\n'
+                               + '  mixDeep: mixDeep,\n'
+                               + '  inheritance: inheritance,\n'
+                               + '  makeInheritable: makeInheritable,\n'
+                               + '  seal: seal,\n'
+                               + '  ObjectDefinition: ObjectDefinition\n'
+                               + '}'
+                      }));
 
   var inheritance = gulp.src([
                           config.src.selector.mixin.mixDeep,
@@ -216,7 +222,7 @@ gulp.task('build:modules', function() {
                         ])
                         .pipe(concat('inheritance.inheritance.js'))
                         .pipe(wrapUMD({
-                          deps: config.umd.deps,
+                          deps:      config.umd.deps,
                           namespace: config.umd.namespace,
                           exports: '{\n'
                                  + '  mixDeep: mixDeep,\n'
@@ -231,7 +237,7 @@ gulp.task('build:modules', function() {
                             ])
                             .pipe(concat('inheritance.makeinheritable.js'))
                             .pipe(wrapUMD({
-                              deps: config.umd.deps,
+                              deps:      config.umd.deps,
                               namespace: config.umd.namespace,
                               exports: '{\n'
                                      + '  mixDeep: mixDeep,\n'
@@ -240,22 +246,30 @@ gulp.task('build:modules', function() {
                                      + '}'
                             }));
 
+  var seal = gulp.src(config.src.selector.inherit.seal)
+                 .pipe(concat('inheritance.seal.js'))
+                 .pipe(wrapUMD({
+                   deps:      config.umd.deps,
+                   namespace: config.umd.namespace,
+                   exports:   'seal'
+                 }));
+
   var mix = gulp.src(config.src.selector.mixin.mix)
                 .pipe(concat('inheritance.mix.js'))
                 .pipe(wrapUMD({
-                  deps: config.umd.deps,
-                  namespace: config.umd.namespace + ".mix",
+                  deps:                 config.umd.deps,
+                  namespace:            config.umd.namespace + ".mix",
                   globalExportTemplate: config.umd.globalExportTemplateInitNamespace,
-                  exports: 'mix'
+                  exports:              'mix'
                 }));
 
   var mixDeep = gulp.src(config.src.selector.mixin.mixDeep)
                     .pipe(concat('inheritance.mixdeep.js'))
                     .pipe(wrapUMD({
-                      deps: config.umd.deps,
-                      namespace: config.umd.namespace + ".mixDeep",
+                      deps:                 config.umd.deps,
+                      namespace:            config.umd.namespace + ".mixDeep",
                       globalExportTemplate: config.umd.globalExportTemplateInitNamespace,
-                      exports: 'mixDeep'
+                      exports:              'mixDeep'
                     }));
 
   var mixPrototype = gulp.src([
@@ -264,7 +278,7 @@ gulp.task('build:modules', function() {
                          ])
                          .pipe(concat('inheritance.mixprototype.js'))
                          .pipe(wrapUMD({
-                           deps: config.umd.deps,
+                           deps:      config.umd.deps,
                            namespace: config.umd.namespace,
                            exports: '\n'
                                     + 'return {\n'
@@ -279,7 +293,7 @@ gulp.task('build:modules', function() {
                              ])
                              .pipe(concat('inheritance.mixprototypedeep.js'))
                              .pipe(wrapUMD({
-                               deps: config.umd.deps,
+                               deps:      config.umd.deps,
                                namespace: config.umd.namespace,
                                exports: '\n'
                                         + 'return {\n'
@@ -288,7 +302,7 @@ gulp.task('build:modules', function() {
                                         + '};'
                              }));
 
-  return merge(objectDef, inheritance, makeInheritable, mix, mixDeep, mixPrototype, mixPrototypeDeep)
+  return merge(objectDef, inheritance, makeInheritable, seal, mix, mixDeep, mixPrototype, mixPrototypeDeep)
           .pipe(replace(/\s*\/\/\s*js(hint\s|cs:).*$/gmi, String.EMPTY))
           .pipe(replace(/\s*\/\*\s*(js(hint|lint|cs:)|global(|s)|exported)\s.*?\*\/\s*\n/gmi, String.EMPTY))
           .pipe(header(config.fileHeader))
@@ -308,20 +322,19 @@ gulp.task('dist', function(callback) {
       return;
     }
 
-    var main = gulp.src(path.join(config.build.dir, '*.js'));
-    var minifiedMain = gulp.src(path.join(config.build.dir, '*.js'))
-                            .pipe(uglify({ preserveComments: 'some' }))
-                            .pipe(rename({ suffix: '.min' }));
+    var main = gulp.src(path.join(config.build.dir, '*.js'))
+                   .pipe(gulp.dest(config.dist.dir))
+                   .pipe(uglify({ preserveComments: 'some' }))
+                   .pipe(rename({ suffix: '.min' }))
+                   .pipe(gulp.dest(config.dist.dir));
 
-    var modules = gulp.src(path.join(config.build.modules.dir, '*.js'));
-    var minifiedModules = gulp.src(path.join(config.build.modules.dir + '*.js'))
-                              .pipe(uglify({ preserveComments: 'some' }))
-                              .pipe(rename({ suffix: '.min' }));
+    var modules = gulp.src(path.join(config.build.modules.dir, '*.js'))
+                      .pipe(gulp.dest(config.dist.modules.dir))
+                      .pipe(uglify({ preserveComments: 'some' }))
+                      .pipe(rename({ suffix: '.min' }))
+                      .pipe(gulp.dest(config.dist.modules.dir));
 
-    merge(
-      merge(main, minifiedMain).pipe(gulp.dest(config.dist.dir)),
-      merge(modules, minifiedModules).pipe(gulp.dest(config.dist.modules.dir))
-    );
+    merge(main, modules);
 
     callback();
   });

@@ -1,5 +1,5 @@
 /*!
- * Inheritance.js (0.3.2)
+ * Inheritance.js (0.4.0)
  *
  * Copyright (c) 2015 Brandon Sara (http://bsara.github.io)
  * Licensed under the CPOL-1.02 (https://github.com/bsara/inheritance.js/blob/master/LICENSE.md)
@@ -20,10 +20,10 @@
  *                                        NOTE: `undefined` and `null` are both VALID values for
  *                                        this parameter. If `obj` is `undefined` or `null`, then
  *                                        a new object will be created from the `mixins` given.
- * @param {Array<Object>|Object} mixins - An array of objects whose attributes should be deep
+ * @param {Array<Object>|Object} mixins - An array of objects whose properties should be deep
  *                                        mixed into the given `obj`.
  *                                        NOTE: The order of objects in this array does matter!
- *                                        If there are attributes present in multiple mixin
+ *                                        If there are properties present in multiple mixin
  *                                        objects, then the mixin with the largest index value
  *                                        overwrite any values set by the lower index valued
  *                                        mixin objects.
@@ -44,27 +44,27 @@ function mixDeep(obj, mixins) {
       continue;
     }
 
-    for (var attrName in mixin) {
-      if (!mixin.hasOwnProperty(attrName)) {
+    for (var propName in mixin) {
+      if (!mixin.hasOwnProperty(propName)) {
         continue;
       }
 
-      if (typeof mixin[attrName] === 'object') {
-        mixDeep(newObj[attrName], mixin[attrName]);
+      if (typeof mixin[propName] === 'object') {
+        mixDeep(newObj[propName], mixin[propName]);
         continue;
       }
 
-      newObj[attrName] = mixin[attrName];
+      newObj[propName] = mixin[propName];
     }
   }
 
   return newObj;
 }/**
- * Creates a new object definition based upon the given `childDef` attributes that
+ * Creates a new object definition based upon the given `childDef` properties that
  * inherits the given `parent`.
  *
  * @param {Object} parent     - The object to be inherited.
- * @param {Object} [childDef] - An object containing all attributes to be used in creating
+ * @param {Object} [childDef] - An object containing all properties to be used in creating
  *                              the new object definition that will inherit the given
  *                              `parent` object. If this parameter is `undefined` or
  *                              `null`, then a new child object definition is created.
@@ -75,7 +75,7 @@ function mixDeep(obj, mixins) {
  * @requires mixDeep
  */
 function inheritance(parent, childDef) {
-  var attrName;
+  var propName;
 
   parent   = (parent || Object);
   childDef = (childDef || {});
@@ -83,11 +83,11 @@ function inheritance(parent, childDef) {
   var child = (childDef.ctor || function() { return this.super.apply(this, arguments); });
 
 
-  for (attrName in parent) {
-    if (attrName === 'extend') {
+  for (propName in parent) {
+    if (propName === 'extend') {
       continue;
     }
-    child[attrName] = parent[attrName];
+    child[propName] = parent[propName];
   }
 
   child.__super__ = parent.prototype;
@@ -101,10 +101,27 @@ function inheritance(parent, childDef) {
   }
 
 
-  var staticAttrs = childDef.static;
-  if (typeof staticAttrs !== 'undefined' && staticAttrs !== null) {
-    for (attrName in staticAttrs) {
-      child[attrName] = staticAttrs[attrName];
+  var staticProps = childDef.static;
+  if (typeof staticProps !== 'undefined' && staticProps !== null) {
+    for (propName in staticProps) {
+      if (propName === 'consts') {
+        continue;
+      }
+
+      child[propName] = staticProps[propName];
+    }
+
+
+    var staticConstProps = staticProps.consts;
+    if (typeof staticConstProps !== 'undefined' && staticConstProps !== null) {
+      for (propName in staticConstProps) {
+        Object.defineProperty(child, propName, {
+          value:        staticConstProps[propName],
+          configurable: false,
+          enumerable:   true,
+          writable:     false
+        });
+      }
     }
   }
 
@@ -133,30 +150,62 @@ function inheritance(parent, childDef) {
 
   child.prototype._super = {};
 
-  for (attrName in parent.prototype) {
-    child.prototype._super[attrName] = function() {
-      return this.objDef.__super__[attrName].apply(this, arguments);
+  for (propName in parent.prototype) {
+    child.prototype._super[propName] = function() {
+      return this.objDef.__super__[propName].apply(this, arguments);
     };
   }
 
-  for (attrName in childDef) {
-    if (attrName === 'constructor'
-        || attrName === 'ctor'
-        || attrName === 'objDef'
-        || attrName === 'mixins'
-        || attrName === 'static'
-        || attrName === 'super'
-        || attrName === '_super') {
+
+  var privateProps = childDef.private;
+  if (typeof privateProps !== 'undefined' && privateProps !== null) {
+    for (propName in privateProps) {
+      if (propName === 'static') {
+        continue;
+      }
+
+      Object.defineProperty(childDef.prototype, propName, {
+        value:        privateProps[propName],
+        configurable: true,
+        enumerable:   false,
+        writable:     true
+      });
+    }
+
+
+    var privateStaticProps = privateProps.static;
+    if (typeof privateStaticProps !== 'undefined' && privateStaticProps !== null) {
+      for (propName in privateStaticProps) {
+        Object.defineProperty(childDef, propName, {
+          value:        privateStaticProps[propName],
+          configurable: true,
+          enumerable:   false,
+          writable:     true
+        });
+      }
+    }
+  }
+
+
+  for (propName in childDef) {
+    if (propName === 'constructor'
+        || propName === 'ctor'
+        || propName === 'objDef'
+        || propName === 'mixins'
+        || propName === 'private'
+        || propName === 'static'
+        || propName === 'super'
+        || propName === '_super') {
       continue;
     }
-    child.prototype[attrName] = childDef[attrName];
+    child.prototype[propName] = childDef[propName];
   }
 
   return child;
 }/**
  * Makes an object inheritable by adding a function called `extend` as a "static"
- * attribute of the object. (I.E. Calling this function adding passing `Object` as a
- * parameter, creates `Object.extend`)
+ * property of the object. (I.E. Calling this function passing `MyObject` as a
+ * parameter, creates `MyObject.extend`)
  *
  * @param {Object}  obj         - The object to make inheritable.
  * @param {Boolean} [overwrite] - If `true`, then an existing `extend` property will be
@@ -182,10 +231,10 @@ function makeInheritable(obj, overwrite, ignoreOverwriteError) {
   }
 
   /**
-   * Creates a new object definition based upon the given `childDef` attributes and causes
+   * Creates a new object definition based upon the given `childDef` properties and causes
    * that new object definition to inherit this object.
    *
-   * @param {Object} childDef - An object containing all attributes to be used in creating
+   * @param {Object} childDef - An object containing all properties to be used in creating
    *                            the new object definition that will inherit this object.
    *                            If this parameter is `undefined` or `null`, then a new
    *                            child object definition is created.

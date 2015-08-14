@@ -8,10 +8,10 @@
  *                                        NOTE: `undefined` and `null` are both VALID values for
  *                                        this parameter. If `obj` is `undefined` or `null`, then
  *                                        a new object will be created from the `mixins` given.
- * @param {Array<Object>|Object} mixins - An array of objects whose attributes should be deep
+ * @param {Array<Object>|Object} mixins - An array of objects whose properties should be deep
  *                                        mixed into the given `obj`.
  *                                        NOTE: The order of objects in this array does matter!
- *                                        If there are attributes present in multiple mixin
+ *                                        If there are properties present in multiple mixin
  *                                        objects, then the mixin with the largest index value
  *                                        overwrite any values set by the lower index valued
  *                                        mixin objects.
@@ -32,17 +32,17 @@ function mixDeep(obj, mixins) {
       continue;
     }
 
-    for (var attrName in mixin) {
-      if (!mixin.hasOwnProperty(attrName)) {
+    for (var propName in mixin) {
+      if (!mixin.hasOwnProperty(propName)) {
         continue;
       }
 
-      if (typeof mixin[attrName] === 'object') {
-        mixDeep(newObj[attrName], mixin[attrName]);
+      if (typeof mixin[propName] === 'object') {
+        mixDeep(newObj[propName], mixin[propName]);
         continue;
       }
 
-      newObj[attrName] = mixin[attrName];
+      newObj[propName] = mixin[propName];
     }
   }
 

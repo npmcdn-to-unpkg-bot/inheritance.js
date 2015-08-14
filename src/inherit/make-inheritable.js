@@ -4,8 +4,8 @@
 
 /**
  * Makes an object inheritable by adding a function called `extend` as a "static"
- * attribute of the object. (I.E. Calling this function adding passing `Object` as a
- * parameter, creates `Object.extend`)
+ * property of the object. (I.E. Calling this function passing `MyObject` as a
+ * parameter, creates `MyObject.extend`)
  *
  * @param {Object}  obj         - The object to make inheritable.
  * @param {Boolean} [overwrite] - If `true`, then an existing `extend` property will be
@@ -31,10 +31,10 @@ function makeInheritable(obj, overwrite, ignoreOverwriteError) {
   }
 
   /**
-   * Creates a new object definition based upon the given `childDef` attributes and causes
+   * Creates a new object definition based upon the given `childDef` properties and causes
    * that new object definition to inherit this object.
    *
-   * @param {Object} childDef - An object containing all attributes to be used in creating
+   * @param {Object} childDef - An object containing all properties to be used in creating
    *                            the new object definition that will inherit this object.
    *                            If this parameter is `undefined` or `null`, then a new
    *                            child object definition is created.

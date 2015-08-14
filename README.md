@@ -34,7 +34,7 @@ were based largly off of their implementation of ["Extend"](http://youmightnotne
 - Helper functions for extending any object or object definition.
 - Helper functions for extending objects via mixins.
 - Adds ability to define object definition level (I.E. "static" or non-prototype)
-  attributes inline with prototype (I.E. "instance") variables; thus, increasing code
+  properties inline with prototype (I.E. "instance") variables; thus, increasing code
   organization
 - `extend` function added to default `Object` implementation and many more built-in JS
   objects. ([Full List of Extensible Built-in Objects](https://github.com/bsara/inheritance.js/wiki/Native-JS-Object-Changes))
@@ -60,8 +60,10 @@ were based largly off of their implementation of ["Extend"](http://youmightnotne
     - [Include as CommonJS Module](#include-as-commonjs-module)
 - [Functions](#functions)
     - [ObjectDefinition.create](#objectdefinitioncreateobjdef)
+    - [ObjectDefinition.createSealed](#objectdefinitioncreatesealedobjdef)
     - [inheritance](#inheritanceparent-childdef)
     - [makeInheritable](#makeinheritableobj-overwrite-ignoreoverwriteerror)
+    - [seal](#sealobj-overwrite-ignoreoverwriteerror)
     - [mix](#mixobj-mixins)
     - [mixDeep](#mixdeepobj-mixins)
     - [mixPrototype](#mixprototypeobj-mixins)
@@ -77,7 +79,7 @@ were based largly off of their implementation of ["Extend"](http://youmightnotne
 
 ## Code Samples
 
-- Create New Object Definition (I.E. "Class") [[JSbin](http://jsbin.com/wurure/edit?js,console)] [[JSFiddle](https://jsfiddle.net/bsara/ekwajv83/)]
+- Create New Object Definition (I.E. "Class") [[JSbin][cs-create-obj-def-jsbin]] [[JSFiddle][cs-create-obj-def-jsfiddle]]
 
 
 ---
@@ -132,7 +134,7 @@ var MyObj = I.ObjectDefinition.create(...);
 
 ## Functions
 
-### [ObjectDefinition.create(objDef)](https://github.com/bsara/inheritance.js/blob/master/src/object-definition.js)
+### [ObjectDefinition.create(objDef)](https://github.com/bsara/inheritance.js/blob/master/src/object-definition.js#L8)
 
 Creates a new object (I.E. "class") that can be inherited.
 **NOTE:** The new object inherits the native JavaScript `Object`.
@@ -149,6 +151,30 @@ Creates a new object (I.E. "class") that can be inherited.
 
 #### Usage
 
+- [JSbin][cs-create-obj-def-jsbin]
+- [JSFiddle][cs-create-obj-def-jsfiddle]
+
+
+---
+
+
+### [ObjectDefinition.createSealed(objDef)](https://github.com/bsara/inheritance.js/blob/master/src/object-definition.jsL21)
+
+Creates a new object (I.E. "class") that CANNOT be inherited.
+**NOTE:** The new object inherits the native JavaScript `Object`.
+
+#### Parameters
+
+| Name      | Type   | Description                 |
+|-----------|--------|-----------------------------|
+| `objDef`  | Object | **TODO**                    |
+
+#### Returns
+
+- `Object` - The newly created, non-inheritable, object that inherits `Object`.
+
+#### Usage
+
 **TODO**
 
 
@@ -157,7 +183,7 @@ Creates a new object (I.E. "class") that can be inherited.
 
 ### [inheritance(parent, childDef)](https://github.com/bsara/inheritance.js/blob/master/src/inherit/inheritance.js)
 
-Creates a new object definition based upon the given `childDef` attributes that inherits
+Creates a new object definition based upon the given `childDef` properties that inherits
 the given `parent`.
 
 #### Parameters
@@ -165,7 +191,7 @@ the given `parent`.
 | Name      | Type   | Description                 |
 |-----------|--------|-----------------------------|
 | parent    | Object | The object to be inherited. |
-| *childDef | Object | An object containing all attributes to be used in creating the new object definition that will inherit the given `parent` object. If this parameter is`undefined` or `null`, then a new child object definition is created. **TODO: Add reference to the childDef spec** |
+| *childDef | Object | An object containing all properties to be used in creating the new object definition that will inherit the given `parent` object. If this parameter is`undefined` or `null`, then a new child object definition is created. **TODO: Add reference to the childDef spec** |
 
 #### Returns
 
@@ -181,14 +207,51 @@ the given `parent`.
 
 ### [makeInheritable(obj, overwrite, ignoreOverwriteError)](https://github.com/bsara/inheritance.js/blob/master/src/inherit/make-inheritable.js)
 
-Makes an object inheritable by adding a function called `extend` as a "static" attribute
-of the object. _(I.E. Calling this function adding passing `Object` as a parameter, creates `Object.extend`)_
+Makes an object inheritable by adding a function called `extend` as a "static" property
+of the object. _(I.E. Calling this function passing `MyObject` as a parameter, creates
+`MyObject.extend`)_
 
 #### Parameters
 
 | Name                  | Type    | Description                     |
 |-----------------------|---------|---------------------------------|
 | obj                   | Object  | The object to make inheritable. |
+| *overwrite            | Boolean | If `true`, then an existing `extend` property will be overwritten regardless of it's value. |
+| *ignoreOverwriteError | Boolean | If `true`, then no error will be thrown if `obj.extend` already exists and `overwrite` is not `true`. |
+
+#### Returns
+
+- `Object` - The modified `obj` given.
+
+#### Errors thrown
+
+- `TypeError` - If `obj` is `undefined` or `null`.
+- `TypeError` - If `obj.extend` already exists and `overwrite` is NOT equal `true`.
+
+#### Usage
+
+**TODO**
+
+
+---
+
+
+### [seal(obj, overwrite, ignoreOverwriteError)](https://github.com/bsara/inheritance.js/blob/master/src/inherit/seal.js)
+
+Makes an object sealed by adding a function called `extend` as a "static" property
+of the object that throws an error if it is ever called. Also adds a readonly
+"static" property named `sealed` to the object definition that is set to `true`,
+thus allowing for one to quickly determine whether or not an object's definition
+is sealed without catching the error thrown by it's `extend` function.
+_(I.E. Calling this function passing `MyObject` as a parameter, creates
+`MyObject.extend` and `MyObject.sealed`, where `MyObject.sealed` will always be
+`true`)_
+
+#### Parameters
+
+| Name                  | Type    | Description         |
+|-----------------------|---------|---------------------|
+| obj                   | Object  | The object to seal. |
 | *overwrite            | Boolean | If `true`, then an existing `extend` property will be overwritten regardless of it's value. |
 | *ignoreOverwriteError | Boolean | If `true`, then no error will be thrown if `obj.extend` already exists and `overwrite` is not `true`. |
 
@@ -218,7 +281,7 @@ of the object. _(I.E. Calling this function adding passing `Object` as a paramet
 | Name                  | Type          | Description                     |
 |-----------------------|---------------|---------------------------------|
 | obj                   | Object        | The object to mix into.<br/>**NOTE:** `undefined` and `null` are both VALID values for this parameter. If `obj` is `undefined` or `null`, then a new object will be created from the `mixins` given. |
-| mixins                | Array<Object> | An array of objects whose attributes should be mixed into the given `obj`.<br/>**NOTE:** The order of objects in this array does matter! If there are attributes present in multiple mixin objects, then the mixin with the largest index value overwrite any values set by the lower index valued mixin objects. |
+| mixins                | Array<Object> | An array of objects whose properties should be mixed into the given `obj`.<br/>**NOTE:** The order of objects in this array does matter! If there are properties present in multiple mixin objects, then the mixin with the largest index value overwrite any values set by the lower index valued mixin objects. |
 
 #### Returns
 
@@ -241,7 +304,7 @@ of the object. _(I.E. Calling this function adding passing `Object` as a paramet
 | Name                  | Type          | Description                     |
 |-----------------------|---------------|---------------------------------|
 | obj                   | Object        | The object to deep mix into.<br/>**NOTE:** `undefined` and `null` are both VALID values for this parameter. If `obj` is `undefined` or `null`, then a new object will be created from the `mixins` given. |
-| mixins                | Array<Object> | An array of objects whose attributes should be deep mixed into the given `obj`.<br/>**NOTE:** The order of objects in this array does matter! If there are attributes present in multiple mixin objects, then the mixin with the largest index value overwrite any values set by the lower index valued mixin objects. |
+| mixins                | Array<Object> | An array of objects whose properties should be deep mixed into the given `obj`.<br/>**NOTE:** The order of objects in this array does matter! If there are properties present in multiple mixin objects, then the mixin with the largest index value overwrite any values set by the lower index valued mixin objects. |
 
 #### Returns
 
@@ -264,7 +327,7 @@ of the object. _(I.E. Calling this function adding passing `Object` as a paramet
 | Name                  | Type          | Description                     |
 |-----------------------|---------------|---------------------------------|
 | obj                   | Object        | The object containing the prototype to mix into.<br/>**NOTE:** `undefined` and `null` are both VALID values for this parameter. If `obj` is `undefined` or `null`, then a new object will be created from the `mixins` given. |
-| mixins                | Array<Object> | An array of objects whose attributes should be mixed into the prototype of the given `obj`.<br/>**NOTE:** The order of objects in this array does matter! If there are attributes present in multiple mixin objects, then the mixin with the largest index value overwrite any values set by the lower index valued mixin objects. |
+| mixins                | Array<Object> | An array of objects whose properties should be mixed into the prototype of the given `obj`.<br/>**NOTE:** The order of objects in this array does matter! If there are properties present in multiple mixin objects, then the mixin with the largest index value overwrite any values set by the lower index valued mixin objects. |
 
 #### Returns
 
@@ -291,7 +354,7 @@ of the object. _(I.E. Calling this function adding passing `Object` as a paramet
 | Name                  | Type          | Description                     |
 |-----------------------|---------------|---------------------------------|
 | obj                   | Object        | The object containing the prototype to deep mix into.<br/>**NOTE:** `undefined` and `null` are both VALID values for this parameter. If `obj` is `undefined` or `null`, then a new object will be created from the `mixins` given. |
-| mixins                | Array<Object> | An array of objects whose attributes should be deep mixed into the prototype of the given `obj`.<br/>**NOTE:** The order of objects in this array does matter! If there are attributes present in multiple mixin objects, then the mixin with the largest index value overwrite any values set by the lower index valued mixin objects. |
+| mixins                | Array<Object> | An array of objects whose properties should be deep mixed into the prototype of the given `obj`.<br/>**NOTE:** The order of objects in this array does matter! If there are properties present in multiple mixin objects, then the mixin with the largest index value overwrite any values set by the lower index valued mixin objects. |
 
 #### Returns
 
@@ -313,7 +376,7 @@ of the object. _(I.E. Calling this function adding passing `Object` as a paramet
 
 ### [Object.extend(childDef)](https://github.com/bsara/inheritance.js/blob/master/src/inherit/make-inheritable.js#L46)
 
-Creates a new object definition based upon the given `childDef` attributes and causes that new object definition to inherit this object.
+Creates a new object definition based upon the given `childDef` properties and causes that new object definition to inherit this object.
 
 **NOTE:** For a list of all native JavaScript objects that have this function added to them, see [the wiki page](https://github.com/bsara/inheritance.js/wiki/Native-JS-Object-Changes).
 All of the other native JavaScript objects with this function work exactly as described here (I.E. this piece of documentation is not specific to `Object`).
@@ -322,7 +385,7 @@ All of the other native JavaScript objects with this function work exactly as de
 
 | Name      | Type   | Description                 |
 |-----------|--------|-----------------------------|
-| childDef  | Object | An object containing all attributes to be used in creating the new object definition that will inherit the `Object`. If this parameter is `undefined` or `null`, then a new child object definition is created. **TODO: Add reference to the childDef spec**  |
+| childDef  | Object | An object containing all properties to be used in creating the new object definition that will inherit the `Object`. If this parameter is `undefined` or `null`, then a new child object definition is created. **TODO: Add reference to the childDef spec**  |
 
 #### Returns
 
@@ -332,7 +395,7 @@ All of the other native JavaScript objects with this function work exactly as de
 
 ```javascript
 var ChildObject = Object.extend({
-  // Child Definition Attributes
+  // Child Definition Properties
 });
 ```
 
@@ -348,7 +411,7 @@ var ChildObject = Object.extend({
 
 | Name      | Type      | Description                 |
 |-----------|-----------|-----------------------------|
-| arguments | Object... | Mixin objects whose attributes should be mixed into the `Object`.<br/>**NOTE:** The order of objects passed as arguments does matter! If there are attributes present in multiple mixin objects, then the mixin with the largest index value overwrite any values set by the lower index valued mixin objects. |
+| arguments | Object... | Mixin objects whose properties should be mixed into the `Object`.<br/>**NOTE:** The order of objects passed as arguments does matter! If there are properties present in multiple mixin objects, then the mixin with the largest index value overwrite any values set by the lower index valued mixin objects. |
 
 #### Returns
 
@@ -464,7 +527,7 @@ newObj.mixin2Func() // Prints "mixin2Func"
 
 | Name      | Type      | Description                 |
 |-----------|-----------|-----------------------------|
-| arguments | Object... | Mixin objects whose attributes should be deep mixed into the `Object`.<br/>**NOTE:** The order of objects in this array does matter! If there are attributes present in multiple mixin objects, then the mixin with the largest index value overwrite any values set by the lower index valued mixin objects. |
+| arguments | Object... | Mixin objects whose properties should be deep mixed into the `Object`.<br/>**NOTE:** The order of objects in this array does matter! If there are properties present in multiple mixin objects, then the mixin with the largest index value overwrite any values set by the lower index valued mixin objects. |
 
 #### Returns
 
@@ -480,3 +543,9 @@ newObj.mixin2Func() // Prints "mixin2Func"
 # Contributing
 
 See [contribution documentation page](https://github.com/bsara/inheritance.js/blob/master/CONTRIBUTING.md) for details.
+
+
+
+
+[cs-create-obj-def-jsbin]: http://jsbin.com/wurure/edit?js,console "Create Object Definition Code Sample (JSBin)"
+[cs-create-obj-def-jsfiddle]: https://jsfiddle.net/bsara/ekwajv83/ "Create Object Definition Code Sample (JSFiddle"

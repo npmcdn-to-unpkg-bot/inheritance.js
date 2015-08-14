@@ -1,3 +1,13 @@
+## [v0.4.0](https://github.com/bsara/inheritance.js/tree/v0.3.2) (2015-08-14)
+
+* **[New Feature]** "Private" properties and "private" static properties (private is in quotes because the properties are not really private, however, they are not [enumerable](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperty#Enumerable_attribute) when added to the object's definition).
+* **[New Feature]** Static constant properties.
+* **[New Function]** `seal`
+* **[New Function]** `ObjectDefinition.createSealed`
+* **[Bug Fix]** Minified versions of library "modules" restored.
+* Minor code cleanup.
+
+
 ## [v0.3.2](https://github.com/bsara/inheritance.js/tree/v0.3.2) (2015-08-12)
 
 * **[Breaking Change]** Removed need to have `Object` modified to use `ObjectDefinition.create`. This means that `inheritance.noexts.js` no longer contains extensions to `Object`, which was the only native object extended in that file.
