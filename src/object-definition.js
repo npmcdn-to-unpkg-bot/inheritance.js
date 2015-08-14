@@ -27,7 +27,7 @@ var ObjectDefinition = {
    * @returns {Object} The newly created, non-inheritable, object that inherits `Object`.
    */
   createSealed: function(objDef) {
-    return seal(inheritance(Object, objDef));
+    return seal(inheritance(Object, objDef), true);
   }
 };
 
