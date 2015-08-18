@@ -60,62 +60,96 @@ function mixDeep(obj, mixins) {
 
   return newObj;
 }/**
- * Creates a new object definition based upon the given `childDef` properties that
- * inherits the given `parent`.
+ * Creates a new object definition based upon the given `objDefProps` that inherits the
+ * given `parent`.
  *
- * @param {Object} parent     - The object to be inherited.
- * @param {Object} [childDef] - An object containing all properties to be used in creating
- *                              the new object definition that will inherit the given
- *                              `parent` object. If this parameter is `undefined` or
- *                              `null`, then a new child object definition is created.
- *                              TODO: Add reference to the `childDef` spec
+ * @param {Object} parent        - The object to be inherited.
+ * @param {Object} [objDefProps] - An object containing all properties to be used in
+ *                                 creating the new object definition that will inherit
+ *                                 the given `parent` object. If this parameter is
+ *                                 `undefined` or `null`, then a new child object
+ *                                 definition is created.
+ *                                 TODO: Add reference to the `objDefProps` spec
  *
- * @returns {Object} An object created from the given `childDef` that inherits `parent`.
+ * @returns {Object} An object created from the given `objDefProps` that inherits
+ *                   `parent`.
  *
- * @requires mixDeep
+ * @requires makeInheritable, mixDeep
  */
-function inheritance(parent, childDef) {
-  var propName;
-
+function inheritance(parent, objDefProps) {
   parent   = (parent || Object);
-  childDef = (childDef || {});
+  objDefProps = (objDefProps || {});
 
-  var child = (childDef.ctor || function() { return this.super.apply(this, arguments); });
+  var propName;
+  var objDef;
+  var objCtor    = (objDefProps.ctor || function() { return objDef.__super__.constructor.apply(this, arguments); });
+  var objDefName = objDefProps.__defName;
 
+  if (typeof objDefName === 'string' && objDefName.trim()) {
+    objDefName = objDefName.trim();
+  } else if (objCtor.name) {
+    objDefName = objCtor.name;
+  } else {
+    objDefName = undefined;
+  }
 
-  for (propName in parent) {
-    if (propName === 'extend') {
-      continue;
+  delete objDefProps.__defName;  var ctorWrapper = function() {
+    if (typeof objDefName !== 'undefined') {
+      var tempSuperFuncs = {};
+
+      tempSuperFuncs.constructor = objDef.__super__.constructor.bind(this);
+      tempSuperFuncs.ctor        = tempSuperFuncs.constructor;
+
+      for (var propName in objDef.__super__) {
+        var superProp = objDef.__super__[propName];
+
+        if (propName !== 'constructor'
+              && propName !== 'ctor'
+              && typeof superProp === 'function') {
+          tempSuperFuncs[propName] = superProp.bind(this);
+        }
+      }
+
+      Object.defineProperty(this, (objDefName + 'Super'), {
+        value:        tempSuperFuncs,
+        configurable: false,
+        enumerable:   false,
+        writable:     false
+      });
     }
-    child[propName] = parent[propName];
-  }
 
-  child.__super__ = parent.prototype;
-
-  makeInheritable(child);
+    return objCtor.apply(this, arguments);
+  };  eval('objDef = function' + (objDefName ? (' ' + objDefName) : '') + '() { ctorWrapper.apply(this, arguments); };');  objDef.prototype = Object.create(parent.prototype);
 
 
-  var mixins = childDef.mixins;
+
+  makeInheritable(objDef);
+
+
+
+  var mixins = objDefProps.mixins;
   if (mixins !== null && mixins instanceof Array) {
-    mixDeep(childDef, mixins);
+    mixDeep(objDefProps, mixins);
   }
 
 
-  var staticProps = childDef.static;
+
+  var staticProps = objDefProps.static;
   if (typeof staticProps !== 'undefined' && staticProps !== null) {
     for (propName in staticProps) {
-      if (propName === 'consts') {
+      if (propName === 'consts'
+          || propName === 'super'
+          || propName === '__super__') {
         continue;
       }
 
-      child[propName] = staticProps[propName];
+      objDef[propName] = staticProps[propName];
     }
-
 
     var staticConstProps = staticProps.consts;
     if (typeof staticConstProps !== 'undefined' && staticConstProps !== null) {
       for (propName in staticConstProps) {
-        Object.defineProperty(child, propName, {
+        Object.defineProperty(objDef, propName, {
           value:        staticConstProps[propName],
           configurable: false,
           enumerable:   true,
@@ -125,46 +159,23 @@ function inheritance(parent, childDef) {
     }
   }
 
-
-  child.prototype        = Object.create(parent.prototype);
-  child.prototype.objDef = child;
-
-  child.prototype.constructor = function() {
-    if (!(this instanceof child)) {
-      return new child(arguments);
-    }
-
-    for (var funcName in this._super) {
-      if (funcName !== '_super') {
-        this._super[funcName] = this._super[funcName].bind(this);
-      }
-    }
-
-    child(arguments);
-  };
+  Object.defineProperty(objDef, '__super__', {
+    value:        parent.prototype,
+    configurable: false,
+    enumerable:   false,
+    writable:     false
+  });
 
 
-  child.prototype.super = function() {
-    this.objDef.__super__.constructor.apply(this, arguments);
-  };
 
-  child.prototype._super = {};
-
-  for (propName in parent.prototype) {
-    child.prototype._super[propName] = function() {
-      return this.objDef.__super__[propName].apply(this, arguments);
-    };
-  }
-
-
-  var privateProps = childDef.private;
+  var privateProps = objDefProps.private;
   if (typeof privateProps !== 'undefined' && privateProps !== null) {
     for (propName in privateProps) {
       if (propName === 'static') {
         continue;
       }
 
-      Object.defineProperty(child.prototype, propName, {
+      Object.defineProperty(objDef.prototype, propName, {
         value:        privateProps[propName],
         configurable: true,
         enumerable:   false,
@@ -176,7 +187,7 @@ function inheritance(parent, childDef) {
     var privateStaticProps = privateProps.static;
     if (typeof privateStaticProps !== 'undefined' && privateStaticProps !== null) {
       for (propName in privateStaticProps) {
-        Object.defineProperty(child, propName, {
+        Object.defineProperty(objDef, propName, {
           value:        privateStaticProps[propName],
           configurable: true,
           enumerable:   false,
@@ -187,21 +198,23 @@ function inheritance(parent, childDef) {
   }
 
 
-  for (propName in childDef) {
+
+  objDef.prototype.constructor = objDef;
+
+  for (propName in objDefProps) {
     if (propName === 'constructor'
         || propName === 'ctor'
-        || propName === 'objDef'
         || propName === 'mixins'
         || propName === 'private'
-        || propName === 'static'
-        || propName === 'super'
-        || propName === '_super') {
+        || propName === 'static') {
       continue;
     }
-    child.prototype[propName] = childDef[propName];
+    objDef.prototype[propName] = objDefProps[propName];
   }
 
-  return child;
+
+
+  return objDef;
 }
 
 return {

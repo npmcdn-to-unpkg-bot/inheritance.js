@@ -394,8 +394,8 @@ gulp.task('lint', [ 'jshint', 'jscs' ]);
 gulp.task('jshint', function() {
   return gulp.src(config.lint.selectors)
              .pipe(jshint())
-             .pipe(jshint.reporter(jshintStylishReporter))
-             .pipe(jshint.reporter('fail'));
+             .pipe(jshint.reporter(jshintStylishReporter, { verbose: true }))
+             .pipe(jshint.reporter('fail', { verbose: true }));
 });
 
 
