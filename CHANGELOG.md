@@ -1,4 +1,4 @@
-## [v0.4.0](https://github.com/bsara/inheritance.js/tree/v0.3.2) (2015-08-14)
+## [v0.4.0](https://github.com/bsara/inheritance.js/tree/v0.3.2) (2015-08-17)
 
 * **[New Feature]** "Private" properties and "private" static properties (private is in quotes because the properties are not really private, however, they are not [enumerable](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperty#Enumerable_attribute) when added to the object's definition).
 * **[New Feature]** Static constant properties.
