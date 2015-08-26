@@ -29,15 +29,22 @@ were based largly off of their implementation of ["Extend"](http://youmightnotne
 
 ## Features
 
-- Usable implementation of a `_super` prototype variable added to objects created with
-  `ObjectDefinition.create()`. **NO NEED TO USE `call` OR `apply`!**
-- Helper functions for extending any object or object definition.
-- Helper functions for extending objects via mixins.
-- Adds ability to define object definition level (I.E. "static" or non-prototype)
-  properties inline with prototype (I.E. "instance") variables; thus, increasing code
-  organization
-- `extend` function added to default `Object` implementation and many more built-in JS
-  objects. ([Full List of Extensible Built-in Objects](https://github.com/bsara/inheritance.js/wiki/Native-JS-Object-Changes))
+- Built with fully native, pure JavaScript! No extra libraries needed.
+- Make any object inheritable with one function call.
+- Make any object non-inheritable ("sealed") with one function call.
+- Easily create object definitions containing...
+    - mixins (deep)
+    - private properties
+    - static properties
+    - static constant properties
+    - private static properties
+- Object definition creation is made much more readable/maintainable.
+- Mix multiple objects into one. (Almost same as jQuery/underscore/lodash `extend`).
+- Optional extensions/inheritance for native JavaScript objects ([Full List of Native Object Extensions](https://github.com/bsara/inheritance.js/wiki/Native-JS-Object-Changes))
+- Support for...
+    - AMD
+    - CommonJS
+    - Global HTML script tag
 
 
 
@@ -55,13 +62,13 @@ were based largly off of their implementation of ["Extend"](http://youmightnotne
 
 - [Code Samples](#code-samples)
 - [Including the Library in your project](#including-the-library-in-your-project)
-    - [Include via HTML Script Tag](#include-via-html-script-tag)
     - [Include as ADM Module](#include-as-amd-module)
     - [Include as CommonJS Module](#include-as-commonjs-module)
+    - [Include via HTML Script Tag](#include-via-html-script-tag)
 - [Functions](#functions)
     - [ObjectDefinition.create](#objectdefinitioncreateobjdef)
     - [ObjectDefinition.createSealed](#objectdefinitioncreatesealedobjdef)
-    - [inheritance](#inheritanceparent-childdef)
+    - [inheritance](#inheritanceparent-objdefprops)
     - [makeInheritable](#makeinheritableobj-overwrite-ignoreoverwriteerror)
     - [seal](#sealobj-overwrite-ignoreoverwriteerror)
     - [mix](#mixobj-mixins)
@@ -69,7 +76,7 @@ were based largly off of their implementation of ["Extend"](http://youmightnotne
     - [mixPrototype](#mixprototypeobj-mixins)
     - [mixPrototypeDeep](#mixprototypedeepobj-mixins)
 - [Functions Added to `Object`](#functions-added-to-object)
-    - [Object.extend](#objectextendchilddef)
+    - [Object.extend](#objectextendobjdefprops)
     - [Object.prototype.mix](#objectprototypemix)
     - [Object.prototype.mixDeep](#objectprototypemixdeep)
 
@@ -88,21 +95,6 @@ were based largly off of their implementation of ["Extend"](http://youmightnotne
 ## Including the Library in your project
 
 > **Note:** If you don't want any native objects to be modified by this library, just use `inheritance.noexts.js` rather than `inheritance.js`.
-
-#### Include via HTML Script Tag
-
-```html
-<script type="text/javascript" src="inheritance.min.js" />
-<script type="text/javascript">
-  I.mix(...);
-
-  // Notice that `ObjectDefinition` belongs to the `window` object, not the `I` namespace.
-  var MyObj = ObjectDefinition.create(...);
-
-  ...
-</script>
-```
-
 
 #### Include as AMD Module
 
@@ -127,6 +119,21 @@ I.mix(...);
 var MyObj = I.ObjectDefinition.create(...);
 
 ...
+```
+
+
+#### Include via HTML Script Tag
+
+```html
+<script type="text/javascript" src="inheritance.min.js" />
+<script type="text/javascript">
+  I.mix(...);
+
+  // Notice that `ObjectDefinition` belongs to the `window` object, not the `I` namespace.
+  var MyObj = ObjectDefinition.create(...);
+
+  ...
+</script>
 ```
 
 
@@ -181,21 +188,21 @@ Creates a new object (I.E. "class") that CANNOT be inherited.
 ---
 
 
-### [inheritance(parent, childDef)](https://github.com/bsara/inheritance.js/blob/master/src/inherit/inheritance.js)
+### [inheritance(parent, objDefProps)](https://github.com/bsara/inheritance.js/blob/master/src/inherit/inheritance.js)
 
-Creates a new object definition based upon the given `childDef` properties that inherits
-the given `parent`.
+Creates a new object definition based upon the given `objDefProps` that inherits the
+given `parent`.
 
 #### Parameters
 
 | Name      | Type   | Description                 |
 |-----------|--------|-----------------------------|
 | parent    | Object | The object to be inherited. |
-| *childDef | Object | An object containing all properties to be used in creating the new object definition that will inherit the given `parent` object. If this parameter is`undefined` or `null`, then a new child object definition is created. **TODO: Add reference to the childDef spec** |
+| *objDefProps | Object | An object containing all properties to be used in creating the new object definition that will inherit the given `parent` object. If this parameter is`undefined` or `null`, then a new child object definition is created. **TODO: Add reference to the objDefProps spec** |
 
 #### Returns
 
-- `Object` - An object created from the given `childDef` that inherits `parent`.
+- `Object` - An object created from the given `objDefProps` that inherits `parent`.
 
 #### Usage
 
@@ -374,9 +381,9 @@ _(I.E. Calling this function passing `MyObject` as a parameter, creates
 
 ## Functions Added to `Object`
 
-### [Object.extend(childDef)](https://github.com/bsara/inheritance.js/blob/master/src/inherit/make-inheritable.js#L46)
+### [Object.extend(objDefProps)](https://github.com/bsara/inheritance.js/blob/master/src/inherit/make-inheritable.js#L46)
 
-Creates a new object definition based upon the given `childDef` properties and causes that new object definition to inherit this object.
+Creates a new object definition based upon the given `objDefProps` and causes that new object definition to inherit this object.
 
 **NOTE:** For a list of all native JavaScript objects that have this function added to them, see [the wiki page](https://github.com/bsara/inheritance.js/wiki/Native-JS-Object-Changes).
 All of the other native JavaScript objects with this function work exactly as described here (I.E. this piece of documentation is not specific to `Object`).
@@ -385,11 +392,11 @@ All of the other native JavaScript objects with this function work exactly as de
 
 | Name      | Type   | Description                 |
 |-----------|--------|-----------------------------|
-| childDef  | Object | An object containing all properties to be used in creating the new object definition that will inherit the `Object`. If this parameter is `undefined` or `null`, then a new child object definition is created. **TODO: Add reference to the childDef spec**  |
+| objDefProps  | Object | An object containing all properties to be used in creating the new object definition that will inherit the `Object`. If this parameter is `undefined` or `null`, then a new child object definition is created. **TODO: Add reference to the objDefProps spec**  |
 
 #### Returns
 
-- `Object` - An object created from the given `childDef` that inherits `Object`.
+- `Object` - An object created from the given `objDefProps` that inherits `Object`.
 
 #### Usage
 

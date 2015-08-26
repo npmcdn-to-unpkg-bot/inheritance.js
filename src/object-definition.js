@@ -12,6 +12,8 @@ var ObjectDefinition = {
    * @param {Object} objDef - TODO: Add description
    *
    * @returns {Object} The newly created, inheritable, object that inherits `Object`.
+   *
+   * @requires inheritance
    */
   create: function(objDef) {
     return inheritance(Object, objDef);
@@ -25,6 +27,8 @@ var ObjectDefinition = {
    * @param {Object} objDef - TODO: Add description
    *
    * @returns {Object} The newly created, non-inheritable, object that inherits `Object`.
+   *
+   * @requires seal
    */
   createSealed: function(objDef) {
     return seal(inheritance(Object, objDef), true);

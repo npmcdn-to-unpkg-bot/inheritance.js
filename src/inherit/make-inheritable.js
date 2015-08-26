@@ -31,22 +31,24 @@ function makeInheritable(obj, overwrite, ignoreOverwriteError) {
   }
 
   /**
-   * Creates a new object definition based upon the given `childDef` properties and causes
-   * that new object definition to inherit this object.
+   * Creates a new object definition based upon the given `objDefProps` properties and
+   * causes that new object definition to inherit this object.
    *
-   * @param {Object} childDef - An object containing all properties to be used in creating
-   *                            the new object definition that will inherit this object.
-   *                            If this parameter is `undefined` or `null`, then a new
-   *                            child object definition is created.
-   *                            TODO: Add reference to the `childDef` spec
+   * @param {Object} objDefProps - An object containing all properties to be used in
+   *                               creating the new object definition that will inherit
+   *                               this object. If this parameter is `undefined` or
+   *                               `null`, then a new child object definition is created.
+   *                               TODO: Add reference to the `objDefProps` spec
    *
-   * @returns {Object} An object created from the given `childDef` that inherits this
+   * @returns {Object} An object created from the given `objDefProps` that inherits this
    *                   object.
    *
    * @throws {TypeError} If the object's definition has been sealed. @see {@link https://github.com/bsara/inheritance.js/blob/master/src/inherit/seal.js}
+   *
+   * @requires inheritance
    */
   Object.defineProperty(obj, 'extend', {
-    value:        function(childDef) { return inheritance(obj, childDef); },
+    value:        function(objDefProps) { return inheritance(obj, objDefProps); },
     configurable: true,
     enumerable:   false,
     writable:     true

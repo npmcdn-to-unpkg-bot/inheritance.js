@@ -20,6 +20,16 @@
  * @requires makeInheritable, mixDeep
  */
 function inheritance(parent, objDefProps) {
+
+  var addOwnerIfFunction = function(obj, owner) {
+    if (typeof obj === 'function') {
+      obj.owner = owner;
+    }
+    return obj;
+  };
+
+
+
   parent   = (parent || Object);
   objDefProps = (objDefProps || {});
 
@@ -40,43 +50,22 @@ function inheritance(parent, objDefProps) {
 
 
 
-  /* jshint -W098 */
-  var ctorWrapper = function() {
-    if (typeof objDefName !== 'undefined') {
-      var tempSuperFuncs = {};
-
-      tempSuperFuncs.constructor = objDef.__super__.constructor.bind(this);
-      tempSuperFuncs.ctor        = tempSuperFuncs.constructor;
-
-      for (var propName in objDef.__super__) {
-        var superProp = objDef.__super__[propName];
-
-        if (propName !== 'constructor'
-              && propName !== 'ctor'
-              && typeof superProp === 'function') {
-          tempSuperFuncs[propName] = superProp.bind(this);
-        }
-      }
-
-      Object.defineProperty(this, (objDefName + 'Super'), {
-        value:        tempSuperFuncs,
-        configurable: false,
-        enumerable:   false,
-        writable:     false
-      });
-    }
-
-    return objCtor.apply(this, arguments);
-  };
-  /* jshint +W098 */
-
   /* jshint -W061 */
-  eval('objDef = function' + (objDefName ? (' ' + objDefName) : '') + '() { ctorWrapper.apply(this, arguments); };');
+  eval('objDef = function' + (objDefName ? (' ' + objDefName) : '') + '() { return objCtor.apply(this, arguments); };');
   /* jshint +W061 */
 
-
-
   objDef.prototype = Object.create(parent.prototype);
+
+
+
+  addOwnerIfFunction(objCtor, objDef.prototype);
+
+  Object.defineProperty(objDef.prototype, '__ctor__', {
+    value:        objCtor,
+    configurable: false,
+    enumerable:   false,
+    writable:     false
+  });
 
 
 
@@ -85,6 +74,7 @@ function inheritance(parent, objDefProps) {
 
 
   var mixins = objDefProps.mixins;
+
   if (mixins !== null && mixins instanceof Array) {
     mixDeep(objDefProps, mixins);
   }
@@ -92,18 +82,20 @@ function inheritance(parent, objDefProps) {
 
 
   var staticProps = objDefProps.static;
+
   if (typeof staticProps !== 'undefined' && staticProps !== null) {
     for (propName in staticProps) {
       if (propName === 'consts'
-          || propName === 'super'
           || propName === '__super__') {
         continue;
       }
 
-      objDef[propName] = staticProps[propName];
+      objDef[propName] = addOwnerIfFunction(staticProps[propName], objDef);
     }
 
+
     var staticConstProps = staticProps.consts;
+
     if (typeof staticConstProps !== 'undefined' && staticConstProps !== null) {
       for (propName in staticConstProps) {
         Object.defineProperty(objDef, propName, {
@@ -126,14 +118,19 @@ function inheritance(parent, objDefProps) {
 
 
   var privateProps = objDefProps.private;
+
   if (typeof privateProps !== 'undefined' && privateProps !== null) {
     for (propName in privateProps) {
-      if (propName === 'static') {
+      if (propName === 'constructor'
+          || propName === 'ctor'
+          || propName === 'static'
+          || propName === '_super'
+          || propName === '__ctor__') {
         continue;
       }
 
       Object.defineProperty(objDef.prototype, propName, {
-        value:        privateProps[propName],
+        value:        addOwnerIfFunction(privateProps[propName], objDef.prototype),
         configurable: true,
         enumerable:   false,
         writable:     true
@@ -145,7 +142,7 @@ function inheritance(parent, objDefProps) {
     if (typeof privateStaticProps !== 'undefined' && privateStaticProps !== null) {
       for (propName in privateStaticProps) {
         Object.defineProperty(objDef, propName, {
-          value:        privateStaticProps[propName],
+          value:        addOwnerIfFunction(privateStaticProps[propName], objDef),
           configurable: true,
           enumerable:   false,
           writable:     true
@@ -155,18 +152,75 @@ function inheritance(parent, objDefProps) {
   }
 
 
+  Object.defineProperty(objDef.prototype, '_super', {
+    configurable: false,
+    enumerable:   false,
+    writable:     false,
+    value: function() {
+      var caller = arguments.callee.caller;
 
-  objDef.prototype.constructor = objDef;
+      if (!caller) {
+        return;
+      }
+
+      var callerOwner = caller.owner;
+      var superType   = callerOwner.constructor.__super__;
+
+      if (!superType) {
+        return;
+      }
+
+
+      if (caller === callerOwner.constructor || caller === callerOwner.__ctor__) {
+        return superType.constructor.apply(this, arguments);
+      }
+
+
+      var callerName = caller.name;
+
+      if (!callerName) {
+        var propNames = Object.getOwnPropertyNames(callerOwner);
+
+        for (var i = 0; i < propNames.length; i++) {
+          var propName = propNames[i];
+
+          if (callerOwner[propName] === caller) {
+            callerName = propName;
+            break;
+          }
+        }
+      }
+
+      if (!callerName) {
+        return;
+      }
+
+
+      var superFunc = superType[callerName];
+
+      if (typeof superFunc !== 'function' || superFunc === null) {
+        return;
+      }
+
+      return superFunc.apply(this, arguments);
+    }
+  });
+
+
+
+  objDef.prototype.constructor = addOwnerIfFunction(objDef, objDef.prototype);
 
   for (propName in objDefProps) {
     if (propName === 'constructor'
         || propName === 'ctor'
         || propName === 'mixins'
         || propName === 'private'
-        || propName === 'static') {
+        || propName === 'static'
+        || propName === '_super'
+        || propName === '__ctor__') {
       continue;
     }
-    objDef.prototype[propName] = objDefProps[propName];
+    objDef.prototype[propName] = addOwnerIfFunction(objDefProps[propName], objDef.prototype);
   }
 
 

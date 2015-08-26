@@ -1,9 +1,12 @@
-## [v0.4.0](https://github.com/bsara/inheritance.js/tree/v0.3.2) (2015-08-17)
+## [v0.4.0](https://github.com/bsara/inheritance.js/tree/v0.4.0) (2015-08-25) **[Breaking Changes]**
+
+> __WARNING:__ This release will break previous versions where `super` and `_super` is used to call parent functions
 
 * **[New Feature]** "Private" properties and "private" static properties (private is in quotes because the properties are not really private, however, they are not [enumerable](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Object/defineProperty#Enumerable_attribute) when added to the object's definition).
 * **[New Feature]** Static constant properties.
 * **[New Function]** `seal`
 * **[New Function]** `ObjectDefinition.createSealed`
+* **[Bug Fix]** Fixed infinite recursive function calls when using `super` and `_super` functions. Now, calling `this._super` will call the super version of the function where `this._super` is called. (I really tried to get around this so that super functions can be called from any function in an object definition...but the solution was quite terrible. I'm always open to help if anyone is willing to offer it!)
 * **[Bug Fix]** Minified versions of library "modules" restored.
 * Minor code cleanup.
 

@@ -13,6 +13,8 @@
  *                                mixin objects.
  *
  * @returns {Object} This object, mixed with the given mixin objects.
+ *
+ * @requires mix
  */
 Object.defineProperty(Object.prototype, 'mix', {
   value:        function() { return mix(this, arguments); },
@@ -34,6 +36,8 @@ Object.defineProperty(Object.prototype, 'mix', {
  *                                mixin objects.
  *
  * @returns {Object} This object, deep mixed with the given mixin objects.
+ *
+ * @requires mixDeep
  */
 Object.defineProperty(Object.prototype, 'mixDeep', {
   value:        function() { return mixDeep(this, arguments); },
