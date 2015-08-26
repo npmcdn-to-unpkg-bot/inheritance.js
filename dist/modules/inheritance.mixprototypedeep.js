@@ -92,7 +92,6 @@ function mixPrototypeDeep(obj, mixins) {
   return obj;
 }
 
-return 
 return {
   mixDeep:      mixDeep,
   mixPrototype: mixPrototypeDeep

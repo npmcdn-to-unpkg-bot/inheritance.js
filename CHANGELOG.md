@@ -1,6 +1,7 @@
 ## [v0.4.1](https://github.com/bsara/inheritance.js/tree/v0.4.1) (2015-08-26)
 
 * **[Bug Fix]** Fixed reference to `mixDeep` in `inheritance.mixprototypedeep.js`.
+* **[Bug Fix]** Fixed return statements in `inheritance.mixprototype.js` and `inheritance.mixprototypedeep.js`.
 
 
 ## [v0.4.0](https://github.com/bsara/inheritance.js/tree/v0.4.0) (2015-08-25) **[Breaking Changes]**

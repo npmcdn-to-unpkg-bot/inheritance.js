@@ -280,11 +280,10 @@ gulp.task('build:modules', function() {
                          .pipe(wrapUMD({
                            deps:      config.umd.deps,
                            namespace: config.umd.namespace,
-                           exports: '\n'
-                                    + 'return {\n'
-                                    + '  mix:          mix,\n'
-                                    + '  mixPrototype: mixPrototype\n'
-                                    + '};'
+                           exports: '{\n'
+                                  + '  mix:          mix,\n'
+                                  + '  mixPrototype: mixPrototype\n'
+                                  + '};'
                          }));
 
   var mixPrototypeDeep = gulp.src([
@@ -295,11 +294,10 @@ gulp.task('build:modules', function() {
                              .pipe(wrapUMD({
                                deps:      config.umd.deps,
                                namespace: config.umd.namespace,
-                               exports: '\n'
-                                        + 'return {\n'
-                                        + '  mixDeep:      mixDeep,\n'
-                                        + '  mixPrototype: mixPrototypeDeep\n'
-                                        + '};'
+                               exports: '{\n'
+                                      + '  mixDeep:      mixDeep,\n'
+                                      + '  mixPrototype: mixPrototypeDeep\n'
+                                      + '};'
                              }));
 
   return merge(objectDef, inheritance, makeInheritable, seal, mix, mixDeep, mixPrototype, mixPrototypeDeep)

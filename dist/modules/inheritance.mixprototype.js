@@ -85,7 +85,6 @@ function mixPrototype(obj, mixins) {
   return obj;
 }
 
-return 
 return {
   mix:          mix,
   mixPrototype: mixPrototype
