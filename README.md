@@ -144,7 +144,8 @@ var MyObj = I.ObjectDefinition.create(...);
 ### [ObjectDefinition.create(objDef)](https://github.com/bsara/inheritance.js/blob/master/src/object-definition.js#L8)
 
 Creates a new object (I.E. "class") that can be inherited.
-**NOTE:** The new object inherits the native JavaScript `Object`.
+
+> **NOTE:** The new object inherits the native JavaScript `Object`.
 
 #### Parameters
 
@@ -168,7 +169,8 @@ Creates a new object (I.E. "class") that can be inherited.
 ### [ObjectDefinition.createSealed(objDef)](https://github.com/bsara/inheritance.js/blob/master/src/object-definition.js#L21)
 
 Creates a new object (I.E. "class") that CANNOT be inherited.
-**NOTE:** The new object inherits the native JavaScript `Object`.
+
+> **NOTE:** The new object inherits the native JavaScript `Object`.
 
 #### Parameters
 
@@ -385,7 +387,7 @@ _(I.E. Calling this function passing `MyObject` as a parameter, creates
 
 Creates a new object definition based upon the given `objDefProps` and causes that new object definition to inherit this object.
 
-**NOTE:** For a list of all native JavaScript objects that have this function added to them, see [the wiki page](https://github.com/bsara/inheritance.js/wiki/Native-JS-Object-Changes).
+> **NOTE:** For a list of all native JavaScript objects that have this function added to them, see [the wiki page](https://github.com/bsara/inheritance.js/wiki/Native-JS-Object-Changes).
 All of the other native JavaScript objects with this function work exactly as described here (I.E. this piece of documentation is not specific to `Object`).
 
 #### Parameters
