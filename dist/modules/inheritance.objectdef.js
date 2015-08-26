@@ -1,5 +1,5 @@
 /*!
- * Inheritance.js (0.4.0)
+ * Inheritance.js (0.4.1)
  *
  * Copyright (c) 2015 Brandon Sara (http://bsara.github.io)
  * Licensed under the CPOL-1.02 (https://github.com/bsara/inheritance.js/blob/master/LICENSE.md)
@@ -455,11 +455,11 @@ var ObjectDefinition = {
 seal(ObjectDefinition, true);
 
 return {
-  mix: mix,
-  mixDeep: mixDeep,
-  inheritance: inheritance,
-  makeInheritable: makeInheritable,
-  seal: seal,
+  mix:              mix,
+  mixDeep:          mixDeep,
+  inheritance:      inheritance,
+  makeInheritable:  makeInheritable,
+  seal:             seal,
   ObjectDefinition: ObjectDefinition
 };
 

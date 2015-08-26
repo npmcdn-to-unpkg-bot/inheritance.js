@@ -146,13 +146,13 @@ gulp.task('build', [ 'build:modules' ], function() {
                   namespace:            config.umd.namespace,
                   globalExportTemplate: config.umd.globalExportTemplateObjectDef,
                   exports: '{\n'
-                         + '  mix: mix,\n'
-                         + '  mixDeep: mixDeep,\n'
-                         + '  mixPrototype: mixPrototype,\n'
+                         + '  mix:              mix,\n'
+                         + '  mixDeep:          mixDeep,\n'
+                         + '  mixPrototype:     mixPrototype,\n'
                          + '  mixPrototypeDeep: mixPrototypeDeep,\n'
-                         + '  inheritance: inheritance,\n'
-                         + '  makeInheritable: makeInheritable,\n'
-                         + '  seal: seal,\n'
+                         + '  inheritance:      inheritance,\n'
+                         + '  makeInheritable:  makeInheritable,\n'
+                         + '  seal:             seal,\n'
                          + '  ObjectDefinition: ObjectDefinition\n'
                          + '}'
                 }));
@@ -173,13 +173,13 @@ gulp.task('build', [ 'build:modules' ], function() {
                      namespace:            config.umd.namespace,
                      globalExportTemplate: config.umd.globalExportTemplateObjectDef,
                      exports: '{\n'
-                            + '  mix: mix,\n'
-                            + '  mixDeep: mixDeep,\n'
-                            + '  mixPrototype: mixPrototype,\n'
+                            + '  mix:              mix,\n'
+                            + '  mixDeep:          mixDeep,\n'
+                            + '  mixPrototype:     mixPrototype,\n'
                             + '  mixPrototypeDeep: mixPrototypeDeep,\n'
-                            + '  inheritance: inheritance,\n'
-                            + '  makeInheritable: makeInheritable,\n'
-                            + '  seal: seal,\n'
+                            + '  inheritance:      inheritance,\n'
+                            + '  makeInheritable:  makeInheritable,\n'
+                            + '  seal:             seal,\n'
                             + '  ObjectDefinition: ObjectDefinition\n'
                             + '}'
                    }));
@@ -207,11 +207,11 @@ gulp.task('build:modules', function() {
                         namespace:            config.umd.namespace,
                         globalExportTemplate: 'root.I = {};\n    <%= _default %>',
                         exports: '{\n'
-                               + '  mix: mix,\n'
-                               + '  mixDeep: mixDeep,\n'
-                               + '  inheritance: inheritance,\n'
-                               + '  makeInheritable: makeInheritable,\n'
-                               + '  seal: seal,\n'
+                               + '  mix:              mix,\n'
+                               + '  mixDeep:          mixDeep,\n'
+                               + '  inheritance:      inheritance,\n'
+                               + '  makeInheritable:  makeInheritable,\n'
+                               + '  seal:             seal,\n'
                                + '  ObjectDefinition: ObjectDefinition\n'
                                + '}'
                       }));
@@ -225,7 +225,7 @@ gulp.task('build:modules', function() {
                           deps:      config.umd.deps,
                           namespace: config.umd.namespace,
                           exports: '{\n'
-                                 + '  mixDeep: mixDeep,\n'
+                                 + '  mixDeep:     mixDeep,\n'
                                  + '  inheritance: inheritance\n'
                                  + '}'
                         }));
@@ -240,8 +240,8 @@ gulp.task('build:modules', function() {
                               deps:      config.umd.deps,
                               namespace: config.umd.namespace,
                               exports: '{\n'
-                                     + '  mixDeep: mixDeep,\n'
-                                     + '  inheritance: inheritance,\n'
+                                     + '  mixDeep:         mixDeep,\n'
+                                     + '  inheritance:     inheritance,\n'
                                      + '  makeInheritable: makeInheritable\n'
                                      + '}'
                             }));
@@ -282,7 +282,7 @@ gulp.task('build:modules', function() {
                            namespace: config.umd.namespace,
                            exports: '\n'
                                     + 'return {\n'
-                                    + '  mix: mix,\n'
+                                    + '  mix:          mix,\n'
                                     + '  mixPrototype: mixPrototype\n'
                                     + '};'
                          }));
@@ -297,7 +297,7 @@ gulp.task('build:modules', function() {
                                namespace: config.umd.namespace,
                                exports: '\n'
                                         + 'return {\n'
-                                        + '  mix: mixDeep,\n'
+                                        + '  mixDeep:      mixDeep,\n'
                                         + '  mixPrototype: mixPrototypeDeep\n'
                                         + '};'
                              }));

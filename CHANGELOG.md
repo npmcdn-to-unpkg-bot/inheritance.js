@@ -1,3 +1,8 @@
+## [v0.4.1](https://github.com/bsara/inheritance.js/tree/v0.4.1) (2015-08-26)
+
+* **[Bug Fix]** Fixed reference to `mixDeep` in `inheritance.mixprototypedeep.js`.
+
+
 ## [v0.4.0](https://github.com/bsara/inheritance.js/tree/v0.4.0) (2015-08-25) **[Breaking Changes]**
 
 > __WARNING:__ This release will break previous versions where `super` and `_super` is used to call parent functions
