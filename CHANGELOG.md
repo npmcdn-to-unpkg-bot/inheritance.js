@@ -1,6 +1,10 @@
 ## [v0.4.2](https://github.com/bsara/inheritance.js/tree/v0.4.2) (2015-08-26)
 
 * **[Bug Fix]** `Object.mix` and `Object.mixDeep` weren't passing mixins to `mix` and `mixDeep` as an array.
+
+
+## [v0.4.1](https://github.com/bsara/inheritance.js/tree/v0.4.1) (2015-08-26)
+
 * **[Bug Fix]** Fixed reference to `mixDeep` in `inheritance.mixprototypedeep.js`.
 * **[Bug Fix]** Fixed return statements in `inheritance.mixprototype.js` and `inheritance.mixprototypedeep.js`.
 
