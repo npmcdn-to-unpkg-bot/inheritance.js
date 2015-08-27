@@ -17,7 +17,7 @@
  * @requires mix
  */
 Object.defineProperty(Object.prototype, 'mix', {
-  value:        function() { return mix(this, arguments); },
+  value:        function() { return mix(this, Array.prototype.slice.call(arguments)); },
   configurable: true,
   enumerable:   false,
   writable:     true
@@ -40,7 +40,7 @@ Object.defineProperty(Object.prototype, 'mix', {
  * @requires mixDeep
  */
 Object.defineProperty(Object.prototype, 'mixDeep', {
-  value:        function() { return mixDeep(this, arguments); },
+  value:        function() { return mixDeep(this, Array.prototype.slice.call(arguments)); },
   configurable: true,
   enumerable:   false,
   writable:     true
