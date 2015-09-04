@@ -1,6 +1,6 @@
 ## [v0.4.3](https://github.com/bsara/inheritance.js/tree/v0.4.3) (2015-09-04)
 
-* **[New Feature]** Plain objects (JSON formatted objects that don't contain a prototype) are now deep mixed when extending, rather than a full replacement of the parent object object.
+* **[New Feature]** Plain objects (JSON formatted objects that don't contain a prototype) are now deep mixed when extending, rather than a full replacement of the parent's object.
 * Major code cleanup in `src/inherit/inheritance.js`.
 
 
