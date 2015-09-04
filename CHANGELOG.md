@@ -1,3 +1,9 @@
+## [v0.4.3](https://github.com/bsara/inheritance.js/tree/v0.4.3) (2015-09-04)
+
+* **[New Feature]** Plain objects (JSON formatted objects that don't contain a prototype) are now deep mixed when extending, rather than a full replacement of the parent object object.
+* Major code cleanup in `src/inherit/inheritance.js`.
+
+
 ## [v0.4.2](https://github.com/bsara/inheritance.js/tree/v0.4.2) (2015-08-26)
 
 * **[Bug Fix]** `Object.mix` and `Object.mixDeep` weren't passing mixins to `mix` and `mixDeep` as an array.

@@ -1,5 +1,5 @@
 /*!
- * Inheritance.js (0.4.2)
+ * Inheritance.js (0.4.3)
  *
  * Copyright (c) 2015 Brandon Sara (http://bsara.github.io)
  * Licensed under the CPOL-1.02 (https://github.com/bsara/inheritance.js/blob/master/LICENSE.md)
@@ -117,20 +117,9 @@ function mixDeep(obj, mixins) {
  * @requires makeInheritable, mixDeep
  */
 function inheritance(parent, objDefProps) {
-
-  var addOwnerIfFunction = function(obj, owner) {
-    if (typeof obj === 'function') {
-      obj.owner = owner;
-    }
-    return obj;
-  };
-
-
-
-  parent   = (parent || Object);
+  parent      = (parent || Object);
   objDefProps = (objDefProps || {});
 
-  var propName;
   var objDef;
   var objCtor    = (objDefProps.ctor || function() { return objDef.__super__.constructor.apply(this, arguments); });
   var objDefName = objDefProps.__defName;
@@ -146,8 +135,7 @@ function inheritance(parent, objDefProps) {
   delete objDefProps.__defName;  eval('objDef = function' + (objDefName ? (' ' + objDefName) : '') + '() { return objCtor.apply(this, arguments); };');  objDef.prototype = Object.create(parent.prototype);
 
 
-
-  addOwnerIfFunction(objCtor, objDef.prototype);
+  _addOwnerIfFunction(objDef.prototype, objCtor);
 
   Object.defineProperty(objDef.prototype, '__ctor__', {
     value:        objCtor,
@@ -157,45 +145,15 @@ function inheritance(parent, objDefProps) {
   });
 
 
-
   makeInheritable(objDef);
 
 
+  _setupMixins(objDefProps);
+  _setupStaticProperties(objDef, objDefProps);
+  _setupPrivateProperties(objDef, objDefProps);
+  _setupSuperFunction(objDef);
+  _setupPublicProperties(objDef, objDefProps);
 
-  var mixins = objDefProps.mixins;
-
-  if (mixins !== null && mixins instanceof Array) {
-    mixDeep(objDefProps, mixins);
-  }
-
-
-
-  var staticProps = objDefProps.static;
-
-  if (typeof staticProps !== 'undefined' && staticProps !== null) {
-    for (propName in staticProps) {
-      if (propName === 'consts'
-          || propName === '__super__') {
-        continue;
-      }
-
-      objDef[propName] = addOwnerIfFunction(staticProps[propName], objDef);
-    }
-
-
-    var staticConstProps = staticProps.consts;
-
-    if (typeof staticConstProps !== 'undefined' && staticConstProps !== null) {
-      for (propName in staticConstProps) {
-        Object.defineProperty(objDef, propName, {
-          value:        staticConstProps[propName],
-          configurable: false,
-          enumerable:   true,
-          writable:     false
-        });
-      }
-    }
-  }
 
   Object.defineProperty(objDef, '__super__', {
     value:        parent.prototype,
@@ -205,8 +163,75 @@ function inheritance(parent, objDefProps) {
   });
 
 
+  return objDef;
+}
 
-  var privateProps = objDefProps.private;
+
+
+function _addOwnerIfFunction(owner, obj) {
+  if (typeof obj === 'function') {
+    obj.owner = owner;
+  }
+  return obj;
+}
+
+
+function _updatePrototypeWithMixDeep(prototype, props, propName) {
+  if (typeof props[propName] === 'object'
+      && typeof props[propName] === typeof prototype[propName]
+      && typeof props[propName].prototype === 'undefined'
+      && typeof prototype[propName].prototype === 'undefined') {
+    mixDeep(prototype[propName], props[propName]);
+    return;
+  }
+
+  prototype[propName] = _addOwnerIfFunction(prototype, props[propName]);
+}
+
+
+function _setupMixins(props) {
+  var mixins = props.mixins;
+
+  if (mixins !== null && mixins instanceof Array) {
+    mixDeep(props, mixins);
+  }
+}
+
+
+function _setupStaticProperties(def, props) {
+  var propName;
+  var staticProps = props.static;
+
+  if (typeof staticProps !== 'undefined' && staticProps !== null) {
+    for (propName in staticProps) {
+      if (propName === 'consts'
+          || propName === '__super__') {
+        continue;
+      }
+
+      def[propName] = _addOwnerIfFunction(def, staticProps[propName]);
+    }
+
+
+    var staticConstProps = staticProps.consts;
+
+    if (typeof staticConstProps !== 'undefined' && staticConstProps !== null) {
+      for (propName in staticConstProps) {
+        Object.defineProperty(def, propName, {
+          value:        staticConstProps[propName],
+          configurable: false,
+          enumerable:   true,
+          writable:     false
+        });
+      }
+    }
+  }
+}
+
+
+function _setupPrivateProperties(def, props) {
+  var propName;
+  var privateProps = props.private;
 
   if (typeof privateProps !== 'undefined' && privateProps !== null) {
     for (propName in privateProps) {
@@ -218,8 +243,8 @@ function inheritance(parent, objDefProps) {
         continue;
       }
 
-      Object.defineProperty(objDef.prototype, propName, {
-        value:        addOwnerIfFunction(privateProps[propName], objDef.prototype),
+      Object.defineProperty(def.prototype, propName, {
+        value:        _addOwnerIfFunction(def.prototype, privateProps[propName]),
         configurable: true,
         enumerable:   false,
         writable:     true
@@ -230,8 +255,8 @@ function inheritance(parent, objDefProps) {
     var privateStaticProps = privateProps.static;
     if (typeof privateStaticProps !== 'undefined' && privateStaticProps !== null) {
       for (propName in privateStaticProps) {
-        Object.defineProperty(objDef, propName, {
-          value:        addOwnerIfFunction(privateStaticProps[propName], objDef),
+        Object.defineProperty(def, propName, {
+          value:        _addOwnerIfFunction(def, privateStaticProps[propName]),
           configurable: true,
           enumerable:   false,
           writable:     true
@@ -239,12 +264,34 @@ function inheritance(parent, objDefProps) {
       }
     }
   }
+}
 
 
-  Object.defineProperty(objDef.prototype, '_super', {
+function _setupPublicProperties(def, props) {
+  def.prototype.constructor = _addOwnerIfFunction(def.prototype, def);
+
+  for (var propName in props) {
+    if (propName === 'constructor'
+        || propName === 'ctor'
+        || propName === 'mixins'
+        || propName === 'private'
+        || propName === 'static'
+        || propName === '_super'
+        || propName === '__ctor__') {
+      continue;
+    }
+
+    _updatePrototypeWithMixDeep(def.prototype, props, propName);
+  }
+}
+
+
+function _setupSuperFunction(def) {
+  Object.defineProperty(def.prototype, '_super', {
     configurable: false,
     enumerable:   false,
     writable:     false,
+
     value: function() {
       var caller = arguments.callee.caller;
 
@@ -294,27 +341,6 @@ function inheritance(parent, objDefProps) {
       return superFunc.apply(this, arguments);
     }
   });
-
-
-
-  objDef.prototype.constructor = addOwnerIfFunction(objDef, objDef.prototype);
-
-  for (propName in objDefProps) {
-    if (propName === 'constructor'
-        || propName === 'ctor'
-        || propName === 'mixins'
-        || propName === 'private'
-        || propName === 'static'
-        || propName === '_super'
-        || propName === '__ctor__') {
-      continue;
-    }
-    objDef.prototype[propName] = addOwnerIfFunction(objDefProps[propName], objDef.prototype);
-  }
-
-
-
-  return objDef;
 }/**
  * Makes an object inheritable by adding a function called `extend` as a "static"
  * property of the object. (I.E. Calling this function passing `MyObject` as a
