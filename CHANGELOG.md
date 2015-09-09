@@ -1,6 +1,7 @@
-## [v0.4.3](https://github.com/bsara/inheritance.js/tree/v0.4.3) (2015-09-04)
+## [v0.4.4](https://github.com/bsara/inheritance.js/tree/v0.4.4) (2015-09-09)
 
 * **[New Feature]** Plain objects (JSON formatted objects that don't contain a prototype) are now deep mixed when extending, rather than a full replacement of the parent's object.
+* **[New Feature]** Added `isObjDef` to object definitions so that one can easily determine if a function is an object definition or not.
 * Major code cleanup in `src/inherit/inheritance.js`.
 
 

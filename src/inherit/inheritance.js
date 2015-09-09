@@ -42,6 +42,7 @@ function inheritance(parent, objDefProps) {
   eval('objDef = function' + (objDefName ? (' ' + objDefName) : '') + '() { return objCtor.apply(this, arguments); };');
   /* jshint +W061 */
 
+  objDef.isObjDef  = true;
   objDef.prototype = Object.create(parent.prototype);
 
 

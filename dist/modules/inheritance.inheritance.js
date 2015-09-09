@@ -1,5 +1,5 @@
 /*!
- * Inheritance.js (0.4.3)
+ * Inheritance.js (0.4.4)
  *
  * Copyright (c) 2015 Brandon Sara (http://bsara.github.io)
  * Licensed under the CPOL-1.02 (https://github.com/bsara/inheritance.js/blob/master/LICENSE.md)
@@ -92,7 +92,8 @@ function inheritance(parent, objDefProps) {
     objDefName = undefined;
   }
 
-  delete objDefProps.__defName;  eval('objDef = function' + (objDefName ? (' ' + objDefName) : '') + '() { return objCtor.apply(this, arguments); };');  objDef.prototype = Object.create(parent.prototype);
+  delete objDefProps.__defName;  eval('objDef = function' + (objDefName ? (' ' + objDefName) : '') + '() { return objCtor.apply(this, arguments); };');  objDef.isObjDef  = true;
+  objDef.prototype = Object.create(parent.prototype);
 
 
   _addOwnerIfFunction(objDef.prototype, objCtor);
