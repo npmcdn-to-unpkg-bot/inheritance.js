@@ -1,4 +1,4 @@
-Inheritance.js [![Build Status](https://img.shields.io/travis/bsara/inheritance.js.svg)](https://travis-ci.org/bsara/inheritance.js?style=flat-square)
+Inheritance.js [![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/bsara/inheritance.js/trend.png)](https://bitdeli.com/free "Bitdeli Badge") [![Build Status](https://img.shields.io/travis/bsara/inheritance.js.svg)](https://travis-ci.org/bsara/inheritance.js?style=flat-square)
 =================================================
 
 [![CPOL v1.02 License](https://img.shields.io/badge/license-CPOL--1.02-blue.svg?style=flat-square)](https://github.com/bsara/inheritance.js/blob/master/LICENSE.md)
