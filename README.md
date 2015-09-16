@@ -38,6 +38,8 @@ were based largly off of their implementation of ["Extend"](http://youmightnotne
     - static properties
     - static constant properties
     - private static properties
+    - [getters](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/get) (via `get` keyword)
+    - [setters](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/set) (via `set` keyword)
 - Object definition creation is made much more readable/maintainable.
 - Mix multiple objects into one. (Almost same as jQuery/underscore/lodash `extend`).
 - Optional extensions/inheritance for native JavaScript objects ([Full List of Native Object Extensions](https://github.com/bsara/inheritance.js/wiki/Native-JS-Object-Changes))
@@ -75,7 +77,7 @@ were based largly off of their implementation of ["Extend"](http://youmightnotne
     - [mixDeep](#mixdeepobj-mixins)
     - [mixPrototype](#mixprototypeobj-mixins)
     - [mixPrototypeDeep](#mixprototypedeepobj-mixins)
-- [Functions Added to `Object`](#functions-added-to-object)
+- [Functions Added to `Object`](#functions-added-to-object) _(These additions are optional)_
     - [Object.extend](#objectextendobjdefprops)
     - [Object.prototype.mix](#objectprototypemix)
     - [Object.prototype.mixDeep](#objectprototypemixdeep)
