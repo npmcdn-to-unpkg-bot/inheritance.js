@@ -1,3 +1,10 @@
+## [v0.4.5](https://github.com/bsara/inheritance.js/tree/v0.4.5) (2015-09-16)
+
+* **[New Feature]** Added ability to specify [getters and setters][getters-setters] in object definitions.
+* Implemented constants using javascript getters to ensure that they are indeed constant and to allow for a more readable implementation.
+* Some minor code cleanup
+
+
 ## [v0.4.4](https://github.com/bsara/inheritance.js/tree/v0.4.4) (2015-09-09)
 
 * **[New Feature]** Plain objects (JSON formatted objects that don't contain a prototype) are now deep mixed when extending, rather than a full replacement of the parent's object.
@@ -89,3 +96,7 @@ now contained within the same directory.
 ## [v0.0.2](https://github.com/bsara/inheritance.js/tree/v0.0.2) (2015-06-08)
 
 * Initial Release
+
+
+
+[getters-setters]: https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Working_with_Objects#Defining_getters_and_setters

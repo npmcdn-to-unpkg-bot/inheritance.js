@@ -1,5 +1,5 @@
 /*!
- * Inheritance.js (0.4.4)
+ * Inheritance.js (0.4.5)
  *
  * Copyright (c) 2015 Brandon Sara (http://bsara.github.io)
  * Licensed under the CPOL-1.02 (https://github.com/bsara/inheritance.js/blob/master/LICENSE.md)
@@ -48,12 +48,7 @@ function seal(obj, overwrite, ignoreOverwriteError) {
   }
 
   Object.defineProperties(obj, {
-    sealed: {
-      configurable: false,
-      enumerable:   false,
-      writable:     false,
-      value:        true
-    },
+    sealed: { get: function() { return true; } },
     extend: {
       configurable: false,
       enumerable:   false,

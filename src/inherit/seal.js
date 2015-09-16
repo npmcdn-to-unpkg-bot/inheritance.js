@@ -36,12 +36,7 @@ function seal(obj, overwrite, ignoreOverwriteError) {
   }
 
   Object.defineProperties(obj, {
-    sealed: {
-      configurable: false,
-      enumerable:   false,
-      writable:     false,
-      value:        true
-    },
+    sealed: { get: function() { return true; } },
     extend: {
       configurable: false,
       enumerable:   false,
