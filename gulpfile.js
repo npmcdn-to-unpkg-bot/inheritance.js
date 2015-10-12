@@ -362,23 +362,23 @@ gulp.task('test', function() {
 gulp.task('clean', [ 'clean:build', 'clean:dist', 'clean:docs', 'clean:reports' ]);
 
 
-gulp.task('clean:build', function(callback) {
-  del(config.build.dir, callback);
+gulp.task('clean:build', function() {
+  return del(config.build.dir);
 });
 
 
-gulp.task('clean:dist', function(callback) {
-  del(config.dist.dir, callback);
+gulp.task('clean:dist', function() {
+  return del(config.dist.dir);
 });
 
 
-gulp.task('clean:docs', function(callback) {
-  del(config.docs.dir, callback);
+gulp.task('clean:docs', function() {
+  return del(config.docs.dir);
 });
 
 
-gulp.task('clean:reports', function(callback) {
-  del(config.reports.dir, callback);
+gulp.task('clean:reports', function() {
+  return del(config.reports.dir);
 });
 
 

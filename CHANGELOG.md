@@ -1,3 +1,9 @@
+## [v0.4.6](https://github.com/bsara/inheritance.js/tree/v0.4.6) (2015-10-12)
+
+* **[Bug Fix]** Fixed stack issues in `inheritance` when `mixDeep` is called on Objects. Basically, only plain objects are allowed to be deeply mixed.
+* **[Bug Fix]** Fixed build bugs caused by new npm package updates
+
+
 ## [v0.4.5](https://github.com/bsara/inheritance.js/tree/v0.4.5) (2015-09-16)
 
 * **[New Feature]** Added ability to specify [getters and setters][getters-setters] in object definitions.

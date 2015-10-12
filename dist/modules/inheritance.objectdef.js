@@ -1,5 +1,5 @@
 /*!
- * Inheritance.js (0.4.5)
+ * Inheritance.js (0.4.6)
  *
  * Copyright (c) 2015 Brandon Sara (http://bsara.github.io)
  * Licensed under the CPOL-1.02 (https://github.com/bsara/inheritance.js/blob/master/LICENSE.md)
@@ -333,14 +333,19 @@ function _isPropGetterOrSetter(propOwner, propName) {
 
 
 function _updatePrototypeWithMixDeep(prototype, props, propName) {
-  if (!_isPropGetterOrSetter(props, propName)
-      && !_isPropGetterOrSetter(prototype, propName)
-      && typeof props[propName] === 'object'
-      && typeof props[propName] === typeof prototype[propName]
-      && typeof props[propName].prototype === 'undefined'
-      && typeof prototype[propName].prototype === 'undefined') {
-    mixDeep(prototype[propName], props[propName]);
-    return;
+
+
+  if (!_isPropGetterOrSetter(props, propName) && !_isPropGetterOrSetter(prototype, propName)) {
+    var oldProp = prototype[propName];
+    var newProp = props[propName];
+
+    if (newProp !== null
+        && typeof newProp === 'object'
+        && newProp.constructor.name === 'Object'
+        && oldProp.constructor.name === 'Object') {
+      mixDeep(prototype[propName], props[propName]);
+      return;
+    }
   }
 
   _addProperty(prototype, props, propName);
