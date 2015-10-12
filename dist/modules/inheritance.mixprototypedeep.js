@@ -83,7 +83,7 @@ function mixDeep(obj, mixins) {
 function mixPrototypeDeep(obj, mixins) {
   obj = (obj || { prototype: {} });
 
-  if (typeof obj.prototype === 'undefined' || obj.prototype === null) {
+  if (obj.prototype == null) {
     throw new TypeError("`obj.prototype` cannot be `undefined` or `null`!");
   }
 

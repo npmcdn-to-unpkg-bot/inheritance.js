@@ -313,8 +313,8 @@ gulp.task('rebuild', function(callback) {
 });
 
 
-gulp.task('dist', function(callback) {
-  runSequence('lint', 'test', 'rebuild', 'clean:dist', function(err) {
+gulp.task('dist', [ 'clean:build', 'clean:dist' ], function(callback) {
+  runSequence('lint', 'test', 'build', function(err) {
     if (err) {
       callback(err);
       return;

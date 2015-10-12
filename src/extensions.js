@@ -88,7 +88,7 @@ var objDefsToExtend = [
 
 for (var i = 0; i < objDefsToExtend.length; i++) {
   var objDef = objDefsToExtend[i];
-  if (typeof objDef !== 'undefined' && objDef !== null) {
+  if (objDef != null) {
     makeInheritable(objDef, true);
   }
 }

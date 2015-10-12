@@ -124,7 +124,7 @@ function mixDeep(obj, mixins) {
 function mixPrototype(obj, mixins) {
   obj = (obj || { prototype: {} });
 
-  if (typeof obj.prototype === 'undefined' || obj.prototype === null) {
+  if (obj.prototype == null) {
     throw new TypeError("`obj.prototype` cannot be `undefined` or `null`!");
   }
 
@@ -155,7 +155,7 @@ function mixPrototype(obj, mixins) {
 function mixPrototypeDeep(obj, mixins) {
   obj = (obj || { prototype: {} });
 
-  if (typeof obj.prototype === 'undefined' || obj.prototype === null) {
+  if (obj.prototype == null) {
     throw new TypeError("`obj.prototype` cannot be `undefined` or `null`!");
   }
 
@@ -224,7 +224,7 @@ function inheritance(parent, objDefProps) {
 function _setupMixins(props) {
   var mixins = props.mixins;
 
-  if (mixins !== null && mixins instanceof Array) {
+  if (mixins != null && mixins instanceof Array) {
     mixDeep(props, mixins);
   }
 }
@@ -236,7 +236,7 @@ function _setupStaticProperties(def, props) {
 
   var staticProps = props.static;
 
-  if (typeof staticProps === 'undefined' || staticProps === null) {
+  if (staticProps == null) {
     return;
   }
 
@@ -250,7 +250,7 @@ function _setupStaticProperties(def, props) {
 
   var staticConstProps = staticProps.consts;
 
-  if (typeof staticConstProps === 'undefined' || staticConstProps === null) {
+  if (staticConstProps == null) {
     return;
   }
 
@@ -274,7 +274,7 @@ function _setupPrivateProperties(def, props) {
 
   var privateProps = props.private;
 
-  if (typeof privateProps === 'undefined' || privateProps === null) {
+  if (privateProps == null) {
     return;
   }
 
@@ -288,7 +288,7 @@ function _setupPrivateProperties(def, props) {
 
   var privateStaticProps = privateProps.static;
 
-  if (typeof privateStaticProps === 'undefined' || privateStaticProps === null) {
+  if (privateStaticProps == null) {
     return;
   }
 
@@ -364,7 +364,7 @@ function _setupSuperFunction(def) {
 
       var superFunc = superType[callerName];
 
-      if (typeof superFunc !== 'function' || superFunc === null) {
+      if (typeof superFunc !== 'function' || superFunc == null) {
         return;
       }
 
@@ -402,10 +402,10 @@ function _updatePrototypeWithMixDeep(prototype, props, propName) {
     var oldProp = prototype[propName];
     var newProp = props[propName];
 
-    if (newProp !== null
+    if (newProp != null
         && typeof newProp === 'object'
         && newProp.constructor.name === 'Object'
-        && oldProp.constructor.name === 'Object') {
+        && (oldProp == null || oldProp.constructor.name === 'Object')) {
       mixDeep(prototype[propName], props[propName]);
       return;
     }
@@ -472,10 +472,10 @@ function _addOwnerIfFunction(owner, obj) {
  * @throws {TypeError} If `obj.extend` already exists and `overwrite` is NOT equal `true`.
  */
 function makeInheritable(obj, overwrite, ignoreOverwriteError) {
-  if (typeof obj === 'undefined' || obj === null) {
+  if (obj == null) {
     throw new TypeError("`obj` cannot be undefined or null!");
   }
-  if (overwrite !== true && typeof obj.extend !== 'undefined' && obj.extend !== null) {
+  if (overwrite !== true && obj.extend != null) {
     if (ignoreOverwriteError === true) {
       return obj;
     }
@@ -526,10 +526,10 @@ function makeInheritable(obj, overwrite, ignoreOverwriteError) {
  * @throws {TypeError} If `obj.extend` already exists and `overwrite` is NOT equal `true`.
  */
 function seal(obj, overwrite, ignoreOverwriteError) {
-  if (typeof obj === 'undefined' || obj === null) {
+  if (obj == null) {
     throw new TypeError("`obj` cannot be undefined or null!");
   }
-  if (overwrite !== true && typeof obj.extend !== 'undefined' && obj.extend !== null) {
+  if (overwrite !== true && obj.extend != null) {
     if (ignoreOverwriteError === true) {
       return obj;
     }
@@ -537,7 +537,7 @@ function seal(obj, overwrite, ignoreOverwriteError) {
   }
 
 
-  if (typeof obj.extend !== 'undefined' && obj.extend !== null) {
+  if (obj.extend != null) {
     delete obj.extend;
   }
 

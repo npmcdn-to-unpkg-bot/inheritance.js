@@ -20,10 +20,10 @@
  * @throws {TypeError} If `obj.extend` already exists and `overwrite` is NOT equal `true`.
  */
 function makeInheritable(obj, overwrite, ignoreOverwriteError) {
-  if (typeof obj === 'undefined' || obj === null) {
+  if (obj == null) {
     throw new TypeError("`obj` cannot be undefined or null!");
   }
-  if (overwrite !== true && typeof obj.extend !== 'undefined' && obj.extend !== null) {
+  if (overwrite !== true && obj.extend != null) {
     if (ignoreOverwriteError === true) {
       return obj;
     }
