@@ -243,17 +243,15 @@ function _isPropGetterOrSetter(propOwner, propName) {
 
 
 function _updatePrototypeWithMixDeep(prototype, props, propName) {
-
-
   if (!_isPropGetterOrSetter(props, propName) && !_isPropGetterOrSetter(prototype, propName)) {
-    var oldProp = prototype[propName];
-    var newProp = props[propName];
+    var protoProp = prototype[propName];
+    var mixinProp = props[propName];
 
-    if (newProp != null
-        && typeof newProp === 'object'
-        && newProp.constructor.name === 'Object'
-        && (oldProp == null || oldProp.constructor.name === 'Object')) {
-      mixDeep(prototype[propName], props[propName]);
+    if (mixinProp != null
+        && typeof mixinProp === 'object'
+        && mixinProp.constructor.name === 'Object'
+        && (protoProp != null && protoProp.constructor.name === 'Object')) {
+      mixDeep(protoProp, mixinProp);
       return;
     }
   }
