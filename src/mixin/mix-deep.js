@@ -37,7 +37,7 @@ function mixDeep(obj, mixins) {
         continue;
       }
 
-      if (typeof mixin[propName] === 'object') {
+      if (mixin[propName] !== null && typeof mixin[propName] === 'object') {
         mixDeep(newObj[propName], mixin[propName]);
         continue;
       }

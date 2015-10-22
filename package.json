@@ -23,6 +23,7 @@
     "objects",
     "prototype"
   ],
+  "main": "dist/inheritance.js",
   "directories": {
     "test": "test"
   },
