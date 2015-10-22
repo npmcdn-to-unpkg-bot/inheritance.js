@@ -1,4 +1,4 @@
-## [v0.4.6](https://github.com/bsara/inheritance.js/tree/v0.4.6) (2015-10-22)
+## [v0.4.7](https://github.com/bsara/inheritance.js/tree/v0.4.7) (2015-10-22)
 
 * **[Bug Fix]** Fixed stack issues in `inheritance` when `mixDeep` is called on Objects. Basically, only plain objects are allowed to be deeply mixed.
 * **[Bug Fix]** Fixed issues in `mixDeep` where properties are set to `null` rather than `undefined`.
