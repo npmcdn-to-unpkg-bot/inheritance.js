@@ -1,5 +1,5 @@
 /*!
- * Inheritance.js (0.4.8)
+ * Inheritance.js (0.4.9)
  *
  * Copyright (c) 2015 Brandon Sara (http://bsara.github.io)
  * Licensed under the CPOL-1.02 (https://github.com/bsara/inheritance.js/blob/master/LICENSE.md)
@@ -323,12 +323,14 @@ function _setupSuperFunction(def) {
       var superFuncDescriptor = InternalUtils.getPropertyDescriptor(superType, callerName);
       var callerDescriptor    = InternalUtils.getPropertyDescriptor(callerOwner, callerName);
 
-      if (callerDescriptor.get != null && callerDescriptor.get === caller) {
-        superFunc = superFuncDescriptor.get;
-      } else if (callerDescriptor.set != null && callerDescriptor.set === caller) {
-        superFunc = superFuncDescriptor.set;
-      } else {
-        superFunc = superFuncDescriptor.value;
+      if (superFuncDescriptor != null) {
+        if (callerDescriptor.get != null && callerDescriptor.get === caller) {
+          superFunc = superFuncDescriptor.get;
+        } else if (callerDescriptor.set != null && callerDescriptor.set === caller) {
+          superFunc = superFuncDescriptor.set;
+        } else {
+          superFunc = superFuncDescriptor.value;
+        }
       }
 
       if (typeof superFunc !== 'function' || superFunc == null) {

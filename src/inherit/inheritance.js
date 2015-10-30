@@ -218,12 +218,14 @@ function _setupSuperFunction(def) {
       var superFuncDescriptor = InternalUtils.getPropertyDescriptor(superType, callerName);
       var callerDescriptor    = InternalUtils.getPropertyDescriptor(callerOwner, callerName);
 
-      if (callerDescriptor.get != null && callerDescriptor.get === caller) {
-        superFunc = superFuncDescriptor.get;
-      } else if (callerDescriptor.set != null && callerDescriptor.set === caller) {
-        superFunc = superFuncDescriptor.set;
-      } else {
-        superFunc = superFuncDescriptor.value;
+      if (superFuncDescriptor != null) {
+        if (callerDescriptor.get != null && callerDescriptor.get === caller) {
+          superFunc = superFuncDescriptor.get;
+        } else if (callerDescriptor.set != null && callerDescriptor.set === caller) {
+          superFunc = superFuncDescriptor.set;
+        } else {
+          superFunc = superFuncDescriptor.value;
+        }
       }
 
       if (typeof superFunc !== 'function' || superFunc == null) {
