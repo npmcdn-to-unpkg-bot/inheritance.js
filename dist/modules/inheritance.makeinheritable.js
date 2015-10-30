@@ -1,5 +1,5 @@
 /*!
- * Inheritance.js (0.4.7)
+ * Inheritance.js (0.4.8)
  *
  * Copyright (c) 2015 Brandon Sara (http://bsara.github.io)
  * Licensed under the CPOL-1.02 (https://github.com/bsara/inheritance.js/blob/master/LICENSE.md)
@@ -13,7 +13,22 @@
   } else {
     root.I = factory();
   }
-}(this, function() {/**
+}(this, function() {/** @namespace */
+var InternalUtils = {
+  getPropertyDescriptor: function(obj, propName) {
+    var propDescriptor = Object.getOwnPropertyDescriptor(obj, propName);
+
+    if (propDescriptor != null) {
+      return propDescriptor;
+    }
+
+    if (obj.constructor == null || obj.constructor.__super__ == null) {
+      return undefined;
+    }
+
+    return InternalUtils.getPropertyDescriptor(obj.constructor.__super__, propName);
+  }
+};/**
  * TODO: Add description
  *
  * @param {Object}               obj    - The object to deep mix into.
@@ -245,9 +260,14 @@ function _setupSuperFunction(def) {
         var propNames = Object.getOwnPropertyNames(callerOwner);
 
         for (var i = 0; i < propNames.length; i++) {
-          var propName = propNames[i];
+          var propName       = propNames[i];
+          var propDescriptor = Object.getOwnPropertyDescriptor(callerOwner, propName);
 
-          if (callerOwner[propName] === caller) {
+          if (propDescriptor.get != null || propDescriptor.set != null) {
+            continue;
+          }
+
+          if (propDescriptor.value === caller) {
             callerName = propName;
             break;
           }
@@ -259,11 +279,22 @@ function _setupSuperFunction(def) {
       }
 
 
-      var superFunc = superType[callerName];
+      var superFunc;
+      var superFuncDescriptor = InternalUtils.getPropertyDescriptor(superType, callerName);
+      var callerDescriptor    = InternalUtils.getPropertyDescriptor(callerOwner, callerName);
+
+      if (callerDescriptor.get != null && callerDescriptor.get === caller) {
+        superFunc = superFuncDescriptor.get;
+      } else if (callerDescriptor.set != null && callerDescriptor.set === caller) {
+        superFunc = superFuncDescriptor.set;
+      } else {
+        superFunc = superFuncDescriptor.value;
+      }
 
       if (typeof superFunc !== 'function' || superFunc == null) {
         return;
       }
+
 
       return superFunc.apply(this, arguments);
     }

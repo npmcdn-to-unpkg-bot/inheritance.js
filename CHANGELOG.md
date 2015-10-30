@@ -1,3 +1,9 @@
+## [v0.4.8](https://github.com/bsara/inheritance.js/tree/v0.4.8) (2015-10-30)
+
+* **[Bug Fix]** Fixed issues calling `_super` in getters and setters.
+* **[Bug Fix]** Fixed issues calling `_super` caused by having a getter or a setter that returns undefined when searching for appropriate super function to call.
+
+
 ## [v0.4.7](https://github.com/bsara/inheritance.js/tree/v0.4.7) (2015-10-22)
 
 * **[Bug Fix]** Fixed stack issues in `inheritance` when `mixDeep` is called on Objects. Basically, only plain objects are allowed to be deeply mixed.

@@ -75,6 +75,7 @@ config.src.selector = {
     makeInheritable: path.join(config.src.dir, 'inherit', 'make-inheritable.js'),
     seal:            path.join(config.src.dir, 'inherit', 'seal.js')
   },
+  internalUtils: path.join(config.src.dir, 'internal-utils.js'),
   mixin: {
     mix:              path.join(config.src.dir, 'mixin', 'mix.js'),
     mixDeep:          path.join(config.src.dir, 'mixin', 'mix-deep.js'),
@@ -158,6 +159,7 @@ gulp.task('build', [ 'build:modules' ], function() {
                 }));
 
   var noExts = gulp.src([
+                     config.src.selector.internalUtils,
                      config.src.selector.mixin.mix,
                      config.src.selector.mixin.mixDeep,
                      config.src.selector.mixin.mixPrototype,
@@ -194,6 +196,7 @@ gulp.task('build', [ 'build:modules' ], function() {
 
 gulp.task('build:modules', function() {
   var objectDef = gulp.src([
+                        config.src.selector.internalUtils,
                         config.src.selector.mixin.mix,
                         config.src.selector.mixin.mixDeep,
                         config.src.selector.inherit.inheritance,
@@ -217,6 +220,7 @@ gulp.task('build:modules', function() {
                       }));
 
   var inheritance = gulp.src([
+                          config.src.selector.internalUtils,
                           config.src.selector.mixin.mixDeep,
                           config.src.selector.inherit.inheritance
                         ])
@@ -231,6 +235,7 @@ gulp.task('build:modules', function() {
                         }));
 
   var makeInheritable = gulp.src([
+                              config.src.selector.internalUtils,
                               config.src.selector.mixin.mixDeep,
                               config.src.selector.inherit.inheritance,
                               config.src.selector.inherit.makeInheritable

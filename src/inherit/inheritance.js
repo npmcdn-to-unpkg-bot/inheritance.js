@@ -1,4 +1,4 @@
-/* globals makeInheritable, mixDeep */
+/* globals makeInheritable, mixDeep, InternalUtils */
 /* exported inheritance */
 
 
@@ -195,9 +195,14 @@ function _setupSuperFunction(def) {
         var propNames = Object.getOwnPropertyNames(callerOwner);
 
         for (var i = 0; i < propNames.length; i++) {
-          var propName = propNames[i];
+          var propName       = propNames[i];
+          var propDescriptor = Object.getOwnPropertyDescriptor(callerOwner, propName);
 
-          if (callerOwner[propName] === caller) {
+          if (propDescriptor.get != null || propDescriptor.set != null) {
+            continue;
+          }
+
+          if (propDescriptor.value === caller) {
             callerName = propName;
             break;
           }
@@ -209,11 +214,22 @@ function _setupSuperFunction(def) {
       }
 
 
-      var superFunc = superType[callerName];
+      var superFunc;
+      var superFuncDescriptor = InternalUtils.getPropertyDescriptor(superType, callerName);
+      var callerDescriptor    = InternalUtils.getPropertyDescriptor(callerOwner, callerName);
+
+      if (callerDescriptor.get != null && callerDescriptor.get === caller) {
+        superFunc = superFuncDescriptor.get;
+      } else if (callerDescriptor.set != null && callerDescriptor.set === caller) {
+        superFunc = superFuncDescriptor.set;
+      } else {
+        superFunc = superFuncDescriptor.value;
+      }
 
       if (typeof superFunc !== 'function' || superFunc == null) {
         return;
       }
+
 
       return superFunc.apply(this, arguments);
     }
