@@ -61,9 +61,6 @@ var objDefsToExtend = [
   this.Int8Array,
   this.Int16Array,
   this.Int32Array,
-  this.Intl.Collator,
-  this.Intl.DataTimeFormat,
-  this.Intl.NumberFormat,
   this.Map,
   this.Number,
   this.Promise,
@@ -85,6 +82,13 @@ var objDefsToExtend = [
   this.WeakMap,
   this.WeakSet
 ];
+
+if (this.Intl != null) {
+  objDefsToExtend.push(this.Intl.Collator);
+  objDefsToExtend.push(this.Intl.DataTimeFormat);
+  objDefsToExtend.push(this.Intl.NumberFormat);
+}
+
 
 for (var i = 0; i < objDefsToExtend.length; i++) {
   var objDef = objDefsToExtend[i];

@@ -1,7 +1,7 @@
 /*!
  * Inheritance.js (0.4.9)
  *
- * Copyright (c) 2015 Brandon Sara (http://bsara.github.io)
+ * Copyright (c) 2016 Brandon Sara (http://bsara.github.io)
  * Licensed under the CPOL-1.02 (https://github.com/bsara/inheritance.js/blob/master/LICENSE.md)
  */
 
@@ -75,9 +75,6 @@ var objDefsToExtend = [
   this.Int8Array,
   this.Int16Array,
   this.Int32Array,
-  this.Intl.Collator,
-  this.Intl.DataTimeFormat,
-  this.Intl.NumberFormat,
   this.Map,
   this.Number,
   this.Promise,
@@ -99,6 +96,13 @@ var objDefsToExtend = [
   this.WeakMap,
   this.WeakSet
 ];
+
+if (this.Intl != null) {
+  objDefsToExtend.push(this.Intl.Collator);
+  objDefsToExtend.push(this.Intl.DataTimeFormat);
+  objDefsToExtend.push(this.Intl.NumberFormat);
+}
+
 
 for (var i = 0; i < objDefsToExtend.length; i++) {
   var objDef = objDefsToExtend[i];

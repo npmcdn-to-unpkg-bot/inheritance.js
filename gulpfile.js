@@ -64,7 +64,7 @@ var config = {
   }
 };
 
-config.fileHeader = "/*!\n * Inheritance.js (" + config.pkg.version + ")\n *\n * Copyright (c) 2015 Brandon Sara (http://bsara.github.io)\n * Licensed under the CPOL-1.02 (https://github.com/bsara/inheritance.js/blob/master/LICENSE.md)\n */\n";
+config.fileHeader = "/*!\n * Inheritance.js (" + config.pkg.version + ")\n *\n * Copyright (c) " + (new Date()).getFullYear() + " Brandon Sara (http://bsara.github.io)\n * Licensed under the CPOL-1.02 (https://github.com/bsara/inheritance.js/blob/master/LICENSE.md)\n */\n";
 
 config.build.modules.dir = path.join(config.build.dir, 'modules');
 config.dist.modules.dir  = path.join(config.dist.dir, 'modules');
@@ -319,7 +319,7 @@ gulp.task('rebuild', function(callback) {
 
 
 gulp.task('dist', [ 'clean:build', 'clean:dist' ], function(callback) {
-  runSequence('lint', 'test', 'build', function(err) {
+  runSequence('lint', 'build', 'test', function(err) {
     if (err) {
       callback(err);
       return;

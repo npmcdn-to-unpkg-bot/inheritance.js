@@ -1,7 +1,12 @@
+## [v0.4.9](https://github.com/bsara/inheritance.js/tree/v0.4.9) (2016-02-18)
+
+* **[Bug Fix]** Fixed `ReferenceError` that occurs when native extensible objects are used & `Intl` does not exist in browser.
+
+
 ## [v0.4.8](https://github.com/bsara/inheritance.js/tree/v0.4.8) (2015-10-30)
 
 * **[Bug Fix]** Fixed issues calling `_super` in [getters and setters][getters-setters].
-* **[Bug Fix]** Fixed issues calling `_super` caused by having a [getter or setter][getters-setters] that returns undefined when searching for appropriate super function to call.
+* **[Bug Fix]** Fixed issues calling `_super` caused by having a [getter or setter][getters-setters] that returns `undefined` when searching for appropriate super function to call.
 
 
 ## [v0.4.7](https://github.com/bsara/inheritance.js/tree/v0.4.7) (2015-10-22)

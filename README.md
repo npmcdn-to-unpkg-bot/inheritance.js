@@ -1,4 +1,4 @@
-Inheritance.js [![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/bsara/inheritance.js/trend.png)](https://bitdeli.com/free "Bitdeli Badge") [![Build Status](https://img.shields.io/travis/bsara/inheritance.js.svg)](https://travis-ci.org/bsara/inheritance.js?style=flat-square)
+Inheritance.js [![Build Status](https://img.shields.io/travis/bsara/inheritance.js.svg)](https://travis-ci.org/bsara/inheritance.js?style=flat-square)
 =================================================
 
 [![CPOL v1.02 License](https://img.shields.io/badge/license-CPOL--1.02-blue.svg?style=flat-square)](https://github.com/bsara/inheritance.js/blob/master/LICENSE.md)
@@ -64,7 +64,7 @@ were based largly off of their implementation of ["Extend"](http://youmightnotne
 
 - [Code Samples](#code-samples)
 - [Including the Library in your project](#including-the-library-in-your-project)
-    - [Include as ADM Module](#include-as-amd-module)
+    - [Include as AMD Module](#include-as-amd-module)
     - [Include as CommonJS Module](#include-as-commonjs-module)
     - [Include via HTML Script Tag](#include-via-html-script-tag)
 - [Functions](#functions)
