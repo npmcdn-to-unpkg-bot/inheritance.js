@@ -1,3 +1,8 @@
 language: node_js
 node_js:
-  - "node"
+  - node
+install:
+  - npm install -g lodash-cli
+  - npm install
+  - cd node_modules/gulp-wrap-umd/ && npm run prepublish && cd ../../
+script: gulp dist

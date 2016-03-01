@@ -30,7 +30,7 @@
     "docs": "gulp docs",
     "clean": "gulp clean",
     "lint": "gulp lint",
-    "test": "gulp dist"
+    "test": "gulp test"
   },
   "files": [
     "/dist/**/*.js",
@@ -51,6 +51,7 @@
     "gulp-uglify": "latest",
     "gulp-util": "latest",
     "gulp-wrap-umd": "bsara/gulp-wrap-umd",
+    "jshint": "latest",
     "jshint-stylish": "latest",
     "merge-stream": "latest",
     "path": "latest",
