@@ -198,11 +198,9 @@ function _setupSuperFunction(def) {
           var propName       = propNames[i];
           var propDescriptor = Object.getOwnPropertyDescriptor(callerOwner, propName);
 
-          if (propDescriptor.get != null || propDescriptor.set != null) {
-            continue;
-          }
-
-          if (propDescriptor.value === caller) {
+          if (propDescriptor.value === caller
+                || propDescriptor.get === caller
+                || propDescriptor.set === caller) {
             callerName = propName;
             break;
           }
