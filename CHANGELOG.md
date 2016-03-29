@@ -1,3 +1,8 @@
+## [v0.4.10](https://github.com/bsara/inheritance.js/tree/v0.4.10) (2016-03-29)
+
+* **[Bug Fix]** Fixed issues when calling super for getters/setters in browsers (Safari) that don't keep track of the name of the overriding getter/setter.
+
+
 ## [v0.4.9](https://github.com/bsara/inheritance.js/tree/v0.4.9) (2016-02-18)
 
 * **[Bug Fix]** Fixed `ReferenceError` that occurs when native extensible objects are used & `Intl` does not exist in browser.
