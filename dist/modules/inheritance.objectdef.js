@@ -1,5 +1,5 @@
 /*!
- * Inheritance.js (0.4.10)
+ * inheritance.js (1.0.0-beta.0)
  *
  * Copyright (c) 2016 Brandon Sara (http://bsara.github.io)
  * Licensed under the CPOL-1.02 (https://github.com/bsara/inheritance.js/blob/master/LICENSE.md)
@@ -136,32 +136,21 @@ function inheritance(parent, objDefProps) {
   objDefProps = (objDefProps || {});
 
   var objDef;
-  var objCtor    = (objDefProps.ctor || function() { return objDef.__super__.constructor.apply(this, arguments); });
-  var objDefName = objDefProps.__defName;
-
-  if (typeof objDefName === 'string' && objDefName.trim()) {
-    objDefName = objDefName.trim();
-  } else if (objCtor.name) {
-    objDefName = objCtor.name;
-  } else {
-    objDefName = undefined;
-  }
-
-  delete objDefProps.__defName;  eval('objDef = function' + (objDefName ? (' ' + objDefName) : '') + '() { return objCtor.apply(this, arguments); };');  objDef.prototype = Object.create(parent.prototype);
+  var objCtor    = (objDefProps.ctor || (function() { return objDef.__super__.constructor.apply(this, arguments); }));
+  var objDefName = _getObjDefName(objCtor, objDefProps.__defName);  eval('objDef = function' + (objDefName ? (' ' + objDefName) : '') + '() { return objCtor.apply(this, arguments); };');  objDef.prototype = Object.create(parent.prototype);
 
 
   makeInheritable(objDef);
 
 
-  _setupMixins(objDefProps);
-  _setupStaticProperties(objDef, objDefProps);
-  _setupPrivateProperties(objDef, objDefProps);
-  _setupSuperFunction(objDef);
-  _setupPublicProperties(objDef, objDefProps);
+  _addMixins(objDefProps);
+  _addConstants(objDef, objDefProps.consts);
+  _addStaticProperties(objDef, objDefProps.statics);
+  _addPrototypeProperties(objDef, objDefProps);
+  _addSuperFunction(objDef);
 
 
   _addOwnerIfFunction(objDef.prototype, objCtor);
-
 
   Object.defineProperty(objDef, 'isObjDef', { get: function() { return true; } });
   Object.defineProperty(objDef, '__super__', { get: function() { return parent.prototype; } });
@@ -173,102 +162,80 @@ function inheritance(parent, objDefProps) {
 
 
 
-function _setupMixins(props) {
+function _getObjDefName(ctor, name) {
+  if (typeof name === 'string' && name.trim()) {
+    return name.trim();
+  }
+  if (ctor.name) {
+    return ctor.name;
+  }
+  return undefined;
+}
+
+
+function _addMixins(props) {
   var mixins = props.mixins;
 
-  if (mixins != null && mixins instanceof Array) {
+  if (mixins != null && Array.isArray(mixins)) {
     mixDeep(props, mixins);
   }
 }
 
 
-function _setupStaticProperties(def, props) {
-  var propName;
-
-
-  var staticProps = props.static;
-
-  if (staticProps == null) {
+function _addConstants(def, props) {
+  if (props == null) {
     return;
   }
 
-  for (propName in staticProps) {
+  for (var propName in props) {
     if (_isReservedStaticProperty(propName)) {
-      continue;
-    }
-    _addProperty(def, staticProps, propName);
-  }
-
-
-  var staticConstProps = staticProps.consts;
-
-  if (staticConstProps == null) {
-    return;
-  }
-
-  for (propName in staticConstProps) {
-    if (_isReservedStaticProperty(propName)) {
-      continue;
+      throw new ReferenceError(""); // TODO: Add error message!!!
     }
 
-    var action = function(propertyName, value) {
-      Object.defineProperty(def, propertyName, { get: function() { return value; }});
-    };
-
-    action(propName, staticConstProps[propName]);
+    ;(function(propertyName, value) {
+      Object.defineProperty(def, propertyName, {
+        get: function() { return value; }
+      });
+    })(propName, props[propName]);
   }
 }
 
 
-function _setupPrivateProperties(def, props) {
-  var propName;
-
-
-  var privateProps = props.private;
-
-  if (privateProps == null) {
+function _addStaticProperties(def, props) {
+  if (props == null) {
     return;
   }
 
-  for (propName in privateProps) {
-    if (_isReservedInstanceProperty(propName)) {
-      continue;
-    }
-    _addProperty(def.prototype, privateProps, propName, true);
-  }
-
-
-  var privateStaticProps = privateProps.static;
-
-  if (privateStaticProps == null) {
-    return;
-  }
-
-  for (propName in privateStaticProps) {
+  for (var propName in props) {
     if (_isReservedStaticProperty(propName)) {
-      continue;
+      throw new ReferenceError(""); // TODO: Add error message!!!
     }
-    _addProperty(def, privateStaticProps, propName, true);
+
+    _addProperty(def, props, propName);
   }
 }
 
 
-function _setupPublicProperties(def, props) {
+function _addPrototypeProperties(def, props) {
   def.prototype.constructor = _addOwnerIfFunction(def.prototype, def);
 
   for (var propName in props) {
-    if (_isReservedInstanceProperty(propName)
-        || propName === 'mixins'
-        || propName === 'private') {
-      continue;
+    if (propName === 'constructor'
+          || propName === 'ctor'
+          || propName === 'consts'
+          || propName === 'statics'
+          || propName === '_super'
+          || propName === '__ctor__'
+          || propName === '__defName') {
+      throw new ReferenceError(""); // TODO: Add error message!!!
     }
 
-    _updatePrototypeWithMixDeep(def.prototype, props, propName);
+    _addProperty(def.prototype, props, propName);
   }
 }
 
 
-function _setupSuperFunction(def) {
+function _addSuperFunction(def) {
   Object.defineProperty(def.prototype, '_super', {
     configurable: false,
     enumerable:   false,
@@ -343,50 +310,16 @@ function _setupSuperFunction(def) {
 
 
 function _isReservedStaticProperty(propName) {
-  return (propName === 'consts' || propName === '__super__');
+  return (propName === 'isObjDef'
+            || propName === '__super__'
+            || propName === '__defName');
 }
 
 
-function _isReservedInstanceProperty(propName) {
-  return (propName === 'constructor'
-          || propName === 'ctor'
-          || propName === 'static'
-          || propName === '_super'
-          || propName === '__ctor__');
-}
-
-
-function _isPropGetterOrSetter(propOwner, propName) {
-  var propDescriptor = Object.getOwnPropertyDescriptor(propOwner, propName);
-  return (typeof propDescriptor !== 'undefined'
-          && (typeof propDescriptor.get !== 'undefined' || typeof propDescriptor.set !== 'undefined'));
-}
-
-
-function _updatePrototypeWithMixDeep(prototype, props, propName) {
-  if (!_isPropGetterOrSetter(props, propName) && !_isPropGetterOrSetter(prototype, propName)) {
-    var protoProp = prototype[propName];
-    var mixinProp = props[propName];
-
-    if (mixinProp != null
-        && typeof mixinProp === 'object'
-        && mixinProp.constructor.name === 'Object'
-        && (protoProp != null && protoProp.constructor.name === 'Object')) {
-      mixDeep(protoProp, mixinProp);
-      return;
-    }
-  }
-
-  _addProperty(prototype, props, propName);
-}
-
-
-function _addProperty(propNewOwner, propCurrentOwner, propName, isPrivate) {
-  isPrivate = (isPrivate === true);
-
-
+function _addProperty(propNewOwner, propCurrentOwner, propName) {
   var propOptions    = {};
   var propDescriptor = Object.getOwnPropertyDescriptor(propCurrentOwner, propName);
+
 
   if (typeof propDescriptor !== 'undefined') {
     for (var descriptorPropName in propDescriptor) {
@@ -396,18 +329,13 @@ function _addProperty(propNewOwner, propCurrentOwner, propName, isPrivate) {
 
 
   if (typeof propOptions.value !== 'undefined') {
-    _addOwnerIfFunction(propNewOwner, propOptions.value);
+    _addOwnerIfFunction(propNewOwner, _deepClone(propOptions.value));
   }
   if (typeof propOptions.get !== 'undefined') {
     _addOwnerIfFunction(propNewOwner, propOptions.get);
   }
   if (typeof propOptions.set !== 'undefined') {
     _addOwnerIfFunction(propNewOwner, propOptions.set);
-  }
-
-
-  if (isPrivate) {
-    propOptions.enumerable = false;
   }
 
 
@@ -420,6 +348,36 @@ function _addOwnerIfFunction(owner, obj) {
     obj.owner = owner;
   }
   return obj;
+}
+
+
+function _deepClone(val) {
+  if (val == null) {
+    return val;
+  }
+
+
+  var ret = val;
+
+
+  if (Array.isArray(val)) {
+    ret = new val.constructor();
+
+    val.forEach(function(item) {
+      ret.push(_deepClone(item));
+    });
+  } else if (typeof val === 'object') {
+    var ctorArg = ((val instanceof Date) ? val.valueOf() : undefined);
+
+    ret = new val.constructor(ctorArg);
+
+    for (var propName in val) {
+      ret[propName] = _deepClone(val[propName]);
+    }
+  }
+
+
+  return ret;
 }/**
  * Makes an object inheritable by adding a function called `extend` as a "static"
  * property of the object. (I.E. Calling this function passing `MyObject` as a
@@ -525,13 +483,23 @@ var ObjectDefinition = {
    * Creates a new object (I.E. "class") that can be inherited.
    * NOTE: The new object inherits the native JavaScript `Object`.
    *
-   * @param {Object} objDef - TODO: Add description
+   * @param {String} [objDefName] - TODO: Add description
+   * @param {Object} objDef       - TODO: Add description
    *
    * @returns {Object} The newly created, inheritable, object that inherits `Object`.
    *
    * @requires inheritance
    */
-  create: function(objDef) {
+  create: function() {
+    var objDefName = arguments[0];
+    var objDef     = arguments[1];
+
+    if (typeof objDefName === 'string') {
+      objDef.__defName = objDefName;
+    } else {
+      objDef = objDefName;
+    }
+
     return inheritance(Object, objDef);
   },
 
@@ -540,14 +508,15 @@ var ObjectDefinition = {
    * Creates a new object (I.E. "class") that CANNOT be inherited.
    * NOTE: The new object inherits the native JavaScript `Object`.
    *
-   * @param {Object} objDef - TODO: Add description
+   * @param {String} [objDefName] - TODO: Add description
+   * @param {Object} objDef       - TODO: Add description
    *
    * @returns {Object} The newly created, non-inheritable, object that inherits `Object`.
    *
    * @requires seal
    */
-  createSealed: function(objDef) {
-    return seal(inheritance(Object, objDef), true);
+  createSealed: function() {
+    return seal(ObjectDefinition.create.apply(this, arguments), true);
   }
 };
 
@@ -561,6 +530,6 @@ return {
   makeInheritable:  makeInheritable,
   seal:             seal,
   ObjectDefinition: ObjectDefinition
-};
+};;
 
 }));

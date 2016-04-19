@@ -36,12 +36,12 @@ function seal(obj, overwrite, ignoreOverwriteError) {
   }
 
   Object.defineProperties(obj, {
-    sealed: { get: function() { return true; } },
+    sealed: { get: function() { return true; } }, // jscs:ignore requireBlocksOnNewline
     extend: {
       configurable: false,
       enumerable:   false,
       writable:     false,
-      value:        function() { throw new TypeError("The object definition you are trying to extend is sealed and cannot be inherited."); }
+      value:        function() { throw new TypeError("The object definition you are trying to extend is sealed and cannot be inherited."); } // jscs:ignore requireBlocksOnNewline
     }
   });
 

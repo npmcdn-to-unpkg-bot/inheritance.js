@@ -9,13 +9,23 @@ var ObjectDefinition = {
    * Creates a new object (I.E. "class") that can be inherited.
    * NOTE: The new object inherits the native JavaScript `Object`.
    *
-   * @param {Object} objDef - TODO: Add description
+   * @param {String} [objDefName] - TODO: Add description
+   * @param {Object} objDef       - TODO: Add description
    *
    * @returns {Object} The newly created, inheritable, object that inherits `Object`.
    *
    * @requires inheritance
    */
-  create: function(objDef) {
+  create: function() {
+    var objDefName = arguments[0];
+    var objDef     = arguments[1];
+
+    if (typeof objDefName === 'string') {
+      objDef.__defName = objDefName;
+    } else {
+      objDef = objDefName;
+    }
+
     return inheritance(Object, objDef);
   },
 
@@ -24,14 +34,15 @@ var ObjectDefinition = {
    * Creates a new object (I.E. "class") that CANNOT be inherited.
    * NOTE: The new object inherits the native JavaScript `Object`.
    *
-   * @param {Object} objDef - TODO: Add description
+   * @param {String} [objDefName] - TODO: Add description
+   * @param {Object} objDef       - TODO: Add description
    *
    * @returns {Object} The newly created, non-inheritable, object that inherits `Object`.
    *
    * @requires seal
    */
-  createSealed: function(objDef) {
-    return seal(inheritance(Object, objDef), true);
+  createSealed: function() {
+    return seal(ObjectDefinition.create.apply(this, arguments), true);
   }
 };
 

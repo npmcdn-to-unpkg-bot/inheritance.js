@@ -24,18 +24,8 @@ function inheritance(parent, objDefProps) {
   objDefProps = (objDefProps || {});
 
   var objDef;
-  var objCtor    = (objDefProps.ctor || function() { return objDef.__super__.constructor.apply(this, arguments); });
-  var objDefName = objDefProps.__defName;
-
-  if (typeof objDefName === 'string' && objDefName.trim()) {
-    objDefName = objDefName.trim();
-  } else if (objCtor.name) {
-    objDefName = objCtor.name;
-  } else {
-    objDefName = undefined;
-  }
-
-  delete objDefProps.__defName;
+  var objCtor    = (objDefProps.ctor || (function() { return objDef.__super__.constructor.apply(this, arguments); })); // jscs:ignore requireBlocksOnNewline
+  var objDefName = _getObjDefName(objCtor, objDefProps.__defName);
 
 
   /* jshint -W061 */
@@ -48,19 +38,23 @@ function inheritance(parent, objDefProps) {
   makeInheritable(objDef);
 
 
-  _setupMixins(objDefProps);
-  _setupStaticProperties(objDef, objDefProps);
-  _setupPrivateProperties(objDef, objDefProps);
-  _setupSuperFunction(objDef);
-  _setupPublicProperties(objDef, objDefProps);
+  _addMixins(objDefProps);
+  _addConstants(objDef, objDefProps.consts);
+  _addStaticProperties(objDef, objDefProps.statics);
+  _addPrototypeProperties(objDef, objDefProps);
+  _addSuperFunction(objDef);
 
 
   _addOwnerIfFunction(objDef.prototype, objCtor);
 
 
+  // jscs:disable requireBlocksOnNewline
+
   Object.defineProperty(objDef, 'isObjDef', { get: function() { return true; } });
   Object.defineProperty(objDef, '__super__', { get: function() { return parent.prototype; } });
   Object.defineProperty(objDef.prototype, '__ctor__', { get: function() { return objCtor; } });
+
+  // jscs:enable requireBlocksOnNewline
 
 
   return objDef;
@@ -68,102 +62,80 @@ function inheritance(parent, objDefProps) {
 
 
 
-function _setupMixins(props) {
+function _getObjDefName(ctor, name) {
+  if (typeof name === 'string' && name.trim()) {
+    return name.trim();
+  }
+  if (ctor.name) {
+    return ctor.name;
+  }
+  return undefined;
+}
+
+
+function _addMixins(props) {
   var mixins = props.mixins;
 
-  if (mixins != null && mixins instanceof Array) {
+  if (mixins != null && Array.isArray(mixins)) {
     mixDeep(props, mixins);
   }
 }
 
 
-function _setupStaticProperties(def, props) {
-  var propName;
-
-
-  var staticProps = props.static;
-
-  if (staticProps == null) {
+function _addConstants(def, props) {
+  if (props == null) {
     return;
   }
 
-  for (propName in staticProps) {
+  for (var propName in props) {
     if (_isReservedStaticProperty(propName)) {
-      continue;
-    }
-    _addProperty(def, staticProps, propName);
-  }
-
-
-  var staticConstProps = staticProps.consts;
-
-  if (staticConstProps == null) {
-    return;
-  }
-
-  for (propName in staticConstProps) {
-    if (_isReservedStaticProperty(propName)) {
-      continue;
+      throw new ReferenceError(""); // TODO: Add error message!!!
     }
 
-    var action = function(propertyName, value) {
-      Object.defineProperty(def, propertyName, { get: function() { return value; }});
-    };
-
-    action(propName, staticConstProps[propName]);
+    ;(function(propertyName, value) {
+      Object.defineProperty(def, propertyName, {
+        get: function() { return value; } // jscs:ignore requireBlocksOnNewline
+      });
+    })(propName, props[propName]);
   }
 }
 
 
-function _setupPrivateProperties(def, props) {
-  var propName;
-
-
-  var privateProps = props.private;
-
-  if (privateProps == null) {
+function _addStaticProperties(def, props) {
+  if (props == null) {
     return;
   }
 
-  for (propName in privateProps) {
-    if (_isReservedInstanceProperty(propName)) {
-      continue;
-    }
-    _addProperty(def.prototype, privateProps, propName, true);
-  }
-
-
-  var privateStaticProps = privateProps.static;
-
-  if (privateStaticProps == null) {
-    return;
-  }
-
-  for (propName in privateStaticProps) {
+  for (var propName in props) {
     if (_isReservedStaticProperty(propName)) {
-      continue;
+      throw new ReferenceError(""); // TODO: Add error message!!!
     }
-    _addProperty(def, privateStaticProps, propName, true);
+
+    _addProperty(def, props, propName);
   }
 }
 
 
-function _setupPublicProperties(def, props) {
+function _addPrototypeProperties(def, props) {
   def.prototype.constructor = _addOwnerIfFunction(def.prototype, def);
 
   for (var propName in props) {
-    if (_isReservedInstanceProperty(propName)
-        || propName === 'mixins'
-        || propName === 'private') {
-      continue;
+    if (propName === 'constructor'
+          || propName === 'ctor'
+          || propName === 'consts'
+          || propName === 'statics'
+          || propName === '_super'
+          || propName === '__ctor__'
+          || propName === '__defName') {
+      throw new ReferenceError(""); // TODO: Add error message!!!
     }
 
-    _updatePrototypeWithMixDeep(def.prototype, props, propName);
+    _addProperty(def.prototype, props, propName);
   }
 }
 
 
-function _setupSuperFunction(def) {
+function _addSuperFunction(def) {
   Object.defineProperty(def.prototype, '_super', {
     configurable: false,
     enumerable:   false,
@@ -238,50 +210,16 @@ function _setupSuperFunction(def) {
 
 
 function _isReservedStaticProperty(propName) {
-  return (propName === 'consts' || propName === '__super__');
+  return (propName === 'isObjDef'
+            || propName === '__super__'
+            || propName === '__defName');
 }
 
 
-function _isReservedInstanceProperty(propName) {
-  return (propName === 'constructor'
-          || propName === 'ctor'
-          || propName === 'static'
-          || propName === '_super'
-          || propName === '__ctor__');
-}
-
-
-function _isPropGetterOrSetter(propOwner, propName) {
-  var propDescriptor = Object.getOwnPropertyDescriptor(propOwner, propName);
-  return (typeof propDescriptor !== 'undefined'
-          && (typeof propDescriptor.get !== 'undefined' || typeof propDescriptor.set !== 'undefined'));
-}
-
-
-function _updatePrototypeWithMixDeep(prototype, props, propName) {
-  if (!_isPropGetterOrSetter(props, propName) && !_isPropGetterOrSetter(prototype, propName)) {
-    var protoProp = prototype[propName];
-    var mixinProp = props[propName];
-
-    if (mixinProp != null
-        && typeof mixinProp === 'object'
-        && mixinProp.constructor.name === 'Object'
-        && (protoProp != null && protoProp.constructor.name === 'Object')) {
-      mixDeep(protoProp, mixinProp);
-      return;
-    }
-  }
-
-  _addProperty(prototype, props, propName);
-}
-
-
-function _addProperty(propNewOwner, propCurrentOwner, propName, isPrivate) {
-  isPrivate = (isPrivate === true);
-
-
+function _addProperty(propNewOwner, propCurrentOwner, propName) {
   var propOptions    = {};
   var propDescriptor = Object.getOwnPropertyDescriptor(propCurrentOwner, propName);
+
 
   if (typeof propDescriptor !== 'undefined') {
     for (var descriptorPropName in propDescriptor) {
@@ -291,18 +229,13 @@ function _addProperty(propNewOwner, propCurrentOwner, propName, isPrivate) {
 
 
   if (typeof propOptions.value !== 'undefined') {
-    _addOwnerIfFunction(propNewOwner, propOptions.value);
+    _addOwnerIfFunction(propNewOwner, _deepClone(propOptions.value));
   }
   if (typeof propOptions.get !== 'undefined') {
     _addOwnerIfFunction(propNewOwner, propOptions.get);
   }
   if (typeof propOptions.set !== 'undefined') {
     _addOwnerIfFunction(propNewOwner, propOptions.set);
-  }
-
-
-  if (isPrivate) {
-    propOptions.enumerable = false;
   }
 
 
@@ -315,4 +248,34 @@ function _addOwnerIfFunction(owner, obj) {
     obj.owner = owner;
   }
   return obj;
+}
+
+
+function _deepClone(val) {
+  if (val == null) {
+    return val;
+  }
+
+
+  var ret = val;
+
+
+  if (Array.isArray(val)) {
+    ret = new val.constructor();
+
+    val.forEach(function(item) {
+      ret.push(_deepClone(item));
+    });
+  } else if (typeof val === 'object') {
+    var ctorArg = ((val instanceof Date) ? val.valueOf() : undefined);
+
+    ret = new val.constructor(ctorArg);
+
+    for (var propName in val) {
+      ret[propName] = _deepClone(val[propName]);
+    }
+  }
+
+
+  return ret;
 }

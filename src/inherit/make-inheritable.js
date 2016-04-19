@@ -48,7 +48,7 @@ function makeInheritable(obj, overwrite, ignoreOverwriteError) {
    * @requires inheritance
    */
   Object.defineProperty(obj, 'extend', {
-    value:        function(objDefProps) { return inheritance(obj, objDefProps); },
+    value:        function(objDefProps) { return inheritance(obj, objDefProps); }, // jscs:ignore requireBlocksOnNewline
     configurable: true,
     enumerable:   false,
     writable:     true
