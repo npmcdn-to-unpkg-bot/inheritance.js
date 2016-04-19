@@ -1,22 +1,22 @@
+/* jshint esnext: true */
 /* globals require */
 
 
-var gulp                  = require('gulp');
-var concat                = require('gulp-concat');
-var del                   = require('del');
-var header                = require('gulp-header');
-var jscs                  = require('gulp-jscs');
-var jsdoc                 = require('gulp-jsdoc');
-var jshint                = require('gulp-jshint');
-var jshintStylishReporter = require('jshint-stylish');
-var merge                 = require('merge-stream');
-var path                  = require('path');
-var rename                = require('gulp-rename');
-var replace               = require('gulp-replace');
-var runSequence           = require('run-sequence');
-var uglify                = require('gulp-uglify');
-var util                  = require('gulp-util');
-var wrapUMD               = require('gulp-wrap-umd');
+const gulp        = require('gulp');
+const concat      = require('gulp-concat');
+const del         = require('del');
+const header      = require('gulp-header');
+const jscs        = require('gulp-jscs');
+const jscsStylish = require('gulp-jscs-stylish');
+const jshint      = require('gulp-jshint');
+const merge       = require('merge-stream');
+const path        = require('path');
+const rename      = require('gulp-rename');
+const replace     = require('gulp-replace');
+const runSequence = require('run-sequence');
+const uglify      = require('gulp-uglify');
+const util        = require('gulp-util');
+const wrapUMD     = require('gulp-wrap-umd');
 
 
 
@@ -56,15 +56,93 @@ var config = {
 
   umd: {
     deps:                              [],
+    exports:                           {},
     namespace:                         'I',
-    globalExportTemplateInitNamespace: 'root.I = {};\n    <%= _default %>',
-    globalExportTemplateObjectDef:     '<%= _default %>\n'
-                                 + '    root.ObjectDefinition = root.<%= namespace %>.ObjectDefinition;\n'
-                                 + '    delete root.<%= namespace %>.ObjectDefinition;'
+    globalExportTemplateInitNamespace: 'root.I = {};\n    <%= _default %>'
   }
 };
 
-config.fileHeader = "/*!\n * Inheritance.js (" + config.pkg.version + ")\n *\n * Copyright (c) " + (new Date()).getFullYear() + " Brandon Sara (http://bsara.github.io)\n * Licensed under the CPOL-1.02 (https://github.com/bsara/inheritance.js/blob/master/LICENSE.md)\n */\n";
+
+// jscs:disable disallowOperatorBeforeLineBreak
+
+config.fileHeader =
+`/*!
+ * inheritance.js (${config.pkg.version})
+ *
+ * Copyright (c) ${(new Date()).getFullYear()} Brandon Sara (http://bsara.github.io)
+ * Licensed under the ${config.pkg.license} (https://github.com/bsara/inheritance.js/blob/master/LICENSE.md)
+ */
+`;
+
+
+config.umd.exports.all =
+`{
+  mix:              mix,
+  mixDeep:          mixDeep,
+  mixPrototype:     mixPrototype,
+  mixPrototypeDeep: mixPrototypeDeep,
+  inheritance:      inheritance,
+  makeInheritable:  makeInheritable,
+  seal:             seal,
+  ObjectDefinition: ObjectDefinition
+};`;
+
+config.umd.exports.noExts =
+`{
+  mix:              mix,
+  mixDeep:          mixDeep,
+  mixPrototype:     mixPrototype,
+  mixPrototypeDeep: mixPrototypeDeep,
+  inheritance:      inheritance,
+  makeInheritable:  makeInheritable,
+  seal:             seal,
+  ObjectDefinition: ObjectDefinition
+};`;
+
+config.umd.exports.objectDef =
+`{
+  mix:              mix,
+  mixDeep:          mixDeep,
+  inheritance:      inheritance,
+  makeInheritable:  makeInheritable,
+  seal:             seal,
+  ObjectDefinition: ObjectDefinition
+};`;
+
+config.umd.exports.inheritance =
+`{
+  mixDeep:     mixDeep,
+  inheritance: inheritance
+};`;
+
+config.umd.exports.makeInheritable =
+`{
+  mixDeep:         mixDeep,
+  inheritance:     inheritance,
+  makeInheritable: makeInheritable
+};`;
+
+config.umd.exports.mixPrototype =
+`{
+  mix:          mix,
+  mixPrototype: mixPrototype
+};`;
+
+config.umd.exports.mixPrototypeDeep =
+`{
+  mixDeep:      mixDeep,
+  mixPrototype: mixPrototypeDeep
+};`;
+
+
+config.umd.globalExportTemplateObjectDef =
+`<%= _default %>
+    root.ObjectDefinition = root.<%= namespace %>.ObjectDefinition;
+    delete root.<%= namespace %>.ObjectDefinition;
+`;
+
+// jscs:enable disallowOperatorBeforeLineBreak
+
 
 config.build.modules.dir = path.join(config.build.dir, 'modules');
 config.dist.modules.dir  = path.join(config.dist.dir, 'modules');
@@ -109,28 +187,28 @@ gulp.task('help', function() {
   var task   = util.colors.green;
 
   console.log(String.EMPTY);
-  console.log(header("Inheritance.js Gulp Tasks"));
-  console.log(header("------------------------------------------------------------------------------"));
-  console.log("  " + task("help") + " (" + util.colors.yellow("default") + ") - Displays this message.");
+  console.log(header(`inheritance.js Gulp Tasks`));
+  console.log(header(`------------------------------------------------------------------------------`));
+  console.log(`  ${task("help")} (${util.colors.yellow("default")}) - Displays this message.`);
   console.log(String.EMPTY);
-  console.log("  " + task("build") + "          - Builds the project.");
-  console.log("  " + task("build:modules") + "  - Builds the project in separate modules.");
-  console.log("  " + task("rebuild") + "        - Cleans the build folder, then builds the project.");
-  console.log("  " + task("docs") + "           - Generates documentation based on inline JSDoc comments.");
-  console.log("  " + task("dist") + "           - Performs all needed tasks to prepare the built project");
-  console.log("                   for a new release.");
+  console.log(`  ${task("build")}          - Builds the project.`);
+  console.log(`  ${task("build:modules")}  - Builds the project in separate modules.`);
+  console.log(`  ${task("rebuild")}        - Cleans the build folder, then builds the project.`);
+  // console.log(`  ${task("docs")}           - Generates documentation based on inline JSDoc comments.`);
+  console.log(`  ${task("dist")}           - Performs all needed tasks to prepare the built project`);
+  console.log(`                   for a new release.`);
   // console.log(String.EMPTY);
-  // console.log("  " + task("test") + "           - Runs the project's tests.");
+  // console.log(`  ${task("test")}           - Runs the project's tests.`);
   console.log(String.EMPTY);
-  console.log("  " + task("clean") + "          - Runs all available cleaning tasks in parallel.");
-  console.log("  " + task("clean:build") + "    - Cleans the build output directory.");
-  console.log("  " + task("clean:docs") + "     - Cleans the documentation output directory.");
-  console.log("  " + task("clean:dist") + "     - Cleans the distribution output directory.");
-  console.log("  " + task("clean:reports") + "  - Cleans the reports output directory.");
+  console.log(`  ${task("clean")}          - Runs all available cleaning tasks in parallel.`);
+  console.log(`  ${task("clean:build")}    - Cleans the build output directory.`);
+  // console.log(`  ${task("clean:docs")}     - Cleans the documentation output directory.`);
+  console.log(`  ${task("clean:dist")}     - Cleans the distribution output directory.`);
+  console.log(`  ${task("clean:reports")}  - Cleans the reports output directory.`);
   console.log(String.EMPTY);
-  console.log("  " + task("lint") + "           - Runs all available linting tasks in parallel.");
-  console.log("  " + task("jshint") + "         - Runs JSHint on the project source files.");
-  console.log("  " + task("jscs") + "           - Runs JSCS on the project source files.");
+  console.log(`  ${task("lint")}           - Runs all available linting tasks in parallel.`);
+  console.log(`  ${task("jshint")}         - Runs JSHint on the project source files.`);
+  console.log(`  ${task("jscs")}           - Runs JSCS on the project source files.`);
   console.log(String.EMPTY);
 });
 
@@ -146,16 +224,7 @@ gulp.task('build', [ 'build:modules' ], function() {
                   deps:                 config.umd.deps,
                   namespace:            config.umd.namespace,
                   globalExportTemplate: config.umd.globalExportTemplateObjectDef,
-                  exports: '{\n'
-                         + '  mix:              mix,\n'
-                         + '  mixDeep:          mixDeep,\n'
-                         + '  mixPrototype:     mixPrototype,\n'
-                         + '  mixPrototypeDeep: mixPrototypeDeep,\n'
-                         + '  inheritance:      inheritance,\n'
-                         + '  makeInheritable:  makeInheritable,\n'
-                         + '  seal:             seal,\n'
-                         + '  ObjectDefinition: ObjectDefinition\n'
-                         + '}'
+                  exports:              config.umd.exports.all
                 }));
 
   var noExts = gulp.src([
@@ -174,16 +243,7 @@ gulp.task('build', [ 'build:modules' ], function() {
                      deps:                 config.umd.deps,
                      namespace:            config.umd.namespace,
                      globalExportTemplate: config.umd.globalExportTemplateObjectDef,
-                     exports: '{\n'
-                            + '  mix:              mix,\n'
-                            + '  mixDeep:          mixDeep,\n'
-                            + '  mixPrototype:     mixPrototype,\n'
-                            + '  mixPrototypeDeep: mixPrototypeDeep,\n'
-                            + '  inheritance:      inheritance,\n'
-                            + '  makeInheritable:  makeInheritable,\n'
-                            + '  seal:             seal,\n'
-                            + '  ObjectDefinition: ObjectDefinition\n'
-                            + '}'
+                     exports:              config.umd.exports.noExts
                    }));
 
   return merge(all, noExts)
@@ -209,14 +269,7 @@ gulp.task('build:modules', function() {
                         deps:                 config.umd.deps,
                         namespace:            config.umd.namespace,
                         globalExportTemplate: 'root.I = {};\n    <%= _default %>',
-                        exports: '{\n'
-                               + '  mix:              mix,\n'
-                               + '  mixDeep:          mixDeep,\n'
-                               + '  inheritance:      inheritance,\n'
-                               + '  makeInheritable:  makeInheritable,\n'
-                               + '  seal:             seal,\n'
-                               + '  ObjectDefinition: ObjectDefinition\n'
-                               + '}'
+                        exports:              config.umd.exports.objectDef
                       }));
 
   var inheritance = gulp.src([
@@ -228,10 +281,7 @@ gulp.task('build:modules', function() {
                         .pipe(wrapUMD({
                           deps:      config.umd.deps,
                           namespace: config.umd.namespace,
-                          exports: '{\n'
-                                 + '  mixDeep:     mixDeep,\n'
-                                 + '  inheritance: inheritance\n'
-                                 + '}'
+                          exports:   config.umd.exports.inheritance
                         }));
 
   var makeInheritable = gulp.src([
@@ -244,11 +294,7 @@ gulp.task('build:modules', function() {
                             .pipe(wrapUMD({
                               deps:      config.umd.deps,
                               namespace: config.umd.namespace,
-                              exports: '{\n'
-                                     + '  mixDeep:         mixDeep,\n'
-                                     + '  inheritance:     inheritance,\n'
-                                     + '  makeInheritable: makeInheritable\n'
-                                     + '}'
+                              exports:   config.umd.exports.makeInheritable
                             }));
 
   var seal = gulp.src(config.src.selector.inherit.seal)
@@ -285,10 +331,7 @@ gulp.task('build:modules', function() {
                          .pipe(wrapUMD({
                            deps:      config.umd.deps,
                            namespace: config.umd.namespace,
-                           exports: '{\n'
-                                  + '  mix:          mix,\n'
-                                  + '  mixPrototype: mixPrototype\n'
-                                  + '};'
+                           exports:   config.umd.exports.mixPrototype
                          }));
 
   var mixPrototypeDeep = gulp.src([
@@ -299,10 +342,7 @@ gulp.task('build:modules', function() {
                              .pipe(wrapUMD({
                                deps:      config.umd.deps,
                                namespace: config.umd.namespace,
-                               exports: '{\n'
-                                      + '  mixDeep:      mixDeep,\n'
-                                      + '  mixPrototype: mixPrototypeDeep\n'
-                                      + '};'
+                               exports:   config.umd.exports.mixPrototypeDeep
                              }));
 
   return merge(objectDef, inheritance, makeInheritable, seal, mix, mixDeep, mixPrototype, mixPrototypeDeep)
@@ -344,11 +384,11 @@ gulp.task('dist', [ 'clean:build', 'clean:dist' ], function(callback) {
 });
 
 
-gulp.task('docs', [ 'clean:docs' ], function() {
-  return gulp.src([ config.src.selector.scripts, 'README.md' ])
-             .pipe(jsdoc.parser(null, 'Inheritance.js'))
-             .pipe(jsdoc.generator(config.docs.dir));
-});
+// gulp.task('docs', [ 'clean:docs' ], function() {
+//   return gulp.src([ config.src.selector.scripts, 'README.md' ])
+//              .pipe(jsdoc.parser(null, `inheritance.js`))
+//              .pipe(jsdoc.generator(config.docs.dir));
+// });
 
 
 
@@ -397,12 +437,13 @@ gulp.task('lint', [ 'jshint', 'jscs' ]);
 gulp.task('jshint', function() {
   return gulp.src(config.lint.selectors)
              .pipe(jshint())
-             .pipe(jshint.reporter(jshintStylishReporter, { verbose: true }))
+             .pipe(jshint.reporter('jshint-stylish', { verbose: true }))
              .pipe(jshint.reporter('fail', { verbose: true }));
 });
 
 
 gulp.task('jscs', function() {
   return gulp.src(config.lint.selectors)
-             .pipe(jscs({ verbose: true }));
+             .pipe(jscs({ verbose: true }))
+             .pipe(jscsStylish());
 });

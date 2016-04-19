@@ -28,7 +28,7 @@
   "nonew": false,
   "singleGroups": false,
   "undef": true,
-  "unused": false, // TODO: Change back to true once inline ignore bugs are fixed!
+  "unused": true,
 
   "laxbreak": true,
   "laxcomma": true,

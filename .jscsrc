@@ -1,4 +1,11 @@
 {
+  "excludeFiles": [
+    "**/build/**",
+    "**/dist/**",
+    "**/node_modules/**"
+  ],
+
+
   "disallowEmptyBlocks": true,
   "disallowIdentifierNames": [
     "that"
@@ -89,7 +96,7 @@
     "?"
   ],
   "requirePaddingNewLinesAfterUseStrict": true,
-  "requirePaddingNewLinesBeforeExport": false,
+  "requirePaddingNewLinesBeforeExport": true,
   "requireParenthesesAroundIIFE": true,
   "requireSemicolons": true,
   "requireSpaceAfterBinaryOperators": [

@@ -1,6 +1,6 @@
 {
   "name": "inheritance-js",
-  "version": "0.4.11",
+  "version": "1.0.0-beta.0",
   "description": "Simple, lightweight extensions and helpers that make inheritance in JS a breeze, all with pure JavaScript, no extra libraries needed",
   "license": "CPOL-1.02",
   "homepage": "https://github.com/bsara/inheritance.js#readme",
@@ -39,22 +39,22 @@
     "/README.md"
   ],
   "devDependencies": {
-    "del": "latest",
-    "gulp": "latest",
-    "gulp-concat": "latest",
-    "gulp-header": "latest",
-    "gulp-jscs": "latest",
-    "gulp-jsdoc": "latest",
-    "gulp-jshint": "latest",
-    "gulp-rename": "latest",
-    "gulp-replace": "latest",
-    "gulp-uglify": "latest",
-    "gulp-util": "latest",
+    "del": "^2.2.0",
+    "gulp": "^3.9.1",
+    "gulp-concat": "^2.6.0",
+    "gulp-header": "^1.7.1",
+    "gulp-jscs": "^3.0.2",
+    "gulp-jscs-stylish": "^1.4.0",
+    "gulp-jshint": "^2.0.0",
+    "gulp-rename": "^1.2.2",
+    "gulp-replace": "^0.5.4",
+    "gulp-uglify": "^1.5.3",
+    "gulp-util": "^3.0.7",
     "gulp-wrap-umd": "bsara/gulp-wrap-umd",
-    "jshint": "latest",
-    "jshint-stylish": "latest",
-    "merge-stream": "latest",
-    "path": "latest",
-    "run-sequence": "latest"
+    "jshint": "^2.9.1",
+    "jshint-stylish": "^2.1.0",
+    "merge-stream": "^1.0.0",
+    "path": "^0.12.7",
+    "run-sequence": "^1.1.5"
   }
 }

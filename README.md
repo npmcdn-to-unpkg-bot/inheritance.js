@@ -1,5 +1,5 @@
-Inheritance.js [![Build Status](https://img.shields.io/travis/bsara/inheritance.js.svg)](https://travis-ci.org/bsara/inheritance.js?style=flat-square)
-=================================================
+# inheritance.js [![Build Status](https://img.shields.io/travis/bsara/inheritance.js.svg?style=flat-square)](https://travis-ci.org/bsara/inheritance.js)
+
 
 [![CPOL v1.02 License](https://img.shields.io/badge/license-CPOL--1.02-blue.svg?style=flat-square)](https://github.com/bsara/inheritance.js/blob/master/LICENSE.md)
 
@@ -9,13 +9,15 @@ Inheritance.js [![Build Status](https://img.shields.io/travis/bsara/inheritance.
 [![Gitter Chat](https://badges.gitter.im/JOIN%20CHAT.svg)](https://gitter.im/bsara/inheritance.js)
 
 
-Simple, lightweight extensions and helpers that make inheritance in JS a breeze, all with pure JavaScript, no extra libraries needed.
+Simple, lightweight extensions and helpers that make inheritance in JS a breeze,
+all with pure JavaScript, no extra libraries needed.
 
 Includes support for AMD, CommonJS, and global inclusion via an HTML script tag.
 
-> *Special Thanks to [YouMightNotNeedjQuery.com](http://youmightnotneedjquery.com). The functions `mix`, `mixDeep`, `mixPrototype`, and `mixPrototypeDeep`
-were based largly off of their implementation of ["Extend"](http://youmightnotneedjquery.com/#extend) and
-["Deep Extend"](http://youmightnotneedjquery.com/#deep_extend).*
+> *Special Thanks to [YouMightNotNeedjQuery.com](http://youmightnotneedjquery.com). The
+functions `mix`, `mixDeep`, `mixPrototype`, and `mixPrototypeDeep` were based largly off
+of their implementation of [`Extend`](http://youmightnotneedjquery.com/#extend) and
+[`Deep Extend`](http://youmightnotneedjquery.com/#deep_extend).*
 
 
 
@@ -23,8 +25,8 @@ were based largly off of their implementation of ["Extend"](http://youmightnotne
 
 - **NPM:** `$ npm install --save inheritance-js`
 - **Bower:** `$ bower install --save inheritance-js`
-- **CDN (minified):** `<script src="//npmcdn.com/inheritance-js@0.4.10/dist/inheritance.min.js"></script>`
-- **CDN (not minified):** `<script src="//npmcdn.com/inheritance-js@0.4.10"></script>`
+- **CDN (minified):** `<script src="//npmcdn.com/inheritance-js@1.0.0-beta.0/dist/inheritance.min.js"></script>`
+- **CDN (not minified):** `<script src="//npmcdn.com/inheritance-js@1.0.0-beta.0"></script>`
 - [**Download**](https://github.com/bsara/inheritance.js/releases)
 
 
@@ -36,10 +38,8 @@ were based largly off of their implementation of ["Extend"](http://youmightnotne
 - Make any object non-inheritable ("sealed") with one function call.
 - Easily create object definitions containing...
     - mixins (deep)
-    - private properties
     - static properties
     - static constant properties
-    - private static properties
     - [getters](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/get) (via `get` keyword)
     - [setters](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Functions/set) (via `set` keyword)
 - Object definition creation is made much more readable/maintainable.
