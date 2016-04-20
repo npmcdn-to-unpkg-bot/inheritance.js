@@ -1,6 +1,3 @@
-/* exported seal */
-
-
 /**
  * Makes an object sealed by adding a function called `extend` as a "static" property
  * of the object that throws an error if it is ever called. (I.E. Calling this function
@@ -19,7 +16,7 @@
  * @throws {TypeError} If `obj` is `undefined` or `null`.
  * @throws {TypeError} If `obj.extend` already exists and `overwrite` is NOT equal `true`.
  */
-function seal(obj, overwrite, ignoreOverwriteError) {
+export default function seal(obj, overwrite, ignoreOverwriteError) {
   if (obj == null) {
     throw new TypeError("`obj` cannot be undefined or null!");
   }
