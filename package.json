@@ -3,7 +3,7 @@
   "version": "1.0.0-beta.0",
   "description": "Simple, lightweight extensions and helpers that make inheritance in JS a breeze, all with pure JavaScript, no extra libraries needed",
   "license": "CPOL-1.02",
-  "homepage": "https://github.com/bsara/odef.js#readme",
+  "homepage": "https://github.com/bsara/es5-odef.js#readme",
   "repository": "bsara/es5-odef.js",
   "keywords": [
     "class",
