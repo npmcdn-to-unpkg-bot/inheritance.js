@@ -37,17 +37,9 @@ String.SPACE = ' ';
 var config = {
   pkg: require('./package.json'),
 
-  build: {
-    dir:     'build/',
-    modules: {}
-  },
-  dist: {
-    dir:     'dist/',
-    modules: {}
-  },
-  docs: { dir: 'docs/' },
+  build: { dir: 'build/' },
+  dist: { dir: 'dist/' },
   lint: {},
-  reports: { dir: 'reports/' },
   src: {
     dir:     'src/',
     selector: {}
@@ -67,79 +59,35 @@ var config = {
 
 config.fileHeader =
 `/*!
- * inheritance.js (${config.pkg.version})
+ * ${config.pkg.name}.js (${config.pkg.version})
  *
  * Copyright (c) ${(new Date()).getFullYear()} Brandon Sara (http://bsara.github.io)
  * Licensed under the ${config.pkg.license} (https://github.com/bsara/inheritance.js/blob/master/LICENSE.md)
  */
 `;
 
+config.umd.header =
+`;(function(root, factory) {
+  if (typeof define === 'function' && define.amd) {
+    define(factory);
+    return;
+  }
+  if (typeof exports === 'object') {
+    module.exports = factory(require, exports, module);
+    return;
+  }
 
-config.umd.exports.all =
-`{
-  mix:              mix,
-  mixDeep:          mixDeep,
-  mixPrototype:     mixPrototype,
-  mixPrototypeDeep: mixPrototypeDeep,
-  inheritance:      inheritance,
-  makeInheritable:  makeInheritable,
-  seal:             seal,
-  ObjectDefinition: ObjectDefinition
-};`;
+  var exports = {};
 
-config.umd.exports.noExts =
-`{
-  mix:              mix,
-  mixDeep:          mixDeep,
-  mixPrototype:     mixPrototype,
-  mixPrototypeDeep: mixPrototypeDeep,
-  inheritance:      inheritance,
-  makeInheritable:  makeInheritable,
-  seal:             seal,
-  ObjectDefinition: ObjectDefinition
-};`;
+  factory(undefined, exports, undefined);
 
-config.umd.exports.objectDef =
-`{
-  mix:              mix,
-  mixDeep:          mixDeep,
-  inheritance:      inheritance,
-  makeInheritable:  makeInheritable,
-  seal:             seal,
-  ObjectDefinition: ObjectDefinition
-};`;
-
-config.umd.exports.inheritance =
-`{
-  mixDeep:     mixDeep,
-  inheritance: inheritance
-};`;
-
-config.umd.exports.makeInheritable =
-`{
-  mixDeep:         mixDeep,
-  inheritance:     inheritance,
-  makeInheritable: makeInheritable
-};`;
-
-config.umd.exports.mixPrototype =
-`{
-  mix:          mix,
-  mixPrototype: mixPrototype
-};`;
-
-config.umd.exports.mixPrototypeDeep =
-`{
-  mixDeep:      mixDeep,
-  mixPrototype: mixPrototypeDeep
-};`;
-
-
-config.umd.globalExportTemplateObjectDef =
-`<%= _default %>
-    root.ObjectDefinition = root.<%= namespace %>.ObjectDefinition;
-    delete root.<%= namespace %>.ObjectDefinition;
+  root.odef            = exports.odef;
+  root.makeInheritable = exports.makeInheritable;
+  root.seal            = exports.seal;
+}(this, function(require, exports, module) {
 `;
+
+config.umd.footer = '\n}));\n';
 
 // jscs:enable disallowOperatorBeforeLineBreak
 
