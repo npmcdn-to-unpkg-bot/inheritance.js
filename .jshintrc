@@ -6,15 +6,7 @@
   "esnext": true,
   "predef": [
     "document",
-    "window",
-    "Map",
-    "Promise",
-    "Proxy",
-    "Reflect",
-    "Set",
-    "Symbol",
-    "WeakMap",
-    "WeakSet"
+    "window"
   ],
 
   "debug": false,

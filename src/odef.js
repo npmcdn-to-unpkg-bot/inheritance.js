@@ -1,9 +1,20 @@
-import seal from 'seal';
+import makeInheritable from 'make-inheritable';
+import seal            from 'seal';
 
-import { _deepClone, _getPropertyDescriptor } from '_internal-utils';
+import { _getPropertyDescriptor } from '_internal-utils';
 
 
 
+/**
+ * TODO: Add description
+ *
+ * @param {String} name  - TODO: Add description
+ * @param {Object} props - TODO: Add description
+ *
+ * @return {Function} TODO: Add description
+ *
+ * @requires makeInheritable, seal
+ */
 export default function odef(name, props) {
   if (typeof name === 'object') {
     props = name;
@@ -17,12 +28,13 @@ export default function odef(name, props) {
   _addPrototypeProperties(odef, props);
   _addSuperFunction(odef);
 
-  return ((props.__sealed__ === true) ? seal(odef, true) : odef);
+  return ((props.__sealed__ === true) ? seal(odef, true) : makeInheritable(odef, true));
 }
 
 
 
 
+/** @private */
 function _createODef(name, props) {
   let parent = (props.__inherits__ || Object);
 
@@ -46,6 +58,7 @@ function _createODef(name, props) {
 
 
 
+/** @private */
 function _getODefName(name, ctor) {
   if (typeof name === 'string' && name.trim()) {
     return name.trim();
@@ -57,6 +70,7 @@ function _getODefName(name, ctor) {
 }
 
 
+/** @private */
 function _addConstants(def, props) {
   if (props == null) {
     return;
@@ -71,6 +85,7 @@ function _addConstants(def, props) {
 }
 
 
+/** @private */
 function _addStaticProperties(def, props) {
   if (props == null) {
     return;
@@ -85,6 +100,7 @@ function _addStaticProperties(def, props) {
 }
 
 
+/** @private */
 function _addPrototypeProperties(def, props) {
   def.prototype.constructor = def;
 
@@ -118,12 +134,17 @@ function _addPrototypeProperties(def, props) {
 }
 
 
+/**
+ * @requires _getPropertyDescriptor
+ * @private
+ */
 function _addSuperFunction(def) {
   Object.defineProperty(def.prototype, '_super', {
     configurable: false,
     enumerable:   false,
     writable:     false,
 
+    /** @private */
     value: function() {
       var caller = arguments.callee.caller;
 
@@ -192,11 +213,13 @@ function _addSuperFunction(def) {
 }
 
 
+/** @private */
 function _isReservedStaticProperty(propName) {
   return (propName === 'isObjDef' || propName === 'objDefName');
 }
 
 
+/** @private */
 function _addProperty(propNewOwner, propCurrentOwner, propName) {
   var propOptions    = {};
   var propDescriptor = Object.getOwnPropertyDescriptor(propCurrentOwner, propName);
@@ -208,7 +231,7 @@ function _addProperty(propNewOwner, propCurrentOwner, propName) {
   }
 
   if (typeof propOptions.value !== 'undefined') {
-    _addOwnerIfFunction(propNewOwner, _deepClone(propOptions.value));
+    _addOwnerIfFunction(propNewOwner, propOptions.value);
   }
   if (typeof propOptions.get !== 'undefined') {
     _addOwnerIfFunction(propNewOwner, propOptions.get);
@@ -221,6 +244,7 @@ function _addProperty(propNewOwner, propCurrentOwner, propName) {
 }
 
 
+/** @private */
 function _addOwnerIfFunction(owner, obj) {
   if (typeof obj === 'function') {
     obj.owner = owner;

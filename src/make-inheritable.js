@@ -1,5 +1,5 @@
-/* globals inheritance */
-/* exported makeInheritable */
+import odef from 'odef';
+
 
 
 /**
@@ -19,7 +19,7 @@
  * @throws {TypeError} If `obj` is `undefined` or `null`.
  * @throws {TypeError} If `obj.extend` already exists and `overwrite` is NOT equal `true`.
  */
-function makeInheritable(obj, overwrite, ignoreOverwriteError) {
+export default function makeInheritable(obj, overwrite, ignoreOverwriteError) {
   if (obj == null) {
     throw new TypeError("`obj` cannot be undefined or null!");
   }
@@ -31,24 +31,24 @@ function makeInheritable(obj, overwrite, ignoreOverwriteError) {
   }
 
   /**
-   * Creates a new object definition based upon the given `objDefProps` properties and
+   * Creates a new object definition based upon the given `props` properties and
    * causes that new object definition to inherit this object.
    *
-   * @param {Object} objDefProps - An object containing all properties to be used in
-   *                               creating the new object definition that will inherit
-   *                               this object. If this parameter is `undefined` or
-   *                               `null`, then a new child object definition is created.
-   *                               TODO: Add reference to the `objDefProps` spec
+   * @param {Object} props - An object containing all properties to be used in
+   *                         creating the new object definition that will inherit
+   *                         this object. If this parameter is `undefined` or
+   *                         `null`, then a new child object definition is created.
    *
-   * @returns {Object} An object created from the given `objDefProps` that inherits this
-   *                   object.
+   *                         TODO: Add reference to the `props` spec
    *
-   * @throws {TypeError} If the object's definition has been sealed. @see {@link https://github.com/bsara/inheritance.js/blob/master/src/inherit/seal.js}
+   * @returns {Object} An object created from the given `props` that inherits this object.
    *
-   * @requires inheritance
+   * @throws {TypeError} If the object's definition has been sealed. @see {@link https://github.com/bsara/odef.js/blob/master/src/seal.js}
+   *
+   * @requires odef
    */
   Object.defineProperty(obj, 'extend', {
-    value:        function(objDefProps) { return inheritance(obj, objDefProps); }, // jscs:ignore requireBlocksOnNewline
+    value:        function(name, props) { return odef(name, props); }, // jscs:ignore requireBlocksOnNewline
     configurable: true,
     enumerable:   false,
     writable:     true

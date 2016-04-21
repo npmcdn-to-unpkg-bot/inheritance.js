@@ -1,5 +1,5 @@
 {
-  "name": "inheritance-js",
+  "name": "es5-odef",
   "version": "1.0.0-beta.0",
   "authors": [
     "Brandon Sara (http://bsara.github.io)"
@@ -14,16 +14,18 @@
   "keywords": [
     "class",
     "classes",
+    "def",
+    "definition",
     "inherit",
-    "inheritjs",
-    "inherit-js",
-    "inherit.js",
     "inheritance",
-    "inheritancejs",
-    "inheritance-js",
-    "inheritance.js",
+    "inherits",
+    "mix",
+    "mixin",
+    "o",
+    "obj",
     "object",
     "objects",
+    "odef",
     "prototype"
   ],
   "moduleType": [
@@ -31,11 +33,11 @@
     "amd",
     "node"
   ],
-  "main": "/dist/inheritance.min.js",
+  "main": "/dist/es5-odef.js",
   "ignore": [
     "**/*",
-    "!/dist/**/*.js",
-    "!/docs/**/*",
+    "!/dist/*.js",
+    "!/dist/*.map",
     "!/LICENSE",
     "!/README.md"
   ]
