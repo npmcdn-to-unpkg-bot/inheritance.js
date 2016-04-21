@@ -1,5 +1,6 @@
 {
   "excludeFiles": [
+    "**/bower_components/**",
     "**/build/**",
     "**/dist/**",
     "**/node_modules/**"
