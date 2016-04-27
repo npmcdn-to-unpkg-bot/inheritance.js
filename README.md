@@ -23,8 +23,8 @@ were based largly off of their implementation of ["Extend"](http://youmightnotne
 
 - **NPM:** `$ npm install --save inheritance-js`
 - **Bower:** `$ bower install --save inheritance-js`
-- **CDN (minified):** `<script src="//npmcdn.com/inheritance-js@0.4.10/dist/inheritance.min.js"></script>`
-- **CDN (not minified):** `<script src="//npmcdn.com/inheritance-js@0.4.10"></script>`
+- **CDN (minified):** `<script src="//npmcdn.com/inheritance-js@0.4.11/dist/inheritance.min.js"></script>`
+- **CDN (not minified):** `<script src="//npmcdn.com/inheritance-js@0.4.11"></script>`
 - [**Download**](https://github.com/bsara/inheritance.js/releases)
 
 
