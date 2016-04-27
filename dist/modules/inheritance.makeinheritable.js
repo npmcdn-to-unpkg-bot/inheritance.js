@@ -1,5 +1,5 @@
 /*!
- * Inheritance.js (0.4.10)
+ * Inheritance.js (0.4.11)
  *
  * Copyright (c) 2016 Brandon Sara (http://bsara.github.io)
  * Licensed under the CPOL-1.02 (https://github.com/bsara/inheritance.js/blob/master/LICENSE.md)
@@ -274,6 +274,16 @@ function _setupSuperFunction(def) {
 
       if (!callerName) {
         return;
+      }
+
+
+      var getterNamePrefix = "get ";
+      var setterNamePrefix = "set ";
+
+      if (callerName.startsWith(getterNamePrefix)) {
+        callerName = callerName.replace(getterNamePrefix, "");
+      } else if (callerName.startsWith(setterNamePrefix)) {
+        callerName = callerName.replace(setterNamePrefix, "");
       }
 
 

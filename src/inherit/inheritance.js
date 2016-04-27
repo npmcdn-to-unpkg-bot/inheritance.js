@@ -212,6 +212,16 @@ function _setupSuperFunction(def) {
       }
 
 
+      var getterNamePrefix = "get ";
+      var setterNamePrefix = "set ";
+
+      if (callerName.startsWith(getterNamePrefix)) {
+        callerName = callerName.replace(getterNamePrefix, "");
+      } else if (callerName.startsWith(setterNamePrefix)) {
+        callerName = callerName.replace(setterNamePrefix, "");
+      }
+
+
       var superFunc;
       var superFuncDescriptor = InternalUtils.getPropertyDescriptor(superType, callerName);
       var callerDescriptor    = InternalUtils.getPropertyDescriptor(callerOwner, callerName);

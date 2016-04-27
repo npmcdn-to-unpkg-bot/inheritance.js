@@ -1,3 +1,8 @@
+## [v0.4.11](https://github.com/bsara/inheritance.js/tree/v0.4.11) (2016-04-27)
+
+* **[Bug Fix]** Fixed getter/setter reference issues in Google Chrome.
+
+
 ## [v0.4.10](https://github.com/bsara/inheritance.js/tree/v0.4.10) (2016-03-29)
 
 * **[Bug Fix]** Fixed issues when calling super for getters/setters in browsers (Safari) that don't keep track of the name of the overriding getter/setter.
