@@ -6,8 +6,6 @@ Inheritance.js [![Build Status](https://img.shields.io/travis/bsara/inheritance.
 [![NPM Package](https://img.shields.io/npm/v/inheritance-js.svg?style=flat-square)](https://www.npmjs.com/package/inheritance-js)&nbsp;
 [![Bower Package](https://img.shields.io/bower/v/inheritance-js.svg?style=flat-square)](http://bower.io/search/?q=inheritance-js)
 
-[![Gitter Chat](https://badges.gitter.im/JOIN%20CHAT.svg)](https://gitter.im/bsara/inheritance.js)
-
 
 Simple, lightweight extensions and helpers that make inheritance in JS a breeze, all with pure JavaScript, no extra libraries needed.
 
