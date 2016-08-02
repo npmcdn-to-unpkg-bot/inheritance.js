@@ -1,3 +1,14 @@
+## [v0.4.12]
+
+* **Project deprecation warning:**
+  This started out as an experiment/learning tool for me, but I ultimately found that the approach taken in the project is VERY inefficient.
+  I'm truely very sorry for any inconvenience this may cause. I recommend just that as a replacement, you should just use the native inheritance
+  functionality of JavaScript, it's fast, and really actually not that hard to pick up; or just use [ES6 classes](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes).
+  Trying to turn the prototypal inheritance into classical inheritance is really not worth it in JavaScript. It's better to embrace how the
+  language naturally works, once you do, you'll never regret it.
+  If anyone would like to take over the project, just let me know.
+
+
 ## [v0.4.11](https://github.com/bsara/inheritance.js/tree/v0.4.11) (2016-04-27)
 
 * **[Bug Fix]** Fixed getter/setter reference issues in Google Chrome.

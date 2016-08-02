@@ -7,6 +7,15 @@ Inheritance.js [![Build Status](https://img.shields.io/travis/bsara/inheritance.
 [![Bower Package](https://img.shields.io/bower/v/inheritance-js.svg?style=flat-square)](http://bower.io/search/?q=inheritance-js)
 
 
+> **WARNING: This project has been deprecated** and **will be removed from NPM and Bower in about 6 months (Feb, 2017)**! This project started out as
+  an experiment/learning tool for me, but I ultimately found that the approach taken in the project is VERY inefficient. I'm truly very sorry for any
+  inconvenience this may cause. I recommend as a replacement that you use the native inheritance functionality of JavaScript, it's fast, and really
+  actually not that hard to pick up; or just use [ES6 classes](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes). Trying to
+  turn the prototypal inheritance into classical inheritance is really not worth it in JavaScript. It's better to embrace how the language works
+  naturally, once you do, you'll never regret it. I will remove the library from NPM and Bower in about 6 months.
+  **If anyone would like to take over the project, just let me know.**
+
+
 Simple, lightweight extensions and helpers that make inheritance in JS a breeze, all with pure JavaScript, no extra libraries needed.
 
 Includes support for AMD, CommonJS, and global inclusion via an HTML script tag.
@@ -21,8 +30,8 @@ were based largly off of their implementation of ["Extend"](http://youmightnotne
 
 - **NPM:** `$ npm install --save inheritance-js`
 - **Bower:** `$ bower install --save inheritance-js`
-- **CDN (minified):** `<script src="//npmcdn.com/inheritance-js@0.4.11/dist/inheritance.min.js"></script>`
-- **CDN (not minified):** `<script src="//npmcdn.com/inheritance-js@0.4.11"></script>`
+- **CDN (minified):** `<script src="//npmcdn.com/inheritance-js@0.4.12/dist/inheritance.min.js"></script>`
+- **CDN (not minified):** `<script src="//npmcdn.com/inheritance-js@0.4.12"></script>`
 - [**Download**](https://github.com/bsara/inheritance.js/releases)
 
 
